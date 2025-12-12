@@ -1,7 +1,7 @@
-data/
 wandb/
 outputs/
 checkpoints/
+trace/
 calc-x-data.zip
 spider-data.zip
 claude_code/logs/

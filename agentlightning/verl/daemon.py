@@ -1,6 +1,7 @@
 # Copyright (c) Microsoft. All rights reserved.
 
 import asyncio
+import concurrent.futures
 import json
 import random
 import socket
@@ -520,7 +521,16 @@ class AgentModeDaemon:
                 raise RuntimeError("Internal loop is not running.")
             future = asyncio.run_coroutine_threadsafe(coro, self._internal_loop)
         try:
-            future.result(timeout=60)  # Wait for completion with a timeout
+            future.result(timeout=600)  # Wait for completion with a timeout
+        except concurrent.futures.TimeoutError:
+            # 更友好的提示，指向可能的阻塞点
+            msg = (
+                "set_up_data_and_server timed out after 300s. "
+                "可能的原因：_async_set_up 中存在阻塞/耗时的同步操作（例如 sandbox.allocate、模型加载或文件 I/O）。\n"
+                "建议：将这些阻塞调用改为 asyncio.to_thread / run_in_executor，或扩大超时时间以便排查。"
+            )
+            print(msg)
+            raise
         except Exception as e:
             print(f"Failed to set up data on server: {e}")
             raise

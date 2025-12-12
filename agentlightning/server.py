@@ -29,6 +29,7 @@ from .types import (
     Task,
     TaskIfAny,
 )
+from .sandbox import SandboxManager, SandboxBusyError
 
 logger = logging.getLogger(__name__)
 
@@ -164,9 +165,10 @@ class ServerDataStore:
             rollout: Rollout returned by a client.
         """
         async with self._results_lock:
-            self._processing_tasks.pop(rollout.rollout_id, None)
+            task = self._processing_tasks.pop(rollout.rollout_id, None)
             self._completed_rollouts[rollout.rollout_id] = rollout
             logger.info(f"Rollout received and stored: {rollout.rollout_id}")
+            return task
 
     async def retrieve_rollout(self, rollout_id: str) -> Optional[RolloutLegacy]:
         """Retrieve and remove a stored rollout by identifier.
@@ -231,6 +233,7 @@ class AgentLightningServer:
         self.endpoint = f"http://{host}:{port}"
         self._task_timeout_seconds = task_timeout_seconds
 
+        self.sandbox_mgr = SandboxManager(sandbox_max_num=10)
         # Defer initialization and use event for cross-thread communication
         self._store: Optional[ServerDataStore] = None
         self.loop: Optional[asyncio.AbstractEventLoop] = None
@@ -269,6 +272,22 @@ class AgentLightningServer:
 
         for _, task in processing_tasks.items():
             if task.last_claim_time and current_time - task.last_claim_time > self._task_timeout_seconds:
+                old_uri = None
+                if task.metadata:
+                    old_uri = task.metadata.get("sandbox_uri")
+                if old_uri:
+                    try:
+                        self.sandbox_mgr.release(old_uri)
+                        logger.info(f"Released sandbox {old_uri} due to timeout for {task.rollout_id}")
+                    except Exception as e:
+                        logger.warning(f"Release sandbox failed for timeout {task.rollout_id}: {e}")
+
+                # 2) 清空等下次分配
+                new_metadata = dict(task.metadata or {})
+                new_metadata.pop("sandbox_uri", None)
+
+                # 3) 更新 task 的 metadata 再重入队
+                task = task.model_copy(update={"metadata": new_metadata})
                 await self._store.requeue_task(task)
                 logger.warning(
                     f"Task {task.rollout_id} timed out after {self._task_timeout_seconds}s, requeued (attempt {task.num_claims})"
@@ -322,7 +341,16 @@ class AgentLightningServer:
             """Persist the rollout reported by a client."""
             if not self._store:
                 raise HTTPException(status_code=503, detail="Server not fully initialized.")
-            await self._store.store_rollout(payload)
+            task = await self._store.store_rollout(payload)
+
+            if task and task.metadata:
+                sandbox_uri = task.metadata.get("sandbox_uri")
+                if sandbox_uri:
+                    try:
+                        self.sandbox_mgr.release(sandbox_uri)
+                        logger.info(f"Release sandbox {sandbox_uri} for {task.rollout_id}")
+                    except Exception as e:
+                        logger.warning(f"Release sandbox failed for {task.rollout_id}: {e}")
             return GenericResponse(
                 status="ok",
                 message=f"Rollout {payload.rollout_id} received and stored.",
@@ -356,6 +384,22 @@ class AgentLightningServer:
         """Add a task to the queue for a client to process."""
         if not self._store:
             raise RuntimeError("Store not initialized. The server may not be running.")
+        metadata = dict(metadata or {})
+        task_id = metadata.get("task_id") or f"task-{uuid.uuid4().hex[:8]}"
+
+        try:
+            # 将阻塞的 sandbox 分配移到线程池，避免阻塞事件循环
+            alloc_timeout = 300.0
+            sandbox_uri = await asyncio.wait_for(
+                asyncio.to_thread(self.sandbox_mgr.allocate, task_id),
+                timeout=alloc_timeout,
+            )
+        except asyncio.TimeoutError:
+            raise RuntimeError(f"Sandbox allocate timed out after {alloc_timeout}s")
+        except Exception as e:
+            raise RuntimeError(f"Sandbox allocate failed: {e}")
+
+        metadata["sandbox_uri"] = sandbox_uri
         return await self._store.add_task(sample, mode=mode, resources_id=resources_id, metadata=metadata)
 
     async def update_resources(self, resources: NamedResources) -> str:

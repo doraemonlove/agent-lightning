@@ -84,7 +84,7 @@ class LegacyAgentRunner(Runner[Any]):
 
     def _to_rollout_object(
         self,
-        result: RolloutRawResultLegacy,
+        result: Optional[RolloutRawResultLegacy | List[Triplet]],
         rollout_id: str,
     ) -> RolloutLegacy:
         """Standardizes the agent's return value into a RolloutLegacy object.
@@ -96,59 +96,62 @@ class LegacyAgentRunner(Runner[Any]):
         Returns:
             A standardized `RolloutLegacy` object for reporting to the server.
         """
-        trace: Any = None
+        logger.info(f"to_rollout_object: {result}")
+        # trace: Any = None
         final_reward: Optional[float] = None
-        triplets: Optional[List[Triplet]] = None
-        trace_spans: Optional[List[ReadableSpan]] = None
+        # triplets: Optional[List[Triplet]] = None
+        # trace_spans: Optional[List[ReadableSpan]] = None
 
         # Handle different types of results from the agent
         # Case 1: result is a float (final reward)
-        if isinstance(result, float):
-            final_reward = result
+        # if isinstance(result, float):
+        #     final_reward = result
         # Case 2: result is a list of Triplets
-        if isinstance(result, list) and all(isinstance(t, Triplet) for t in result):
-            triplets = result  # type: ignore
-        # Case 3: result is a list of ReadableSpan (OpenTelemetry spans)
-        if isinstance(result, list) and all(isinstance(t, ReadableSpan) for t in result):
-            trace_spans = result  # type: ignore
-            trace = [json.loads(readable_span.to_json()) for readable_span in trace_spans]  # type: ignore
-        # Case 4: result is a list of dict (trace JSON)
-        if isinstance(result, list) and all(isinstance(t, dict) for t in result):
-            trace = result
-        # Case 5: result is a RolloutLegacy object
-        if isinstance(result, RolloutLegacy):
-            final_reward = result.final_reward
-            triplets = result.triplets
-            trace = result.trace
+        # if isinstance(result, list) and all(isinstance(t, Triplet) for t in result):
+        #     triplets = result  # type: ignore
+        # # Case 3: result is a list of ReadableSpan (OpenTelemetry spans)
+        # if isinstance(result, list) and all(isinstance(t, ReadableSpan) for t in result):
+        #     trace_spans = result  # type: ignore
+        #     trace = [json.loads(readable_span.to_json()) for readable_span in trace_spans]  # type: ignore
+        # # Case 4: result is a list of dict (trace JSON)
+        # if isinstance(result, list) and all(isinstance(t, dict) for t in result):
+        #     trace = result
+        # # Case 5: result is a Rollout object
+        # if isinstance(result, Rollout):
+        #     final_reward = result.final_reward
+        #     triplets = result.triplets
+        #     trace = result.trace
 
         # If the agent has tracing enabled, use the tracer's last trace if not already set
-        if self.tracer and (trace is None or trace_spans is None):
-            spans = self.tracer.get_last_trace()
-            if spans:
-                trace = [json.loads(readable_span.to_json()) for readable_span in spans]
-                trace_spans = spans
+        # if self.tracer and (trace is None or trace_spans is None):
+        #     spans = self.tracer.get_last_trace()
+        #     if spans:
+        #         trace = [json.loads(readable_span.to_json()) for readable_span in spans]
+        #         trace_spans = spans
 
-        # Always extract triplets from the trace using TracerTraceToTriplet
-        if trace_spans:
-            triplets = self.triplet_exporter(trace_spans)  # type: ignore
+        # # Always extract triplets from the trace using TraceTripletAdapter
+        # if trace_spans:
+        #     triplets = self.triplet_exporter(trace_spans)
 
         # If the agent has triplets, use the last one for final reward if not set
-        if triplets and triplets[-1].reward is not None and final_reward is None:
-            final_reward = triplets[-1].reward
-
-        # Create the RolloutLegacy object with standardized fields
+        # if triplets and triplets[-1].reward is not None and final_reward is None:
+        #     final_reward = triplets[-1].reward
+        final_reward = result[-1].reward
+        logger.info(f"final_reward: {final_reward}, triplets: {result}")
+        # Create the Rollout object with standardized fields
         result_dict: Dict[str, Any] = {
             "rollout_id": rollout_id,
         }
         if final_reward is not None:
             result_dict["final_reward"] = final_reward
-        if triplets is not None:
-            result_dict["triplets"] = triplets
-        if trace is not None:
-            result_dict["trace"] = trace
+        # if triplets is not None:
+        #     result_dict["triplets"] = triplets
+        result_dict["triplets"] = result
+        # if trace is not None:
+        #     result_dict["trace"] = trace
 
-        if isinstance(result, RolloutLegacy):
-            return result.model_copy(update=result_dict)
+        # if isinstance(result, RolloutLegacy):
+        #     return result.model_copy(update=result_dict)
         return RolloutLegacy(**result_dict)
 
     def run(self) -> bool:  # type: ignore
@@ -183,17 +186,29 @@ class LegacyAgentRunner(Runner[Any]):
             with self.tracer._trace_context_sync(name=f"rollout_{rollout_id}"):  # pyright: ignore[reportPrivateUsage]
                 start_time = time.time()
                 rollout_method = self.agent.training_rollout if task.mode == "train" else self.agent.validation_rollout
+
+                from copy import deepcopy
+
+                resources = deepcopy(resources_update.resources)
+
+                sandbox_uri = (task.metadata or {}).get("sandbox_uri")
+                if sandbox_uri:
+                    resources["sandbox"] = {
+                        "type": "sandbox",
+                        "uri": sandbox_uri
+                    }
+
                 # Pass the task input, not the whole task object
                 if is_v0_1_rollout_api(rollout_method):
                     result = cast(
                         RolloutRawResultLegacy,
                         rollout_method(
-                            task.input, rollout_id=rollout_obj.rollout_id, resources=resources_update.resources  # type: ignore
+                            task.input, rollout_id=rollout_obj.rollout_id, resources=resources  # type: ignore
                         ),
                     )  # type: ignore
                 else:
-                    result = rollout_method(task.input, resources=resources_update.resources, rollout=rollout_obj)  # type: ignore
-                rollout_obj = self._to_rollout_object(result, task.rollout_id)  # type: ignore
+                    result = rollout_method(task.input, resources=resources, rollout=rollout_obj)
+                rollout_obj = self._to_rollout_object(result, task.rollout_id)
                 end_time = time.time()
                 logger.info(
                     f"{self._log_prefix(rollout_id)} Completed in "
