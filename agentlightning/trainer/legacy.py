@@ -127,7 +127,7 @@ class TrainerLegacy(ParallelWorkerBase):
             logger.warning("AgentLightningClient already initialized. Returning existing instance.")
         return self._client
 
-    def _worker_main_loop(self, agent: LitAgent[Any], worker_id: int, is_async: bool):
+    def _worker_main_loop(self, agent: LitAgent[Any], worker_id: int, is_async: bool, plan_name: str = None):
         """The main function for each worker process.
 
         This function initializes the client and the loop, then starts the
@@ -172,7 +172,7 @@ class TrainerLegacy(ParallelWorkerBase):
             )
             loop.init_worker(worker_id)  # type: ignore
             if is_async:
-                num_processed = asyncio.run(loop.iter_async())
+                num_processed = asyncio.run(loop.iter_async(plan_name=plan_name))
             else:
                 num_processed = loop.iter()
         except Exception:
@@ -274,7 +274,7 @@ class TrainerLegacy(ParallelWorkerBase):
         # Determine if the agent is asynchronous
 
         mode = "asynchronous" if agent.is_async() else "synchronous"
-
+        logger.info(f"mode: {mode}")
         try:
             if self.n_workers == 1:
                 logger.info(f"Running with n_workers=1 ({mode} in main process).")
@@ -300,9 +300,10 @@ class TrainerLegacy(ParallelWorkerBase):
                 logger.info(f"Running with n_workers={self.n_workers} ({mode} multiprocessing).")
                 for i in range(self.n_workers):
                     process_name = f"AgentLightning-Worker-{i}"
+                    plan_name = f"WJJ_TEST_0{i}"
                     p = multiprocessing.Process(
                         target=self._worker_main_loop,
-                        args=(agent, i, agent.is_async()),
+                        args=(agent, i, agent.is_async(), plan_name),
                         daemon=self.daemon,
                         name=process_name,
                     )

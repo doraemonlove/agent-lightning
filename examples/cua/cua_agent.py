@@ -2,18 +2,16 @@ from __future__ import annotations
 
 import os
 import time
-from typing import Any, Dict, Literal, Optional, cast
+from typing import Any, cast
 
 import dotenv
 import agentlightning
 import requests
 import traceback
 import json
-from agentlightning.types import Triplet
-from transformers import AutoTokenizer
 
-# 需要从token中还原triplets
-tokenizer = AutoTokenizer.from_pretrained("/models/Qwen3-VL-8B-Instruct")
+from convert_triplets import convert_trace_to_triplets
+
 
 # VERL_API_BASE=http://localhost:9999/ python
 agentlightning.configure_logger()
@@ -23,7 +21,7 @@ logger = agentlightning.configure_logger(name=__name__)
 TRACE_DIR = "./trace"
 os.makedirs(TRACE_DIR, exist_ok=True)
 
-def run_planner_task(
+async def run_planner_task(
     sandbox_id: str,
     user_prompt: str,
     model_name: str,
@@ -51,8 +49,8 @@ def run_planner_task(
         "model_name": model_name,
         "model_endpoint": model_endpoint,
         "model_api_key": api_key,
-        "max_actions": 20,
-        "max_images": 1,
+        "max_actions": 35,
+        "max_images": 3,
         "thinking_type": "enabled",
         "is_training": True,
         "turn_on_review": False
@@ -96,7 +94,7 @@ def test_llm_endpoint(endpoint: str, model_name: str):
         logger.exception(f"❌ LLM 接口测试失败: {e}")
         return False
 
-def score_trace(url, trace: list[dict]=None, user_instruction: str=None, temperature: float=0.0):
+async def score_trace(url, trace: list[dict]=None, user_instruction: str=None, temperature: float=0.0):
     try:
         data = {
             "trace": trace,
@@ -128,7 +126,7 @@ def score_trace(url, trace: list[dict]=None, user_instruction: str=None, tempera
 class LitCUAAgent(agentlightning.LitAgent):
     score_endpoint: str = "http://localhost:8003/score"
 
-    def _execute_rollout(
+    async def _execute_rollout(
         self, sample: dict[str, Any], *, resources: agentlightning.NamedResources, rollout_id: str, is_training: bool
     ) -> float | None:
         start_time = time.time()
@@ -143,8 +141,8 @@ class LitCUAAgent(agentlightning.LitAgent):
             llm: agentlightning.LLM = cast(agentlightning.LLM, resources["main_llm"])
 
             model_name = "/models/Qwen3-VL-8B-Instruct"
-            test_llm_endpoint(llm.endpoint, model_name)
-            result = run_planner_task(
+            # test_llm_endpoint(llm.endpoint, model_name)
+            result = await run_planner_task(
                 sandbox_id=sandbox_uri,
                 user_prompt=sample["instruction"],
                 model_name=model_name,
@@ -159,45 +157,24 @@ class LitCUAAgent(agentlightning.LitAgent):
         end_time_rollout = time.time()
         logger.info("[Rollout %s] Time taken for rollout: %.2f seconds", rollout_id, end_time_rollout - start_time)
         
-        reward = score_trace(url=self.score_endpoint, trace=result, user_instruction=sample["instruction"])
+        reward = await score_trace(url=self.score_endpoint, trace=result, user_instruction=sample["instruction"])
         logger.info("[Rollout %s] Reward: %s", rollout_id, reward)
         end_time_eval = time.time()
         logger.info(
             "[Rollout %s] Time taken for evaluation: %.2f seconds", rollout_id, end_time_eval - end_time_rollout
         )
 
-        responses = ""
-        index = 0
-        for i, item in enumerate(result):
-            if "screenshot" in item:
-                continue
-            action = item.get("action", "")
-            thought = item.get("summary", "")
-            response = f"step {index}:" + "action:" + action + ", thought:" + thought
-            index += 1
-            responses += response
+        triplets = convert_trace_to_triplets(sample["instruction"], result, reward)
 
-        logger.info(f"responses: {responses}")
+        logger.info(f"triplets: {len(triplets)}")
+        return triplets
 
-        triplet = Triplet(
-            prompt={
-                "token_ids": tokenizer.encode(
-                    json.dumps(sample["instruction"], ensure_ascii=False), add_special_tokens=False
-                ),
-            },
-            response={
-                "token_ids": tokenizer.encode(responses, add_special_tokens=False),
-            },
-            reward=reward,
-        )
+    async def training_rollout_async(self, task: Any, rollout_id: str, resources: agentlightning.NamedResources) -> Any:  # type: ignore
+        logger.info(f"{rollout_id} training_rollout_async")
+        return await self._execute_rollout(task, resources=resources, rollout_id=rollout_id, is_training=True)
 
-        return [triplet]
-
-    def training_rollout(self, task: Any, rollout_id: str, resources: agentlightning.NamedResources) -> Any:  # type: ignore
-        return self._execute_rollout(task, resources=resources, rollout_id=rollout_id, is_training=True)
-
-    def validation_rollout(self, task: Any, rollout_id: str, resources: agentlightning.NamedResources) -> Any:  # type: ignore
-        return self._execute_rollout(task, resources=resources, rollout_id=rollout_id, is_training=False)
+    async def validation_rollout_async(self, task: Any, rollout_id: str, resources: agentlightning.NamedResources) -> Any:  # type: ignore
+        return await self._execute_rollout(task, resources=resources, rollout_id=rollout_id, is_training=False)
 
 
 if __name__ == "__main__":

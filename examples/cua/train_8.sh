@@ -2,15 +2,15 @@
 
 set -e
 export N_GPUS=8
-# export BASE_MODEL=/models/ByteDance-Seed/UI-TARS-1.5-7B
 export BASE_MODEL=/models/Qwen3-VL-8B-Instruct
-# export BASE_MODEL=/models/Qwen2.5-VL-7B-Instruct
 export DATA_DIR=/root/code/wangjiaju/agent-lightning/examples/cua/data
 export ROLLOUT_TP_SIZE=4
 export EXPERIMENT_NAME=cua
 export PROJECT_NAME=AgentLightning
 export WANDB_BASE_URL="http://localhost:8080"
 export WANDB_API_KEY="local-b824031c34aa894204c7c703de1a1987a894ea80"
+export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+export ROLLOUT_PARALLEL_NUM=8
 
 echo "Starting training script..."
 
@@ -21,15 +21,15 @@ python -m agentlightning.verl \
     data.val_files=${DATA_DIR}/eval.parquet \
     data.train_batch_size=8 \
     data.val_batch_size=8 \
-    data.max_prompt_length=512 \
-    data.max_response_length=12288 \
+    data.max_prompt_length=16384 \
+    data.max_response_length=512  \
     data.truncation='error' \
-    actor_rollout_ref.rollout.n=1 \
+    actor_rollout_ref.rollout.n=4 \
     actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu=1 \
     actor_rollout_ref.rollout.multi_turn.format=hermes \
     actor_rollout_ref.rollout.name=vllm \
-    actor_rollout_ref.rollout.gpu_memory_utilization=0.7 \
-    actor_rollout_ref.rollout.max_model_len=12288 \
+    actor_rollout_ref.rollout.gpu_memory_utilization=0.3 \
+    actor_rollout_ref.rollout.max_model_len=16896 \
     actor_rollout_ref.rollout.tensor_model_parallel_size=$ROLLOUT_TP_SIZE \
     +actor_rollout_ref.rollout.engine_kwargs.vllm.enable_auto_tool_choice=True \
     +actor_rollout_ref.rollout.engine_kwargs.vllm.api_key="wangjiaju" \
@@ -37,11 +37,11 @@ python -m agentlightning.verl \
     actor_rollout_ref.model.path=${BASE_MODEL} \
     actor_rollout_ref.model.use_remove_padding=True \
     actor_rollout_ref.model.enable_gradient_checkpointing=True \
-    actor_rollout_ref.actor.optim.lr=1e-5 \
-    actor_rollout_ref.actor.ppo_mini_batch_size=8 \
+    actor_rollout_ref.actor.optim.lr=5e-6 \
+    actor_rollout_ref.actor.ppo_mini_batch_size=32 \
     actor_rollout_ref.actor.ppo_micro_batch_size_per_gpu=1 \
-    actor_rollout_ref.actor.use_kl_loss=False \
-    actor_rollout_ref.actor.kl_loss_coef=0.000 \
+    actor_rollout_ref.actor.use_kl_loss=True \
+    actor_rollout_ref.actor.kl_loss_coef=0.01 \
     actor_rollout_ref.actor.entropy_coeff=0 \
     actor_rollout_ref.actor.clip_ratio_low=0.2 \
     actor_rollout_ref.actor.clip_ratio_high=0.3 \

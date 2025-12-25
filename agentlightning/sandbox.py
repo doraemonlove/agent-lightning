@@ -67,6 +67,12 @@ class SandboxManager:
             resp = self.list_sandbox()
             sandboxes = resp.get("Result", []) or []
             running_uris = [sb.get("SandboxId") for sb in sandboxes if sb.get("Status") == "RUNNING"]
+            running_uris = [
+                "i-yebwczn8xsqc6io24lrp", "i-yebwczdeyowh2yrawo46", "i-yebwcz4zk0xjd1xk3d14", "i-yebwcypjb4qc6ip4x7l1", "i-yebwaldjb4qc6inlbbas", "i-yebwal2arkqc6iolez8y", "i-yebwaksgsgqc6iq0l2v0", "i-yebwakimtcqc6ikyy1h3", "i-yebwak7e9s5i3z3leejg", "i-yebwajw5q8xjd1y6j0tq",
+                "i-yebwajmbr4bw80f0qnz5", "i-yebwajchs0qc6in7px0a", "i-yebwaj2nswcva4h3i01k", "i-yebwaikef4bw80c1nvei", "i-ye8l6vmyo0bw80d82r4h", "i-ye8l6uff28qc6ildofi8", "i-ye8l6tewaoxjd1u610mp", "i-ye8l6scyyowh2yqbccw2", "i-ye8l3ejlz4cva4ex8mm5", "i-ye8l3dj37kbw80ctz5jz",
+                "i-ye8l3cikg0cva4eypkdi", "i-ye8l0nsem85i3z50kujj", "i-ye8kzm3i0wwh2ypyfi0q", "i-ye8kzl1kow5i3z3z21y9", "i-yebyrouj28qc6ipf3ago", "i-yebyrom3nkqc6infvo17", "i-yebyro9gjkbw80d63dwd", "i-yebyro2fpcwh2ypfknls", "i-yebyrnslq8cva4gqydwl", "i-yebyrnirr4bw80foocvh",
+                "i-yebyrnbqwwqc6imkn3rl", "i-yebyrmnv9c5i3z5bpcpu"
+            ]
             print("✅当前沙箱列表", running_uris)
             if not running_uris:
                 return

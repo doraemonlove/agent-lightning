@@ -250,7 +250,15 @@ class AgentModeDaemon:
             resolved = self._resolve_image_path(url)
             return f"file://{resolved}"
 
-        images: List[Image.Image] = [process_image({"image": to_image_uri(url)}) for url in image_urls]
+        images: List[Image.Image] = [
+            process_image({
+                "image": to_image_uri(url),
+                "min_pixels": 200704,
+                "max_pixels": 1350000
+            }) 
+            for url in image_urls
+        ]
+    
         model_inputs = self.processor(text=["dummy"], images=images, return_tensors="pt")
         return model_inputs.get("image_grid_thw")
 
@@ -467,6 +475,7 @@ class AgentModeDaemon:
             # Data ID is different from Rollout ID, as one data can have multiple rollouts.
             for _ in range(rollouts_per_sample):
                 task_metadata = {"data_id": data_id, "is_train": is_train}
+                print(f"mode: {self.mode}")
                 if self.mode == "v0":
                     # Queue immediately
                     rollout_id = await self.server.queue_task(
@@ -521,7 +530,7 @@ class AgentModeDaemon:
                 raise RuntimeError("Internal loop is not running.")
             future = asyncio.run_coroutine_threadsafe(coro, self._internal_loop)
         try:
-            future.result(timeout=600)  # Wait for completion with a timeout
+            future.result(timeout=1800)  # Wait for completion with a timeout
         except concurrent.futures.TimeoutError:
             # 更友好的提示，指向可能的阻塞点
             msg = (

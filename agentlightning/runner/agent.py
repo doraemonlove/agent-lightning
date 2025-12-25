@@ -351,7 +351,9 @@ class LitAgentRunner(Runner[T_task]):
                 f"Invalid raw result type. It's expected to be none, float, or a list of ReadableSpan or Span, "
                 f"but got: {type(raw_result).__name__}..."
             )
-
+        print(f"trace_spans: {trace_spans}")
+        for span in trace_spans:
+            print(span.to_json(indent=2))
         return trace_spans
 
     async def _emit_heartbeat(self, store: LightningStore) -> None:

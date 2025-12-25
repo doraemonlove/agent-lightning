@@ -113,7 +113,7 @@ def render_action_screenshot_pairs_to_pdf(trajectory, output_pdf_path):
 
 
 if __name__ == "__main__":
-    json_dir = "/root/code/wangjiaju/agent-lightning/examples/cua/trace/Qwen3-VL-8B-Instruct"
+    json_dir = "/root/code/wangjiaju/agent-lightning/examples/cua/trace/train"
     for json_file in os.listdir(json_dir):
         if json_file.endswith(".json"):
             json_path = os.path.join(json_dir, json_file)

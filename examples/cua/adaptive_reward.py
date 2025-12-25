@@ -35,72 +35,59 @@ class ReviewRequest(BaseModel):
 # 轨迹总体评估prompt
 CUA_EVALUATION_PROMPT = """
 # Role (角色设定)
-你是一名专业的**资产管理系统质检员**。你的工作是审核一个自动化 Agent 是否按照用户指令，正确地在 web 系统中完成了资产盘点审核任务。
+你是一名**铁面无私的自动化审计员**。你的任务是基于客观事实审核 Agent 的资产盘点任务执行情况。
 
-# Task (任务说明)
-**用户指令**：
-> “设置筛选条件：盘点计划为‘WJJ_TEST’，盘点审核结果为‘未盘点’。然后审核 1 条记录。”
+# ⚠️ CORE PRINCIPLE: DATA TRUST HIERARCHY (核心原则：数据信任分级)
+1. **最高信任级 (Trusted Evidence)**：
+   * **Screenshot (截图)**：这是唯一的“视觉真值”。
+   * **Action Code (代码)**：这是 Agent 实际发送给系统的指令（坐标点击等）。
+2. **校验级参考 (Intent Validation)**：
+   * **Summary / Thought**：仅视为 Agent 的“操作申请”或“意图声明”。
+   * **准则**：禁止直接采信 Summary 的结论。你必须核对 Action 坐标是否点击在 Summary 声称的按钮上，并必须以【设备说明】是否发生刷新变化作为判定操作成功的唯一最终依据。
 
-**输入数据**：
-Agent 的执行轨迹（Trajectory），包含每一步的截图、Thought 和 Action。
+# Evaluation Steps (分项评估标准)
 
-# Evaluation Steps (评估步骤拆解)
-请从以下 4 个维度进行评估。
+## 维度 1：环境启动与筛选 (Start & Setup) - 0.2分
+* **SOP 事实核查**：冷启动核查、目标页面核查、筛选条件核查（盘点计划、盘点审核结果）。
 
-## 维度 1：筛选条件设置 (Pre-check)
-* **标准**：Agent 是否确保“盘点计划”为 `WJJ_TEST` 且“审核结果”为 `未盘点`？
-* **判定**：
-    * 如果初始截图已满足且 Agent 直接开始 -> **得分**。
-    * 如果初始不满足且 Agent 修改正确 -> **得分**。
-    * 如果 Agent 修改成了错误的值 -> **0分**。
+## 维度 2：审核逻辑准确性与数量 (Core Logic & Quantity) - 0.5分
+**此项遵循严格的“有效性优先”审计链条：**
 
-## 维度 2：核心审核逻辑 (Core Logic - 权重最高)
-* **标准**：
-    1.  **进入正确**：点击的是“盘点审核”按钮（而非列表行）。
-    2.  **视觉真值 (Visual Ground Truth)**：
-        * **比对**：弹窗中的【实物图片条码】 vs 信息栏的【资产条码文本】。
-        * **决策**：一致 -> 点“通过”；不一致/看不清 -> 点“驳回”。
-    3.  **生效**：弹窗成功关闭，列表状态更新。
-* **判定**：若发生“视觉幻觉”（图片明明不一致却说一致并通过），该维度直接 **0分**。
+* **SOP 事实核查 (必须按顺序执行)：**
+    1. **第一步：有效性判定 (Existence Check)**：
+        * 对比点击按钮 **前** 列表第一行的【设备说明】文字 vs 点击 **后** 返回页面的第一行【设备说明】文字。
+        * **无效判定**：若返回后【设备说明】与点击前**完全一致**，判定该次审核**无效**。此条记录直接计为 0 分，不进入逻辑比对。
+        * **有效判定**：若【设备说明】发生了内容变化，判定为**有效审核**，进入下一步。
+    2. **第二步：准确性判定 (Logic Check)**：
+        * 提取弹窗图片中的所有可见文字。
+        * [cite_start]**通过准则**：只要图片中包含与系统【资产条码】文本**完全一致的子字符串**，即视为条码匹配。Agent 必须点“通过”。
+        * [cite_start]**驳回准则**：若图片中无法识别到与系统【资产条码】完全匹配的字符串（忽略图片中的额外符号、品牌名、型号名等），Agent 必须点“驳回”。
+* **判定 (最高 0.5分)**：
+    * **计分公式**：$得分 = 0.5 * (审核有效 且 逻辑正确 的条数 / 总要求审核数 N)$
+    * **特殊规则**：若审核有效（列表刷新）但逻辑判定错误（如图片包含条码却点驳回，或不包含却点通过），该条计 0 分。
 
-## 维度 3：任务终止 (Stopping Condition)
-* **标准**：审核完第 1 条记录后，Agent 是否停止操作（Action: finished 或不再点开新记录）？
-* **判定**：如果继续点开了第 2 条记录的审核弹窗，视为**过度执行**，该维度 **0分**。
+## 维度 3：任务终止控制 (Flow Control) - 0.2分
+* **SOP 事实核查**：完成 N 条后停止给 0.2 分；未完成或超额审核给 0 分。
 
-## 维度 4：工具操作精准度 (Tool Proficiency)
-* **标准**：考察 Agent 的操作是否精准、无冗余。
-* **扣分项 (每出现一次扣 0.1，扣完为止)**：
-    1.  **误触 (Misclick)**：点击了无效区域（如空白处、纯文本标签）导致界面无变化。
-    2.  **误入详情页**：错误点击了列表“行”进入了详情页，然后又退回。
-    3.  **冗余操作**：筛选条件明明已经是正确的，却多此一举去点击筛选框。
-    4.  **重复尝试**：在同一个错误坐标连续点击 2 次（未达到死循环标准，但显笨拙）。
+## 维度 4：工具操作精准度 (Tool Proficiency) - 0.1分
+* **SOP 事实核查**：检查 Action 字段。无 `bad_function_call` 给 0.1 分。
 
-# Critical Rules (一票否决制)
-1.  **死循环 (Dead Loop) = 总分 0 分**
-    * 如果连续执行 **3 次或以上** 相同操作且界面无变化，视为任务卡死，总分直接记为 0。
+---
 
-# Scoring Mechanism (评分标准)
-总分 1.0 分，明细如下：
-
-| 维度 | 分值 | 说明 |
-| :--- | :--- | :--- |
-| **1. 筛选设置** | **0.1** | 成功验证或修改筛选条件。 |
-| **2. 审核逻辑** | **0.5** | 能够正确识别图片并点击正确按钮（通过/驳回）。 |
-| **3. 任务终止** | **0.2** | 完成1条后立即停止，未操作第2条。 |
-| **4. 操作精准** | **0.2** | 初始 0.2 分。<br> - 出现一次误触/冗余/误入详情页，**扣 0.1**。<br> - 出现两次及以上，**扣 0.2 (本项得0分)**。 |
+# 🛑 Penalty Mechanism (惩罚机制)
+* **死循环判定**：连续 3 个 Step 执行相似动作且界面无变化，-0.2分。
 
 # Output Format (输出格式)
-请严格按照以下 JSON 格式输出（不要输出 markdown 标记）：
+请严格按照以下 JSON 格式输出：
 
 {
   "score": <0.0 到 1.0>,
   "reason": "评估详情：
-  1. 筛选设置 (+0.1/0)：[简述情况]
-  2. 审核逻辑 (+0.5/0)：[图片条码] vs [系统条码] -> Agent操作为[通过/驳回]，判定[正确/错误]
-  3. 任务终止 (+0.2/0)：[简述是否停止]
-  4. 操作精准 (+0.2/0.1/0)：[列出所有误触或冗余操作，若无则写'操作精准']
-  ------------------
-  总结：[一句话总结表现]",
+  1. 启动与筛选：[评价]
+  2. 审核逻辑与数量：[必须列出：1. 实际有效点击次数；2. 每一条条码比对的对错情况，例如：第一条记录系统为A图片为B，Agent点击通过，判定为逻辑错误]
+  3. 任务终止：[评价]
+  4. 操作精准：[评价]
+  总结：[简评]",
 }
 """
 
@@ -331,38 +318,32 @@ class CuaTraceScorer:
             return trace
         raise TypeError("trace 需要是 list/dict 或 JSON 字符串")
 
-    def _build_content(
-        self, parsed_trace: Any, user_instruction: str
-    ) -> List[Dict[str, Any]]:
-        """
-        构造图文混排 content：
-        - 第一个 text：CUA_EVALUATION_PROMPT
-        - 第二个 text：传入的 user_instruction
-        - 后续：从事件中抽取 screenshots -> image_url；action -> text
-        注：根据新需求，这里不再插入 tools 文本。
-        """
+    def _build_content(self, parsed_trace: Any, user_instruction: str) -> List[Dict[str, Any]]:
         content: List[Dict[str, Any]] = [
-            {"type": "text", "text": self.prompt.strip()},
-            {"type": "text", "text": (user_instruction or "（用户指令未提供）").strip()},
+            {"type": "text", "text": f"User Instruction: {user_instruction.strip()}"},
         ]
 
         events = _iter_events(parsed_trace)
-        for ev in events:
+        for i, ev in enumerate(events, 1): # 使用 enumerate 生成 Step 序号
             if not isinstance(ev, dict):
                 continue
-            # 图片
+            
+            # 1. 插入图片
             img_contents = []
-            for key in ("screenshot", "screenshots", "image", "images", "img"):
-                if key in ev and ev[key]:
-                    img_contents.extend(_normalize_image_url(ev[key]))
+            if "screenshot" in ev and ev["screenshot"]:
+                img_contents.extend(_normalize_image_url(ev["screenshot"]))
             if img_contents:
+                # 在图片前加上步骤标注，方便模型在审计时定位
+                content.append({"type": "text", "text": f"--- Step {i} Screenshot ---"})
                 content.extend(img_contents)
-            # 动作
+            
+            # 2. 插入动作（独立字典）
             if "action" in ev and ev["action"]:
                 action = str(ev.get("action", "")).strip()
-                summary = str(ev.get("summary") or ev.get("thought") or ev.get("description") or "").strip()
-                text = f"action:{action} summary:{summary}" if summary else f"action:{action}"
-                content.append({"type": "text", "text": text})
+                summary = str(ev.get("summary", "")).strip()
+                # 独立成字典，并标注步骤
+                content.append({"type": "text", "text": f"Step {i} Agent think: {summary}, and agent execute: {action}"})
+                
         return content
 
     def score_trace(
@@ -384,6 +365,7 @@ class CuaTraceScorer:
                 model=self.model,
                 temperature=temperature,
                 messages=[
+                    {"role": "system", "content": self.prompt.strip()},
                     {"role": "user", "content": contents},
                 ],
                 response_format=ScoreResponse

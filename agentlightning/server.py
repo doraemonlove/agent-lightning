@@ -33,7 +33,6 @@ from .sandbox import SandboxManager, SandboxBusyError
 
 logger = logging.getLogger(__name__)
 
-
 class ServerDataStore:
     """Async-safe container for in-memory server state.
 
@@ -90,7 +89,7 @@ class ServerDataStore:
             metadata=metadata or {},
         )
         await self._task_queue.put(task)
-        logger.info(f"Task queued: {rollout_id} (mode: {mode}, resources_id: {resources_id})")
+        print(f"Task queued: {rollout_id} (mode: {mode}, resources_id: {resources_id}, metadata: {metadata})")
         return rollout_id
 
     async def get_next_task(self) -> Optional[Task]:
@@ -311,7 +310,7 @@ class AgentLightningServer:
             else:
                 logger.debug("No task available for client.")
                 return TaskIfAny(is_available=False)
-
+        
         @self._app.get("/resources/latest", response_model=ResourcesUpdate)
         async def fetch_latest_resources() -> ResourcesUpdate:  # type: ignore
             """Return the most recent resource bundle published to the server."""

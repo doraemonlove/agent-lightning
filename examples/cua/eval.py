@@ -48,8 +48,8 @@ class cua_evaluation:
             "sandbox_id": sandbox_id,
             "model_name": model_name,
             "model_endpoint": model_endpoint,
-            "max_actions": 30,
-            "max_images": 1,
+            "max_actions": 40,
+            "max_images": 3,
             "thinking_type": "enabled",
             "is_training": True,
             "model_api_key": model_api_key,
@@ -182,6 +182,47 @@ class cua_evaluation:
 
         return reward, elapsed
 
+    def execute_eval_offline(
+        self,
+        instruction: str,
+        eval_dir: str,
+    ) -> tuple[float, float] | None:
+
+        for filename in os.listdir(eval_dir):
+            try:
+                if not filename.endswith("json"):
+                    continue
+                file_path = os.path.join(eval_dir, filename)
+                with open(file_path, "r") as f:
+                    result = json.load(f)
+
+                score_result = self.score_trace(trace=result, instruction=instruction)
+                reward = score_result["score"]
+                reason = score_result["reason"]
+
+                logger.info("评分完成: result=%s", score_result)
+
+            except Exception as e:
+                logger.exception("[Rollout Error during agent invocation] %s", e)
+                continue
+
+            row = {
+                "reward": reward,
+                "reason": json.dumps(reason, ensure_ascii=False),
+            }
+            fieldnames = ["reward", "reason"]
+            try:
+                write_header = not os.path.exists(self.results_file) or os.path.getsize(self.results_file) == 0
+                with open(self.results_file, "a", encoding="utf-8", newline="") as f:
+                    writer = csv.DictWriter(f, fieldnames=fieldnames)
+                    if write_header:
+                        writer.writeheader()
+                    writer.writerow(row)
+                logger.info("评估结果已写入 %s: %s", self.results_file, row)
+            except Exception as e:
+                logger.exception("写入评估结果文件失败: %s", e)
+
+    
 def iterate_parquet_samples(parquet_path: str, start_row: int = 0):
     """从 parquet 读取 records，并从 start_row 开始逐条迭代，返回 (索引, sample_dict)"""
     df = pd.read_parquet(parquet_path)
@@ -191,7 +232,7 @@ def iterate_parquet_samples(parquet_path: str, start_row: int = 0):
 
 def main():
     eval_path = "/root/code/wangjiaju/agent-lightning/examples/cua/data/train.parquet"
-    sandbox_uri = "i-ye8l6vmyo0bw80d82r4h"
+    sandbox_uri = "i-yebwczn8xsqc6io24lrp"
     evaluator = cua_evaluation("Qwen3-VL-8B-Instruct-eval.csv")
     model_endpoint = "http://localhost:8002/v1"
     serve_model_name = "models/Qwen3-VL-8B-Instruct"
@@ -235,5 +276,10 @@ def main():
     logger.info("评估完成。总样本: %d, 成功处理: %d", total, processed)
 
 
+def eval_offline():
+    instruction = "任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。随后重新打开浏览器,进入资产审核网站，设置筛选条件，盘点计划WJJ_TEST，盘点审核结果为未盘点,然后盘点2条记录。"
+    evaluator = cua_evaluation("Qwen3-VL-8B-Instruct-offline-eval.csv")
+    evaluator.execute_eval_offline(instruction, "./trace/Qwen3-VL-8B-Instruct")
+
 if __name__ == "__main__":
-    main()
+    eval_offline()

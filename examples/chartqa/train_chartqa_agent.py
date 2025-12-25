@@ -44,7 +44,7 @@ RL_CONFIG: Dict[str, Any] = {
     },
     "actor_rollout_ref": {
         "rollout": {
-            "tensor_model_parallel_size": 1,
+            "tensor_model_parallel_size": 4,
             "n": 4,
             "log_prob_micro_batch_size_per_gpu": 1,
             "name": "vllm",
@@ -65,13 +65,13 @@ RL_CONFIG: Dict[str, Any] = {
         },
         "ref": {"log_prob_micro_batch_size_per_gpu": 1, "fsdp_config": {"param_offload": True}},
         "model": {
-            "path": "Qwen/Qwen2-VL-2B-Instruct",
+            "path": "/models/Qwen3-VL-8B-Instruct",
             "use_remove_padding": True,
             "enable_gradient_checkpointing": True,
         },
     },
     "trainer": {
-        "n_gpus_per_node": 1,
+        "n_gpus_per_node": 8,
         "val_before_train": False,
         "critic_warmup": 0,
         "logger": ["console", "wandb"],
@@ -98,9 +98,9 @@ def config_ci() -> Dict[str, Any]:
 
     config = deepcopy(RL_CONFIG)
     config["data"]["train_batch_size"] = 16
-    config["trainer"]["n_gpus_per_node"] = 1
+    config["trainer"]["n_gpus_per_node"] = 8
     config["trainer"]["total_training_steps"] = 4
-    config["trainer"]["val_before_train"] = True
+    config["trainer"]["val_before_train"] = False
     config["trainer"]["test_freq"] = 2
     config["trainer"]["experiment_name"] = EXPERIMENT_NAME
     config["trainer"]["project_name"] = PROJECT_NAME
@@ -119,8 +119,8 @@ def config_debug() -> Dict[str, Any]:
 def config_qwen() -> Dict[str, Any]:
     """Return a Qwen-focused config with validation before each epoch."""
     config = deepcopy(RL_CONFIG)
-    config["trainer"]["val_before_train"] = True
-    config["trainer"]["n_gpus_per_node"] = 2
+    config["trainer"]["val_before_train"] = False
+    config["trainer"]["n_gpus_per_node"] = 8
     config["trainer"]["total_epochs"] = 2
     config["trainer"]["test_freq"] = 32
     return config
@@ -164,7 +164,7 @@ def train(
 
 def main():
     """Parse CLI arguments and kick off ChartQA training."""
-    agl.setup_logging(apply_to=["chartqa_agent"])
+    agl.setup_logging(level="DEBUG", apply_to=["chartqa_agent"])
     parser = argparse.ArgumentParser(description="Train ChartQA agent")
     parser.add_argument("config", choices=["debug", "qwen", "ci"], help="Training configuration")
     parser.add_argument("--n-runners", type=int, default=10, help="Number of runners for Trainer")

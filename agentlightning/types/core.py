@@ -282,7 +282,6 @@ class Task(BaseModel):
     # Allow additional metadata fields
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
-
 class TaskIfAny(BaseModel):
     """A task or indication that no task is available.
 
@@ -293,7 +292,6 @@ class TaskIfAny(BaseModel):
     is_available: bool
     """Indication that a task is available."""
     task: Optional[Task] = None
-
 
 RolloutRawResultLegacy = Union[None, float, List[Triplet], List[Dict[str, Any]], List[ReadableSpan], RolloutLegacy]
 """Legacy rollout result type.

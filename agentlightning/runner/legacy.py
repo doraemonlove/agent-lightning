@@ -12,16 +12,24 @@ from agentlightning.client import AgentLightningClient
 from agentlightning.litagent import LitAgent
 from agentlightning.litagent.litagent import is_v0_1_rollout_api
 from agentlightning.tracer.base import Tracer
-from agentlightning.types import RolloutLegacy, RolloutRawResultLegacy, Triplet
+from agentlightning.types import RolloutLegacy, RolloutRawResultLegacy, Triplet, Task
 
 from .base import Runner
-
+import asyncio
+import os
 logger = logging.getLogger(__name__)
 
 __all__ = [
     "LegacyAgentRunner",
 ]
-
+ROLLOUT_PARALLEL_NUM = int(os.getenv("ROLLOUT_PARALLEL_NUM", 8))
+BASE_PLAN_NAME = os.getenv("BASE_PLAN_NAME", "WJJ_TEST")
+PLAN_NAME_LIST = [
+    {
+        "plan_name": f"{BASE_PLAN_NAME}_{i+1:02d}",
+    }
+    for i in range(ROLLOUT_PARALLEL_NUM)
+]
 
 class LegacyAgentRunner(Runner[Any]):
     """Manages the agent's execution loop and integrates with AgentOps.
@@ -96,7 +104,7 @@ class LegacyAgentRunner(Runner[Any]):
         Returns:
             A standardized `RolloutLegacy` object for reporting to the server.
         """
-        logger.info(f"to_rollout_object: {result}")
+        # logger.info(f"to_rollout_object: {result}")
         # trace: Any = None
         final_reward: Optional[float] = None
         # triplets: Optional[List[Triplet]] = None
@@ -137,7 +145,7 @@ class LegacyAgentRunner(Runner[Any]):
         # if triplets and triplets[-1].reward is not None and final_reward is None:
         #     final_reward = triplets[-1].reward
         final_reward = result[-1].reward
-        logger.info(f"final_reward: {final_reward}, triplets: {result}")
+        # logger.info(f"final_reward: {final_reward}, triplets: {result}")
         # Create the Rollout object with standardized fields
         result_dict: Dict[str, Any] = {
             "rollout_id": rollout_id,
@@ -243,28 +251,32 @@ class LegacyAgentRunner(Runner[Any]):
         logger.info(f"{self._log_prefix()} Finished sync rollouts. Processed {num_tasks_processed} tasks.")
         return num_tasks_processed
 
-    async def run_async(self) -> bool:
+    async def run_async(self, plan_name: str = None) -> bool:
         """Poll the task and rollout once."""
+        logger.info(f"run async start")
         self.agent.set_runner(self)  # Ensure the agent has a reference to this runner
-
+        
         task = await self.client.poll_next_task_async()
         if task is None:
             logger.info(f"{self._log_prefix()} Poll returned no task. Exiting.")
             return False
         rollout_id = task.rollout_id
-
         resources_id = task.resources_id
         resources_update = None
         if resources_id:
             resources_update = await self.client.get_resources_by_id_async(resources_id)
         else:
-            logger.debug(f"{self._log_prefix(rollout_id)} No 'resources_id'. Fetching latest resources.")
+            logger.debug("No 'resources_id'. Fetching latest resources.")
             resources_update = await self.client.get_latest_resources_async()
         if not resources_update:
-            logger.error(f"{self._log_prefix(rollout_id)} Failed to fetch resources. Skipping.")
-            return False
-
+            logger.error(" Failed to fetch resources. Skipping.")
+            raise
         rollout_obj = RolloutLegacy(rollout_id=task.rollout_id, task=task)  # Default empty rollout
+        
+        instruction_template = task.input.get("instruction", "")
+        if instruction_template and plan_name:
+            rendered_text = instruction_template.format(**{"plan_name": plan_name})
+            task.input["instruction"] = rendered_text
 
         try:
             try:
@@ -278,15 +290,25 @@ class LegacyAgentRunner(Runner[Any]):
                     self.agent.training_rollout_async if task.mode == "train" else self.agent.validation_rollout_async
                 )
                 # Pass the task input, not the whole task object
+                from copy import deepcopy
+
+                resources = deepcopy(resources_update.resources)
+                sandbox_uri = (task.metadata or {}).get("sandbox_uri")
+                if sandbox_uri:
+                    resources["sandbox"] = {
+                        "type": "sandbox",
+                        "uri": sandbox_uri
+                    }
+
                 if is_v0_1_rollout_api(rollout_method):
                     result = cast(
                         RolloutRawResultLegacy,
                         await rollout_method(
-                            task.input, rollout_id=rollout_obj.rollout_id, resources=resources_update.resources  # type: ignore
+                            task.input, rollout_id=rollout_obj.rollout_id, resources=resources  # type: ignore
                         ),
                     )  # type: ignore
                 else:
-                    result = await rollout_method(task.input, resources=resources_update.resources, rollout=rollout_obj)  # type: ignore
+                    result = await rollout_method(task.input, resources=resources, rollout=rollout_obj)  # type: ignore
                 rollout_obj = self._to_rollout_object(result, task.rollout_id)  # type: ignore
                 end_time = time.time()
                 logger.info(
@@ -306,13 +328,13 @@ class LegacyAgentRunner(Runner[Any]):
 
         return True
 
-    async def iter_async(self) -> int:
+    async def iter_async(self, plan_name: str = None) -> int:
         """Executes the asynchronous polling and rollout loop."""
         num_tasks_processed = 0
         logger.info(f"{self._log_prefix()} Started async rollouts (max: {self.max_tasks or 'unlimited'}).")
 
         while self.max_tasks is None or num_tasks_processed < self.max_tasks:
-            if await self.run_async():
+            if await self.run_async(plan_name=plan_name):
                 num_tasks_processed += 1
 
             if num_tasks_processed % 10 == 0 or num_tasks_processed == 1:
