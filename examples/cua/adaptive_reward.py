@@ -432,7 +432,7 @@ app = FastAPI(
 
 scorer = CuaTraceScorer(
     base_url="https://ark.cn-beijing.volces.com/api/v3",
-    api_key="b02fbb1a-c16d-4870-aa79-ba90a7b57aed",
+    api_key="",
     model="doubao-seed-1-6-251015",
 )
 
