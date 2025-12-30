@@ -286,7 +286,7 @@ class TrainerLegacy(ParallelWorkerBase):
                     )
                     # Ideally the single worker should be run in a separate thread or process.
 
-                num_tasks = self._worker_main_loop(agent, 0, agent.is_async())
+                num_tasks = self._worker_main_loop(agent, 0, agent.is_async(), plan_name="WJJ_TEST")
                 logger.info(f"Single worker mode finished. Tasks processed: {num_tasks}")
 
                 # If algorithm is provided and we have datasets, run algorithm after worker completes
@@ -300,7 +300,7 @@ class TrainerLegacy(ParallelWorkerBase):
                 logger.info(f"Running with n_workers={self.n_workers} ({mode} multiprocessing).")
                 for i in range(self.n_workers):
                     process_name = f"AgentLightning-Worker-{i}"
-                    plan_name = f"WJJ_TEST_0{i}"
+                    plan_name = f"WJJ_TEST_0{i+1}"
                     p = multiprocessing.Process(
                         target=self._worker_main_loop,
                         args=(agent, i, agent.is_async(), plan_name),

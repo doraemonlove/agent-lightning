@@ -7,10 +7,13 @@ export DATA_DIR=/root/code/wangjiaju/agent-lightning/examples/cua/data
 export ROLLOUT_TP_SIZE=4
 export EXPERIMENT_NAME=cua
 export PROJECT_NAME=AgentLightning
-export WANDB_BASE_URL="http://localhost:8080"
-export WANDB_API_KEY="local-b824031c34aa894204c7c703de1a1987a894ea80"
+export WANDB_BASE_URL="http://localhost:8081"
+export WANDB_API_KEY="local-b1768c95e40cec9737227b7bc1986f988568a058"
 export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
-export ROLLOUT_PARALLEL_NUM=8
+export VLLM_ENABLE_CUSTOM_ALL_REDUCE=false
+export CUDA_DEVICE_MAX_CONNECTIONS=1
+export VLLM_ALLREDUCE_USE_SYMM_MEM=0
+export VLLM_ATTENTION_BACKEND=XFORMERS
 
 echo "Starting training script..."
 
@@ -21,15 +24,15 @@ python -m agentlightning.verl \
     data.val_files=${DATA_DIR}/eval.parquet \
     data.train_batch_size=8 \
     data.val_batch_size=8 \
-    data.max_prompt_length=16384 \
+    data.max_prompt_length=24576 \
     data.max_response_length=512  \
     data.truncation='error' \
     actor_rollout_ref.rollout.n=4 \
     actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu=1 \
     actor_rollout_ref.rollout.multi_turn.format=hermes \
     actor_rollout_ref.rollout.name=vllm \
-    actor_rollout_ref.rollout.gpu_memory_utilization=0.3 \
-    actor_rollout_ref.rollout.max_model_len=16896 \
+    actor_rollout_ref.rollout.gpu_memory_utilization=0.5 \
+    actor_rollout_ref.rollout.max_model_len=25088 \
     actor_rollout_ref.rollout.tensor_model_parallel_size=$ROLLOUT_TP_SIZE \
     +actor_rollout_ref.rollout.engine_kwargs.vllm.enable_auto_tool_choice=True \
     +actor_rollout_ref.rollout.engine_kwargs.vllm.api_key="wangjiaju" \

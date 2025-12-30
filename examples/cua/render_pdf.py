@@ -9,7 +9,7 @@ from reportlab.lib.utils import ImageReader
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 
-pdfmetrics.registerFont(TTFont("SimSun", "/root/code/wangjiaju/cua-rl/SimSun.ttf"))
+pdfmetrics.registerFont(TTFont("SimSun", "/root/code/wangjiaju/agent-lightning/SimSun.ttf"))
 
 
 def decode_base64_image(b64_str):
@@ -113,7 +113,7 @@ def render_action_screenshot_pairs_to_pdf(trajectory, output_pdf_path):
 
 
 if __name__ == "__main__":
-    json_dir = "/root/code/wangjiaju/agent-lightning/examples/cua/trace/train"
+    json_dir = "/root/code/wangjiaju/agent-lightning/examples/cua/trace/train-3"
     for json_file in os.listdir(json_dir):
         if json_file.endswith(".json"):
             json_path = os.path.join(json_dir, json_file)

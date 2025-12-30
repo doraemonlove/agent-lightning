@@ -11,11 +11,12 @@ import traceback
 import uvicorn
 # 兼容 OpenAI 客户端
 try:
-    from openai import OpenAI  # pip install openai
+    from openai import OpenAI, AsyncOpenAI
 
     OPENAI_AVAILABLE = True
 except Exception:
     OpenAI = None
+    AsyncOpenAI = None
     OPENAI_AVAILABLE = False
 
 class ScoreRequest(BaseModel):
@@ -40,42 +41,47 @@ CUA_EVALUATION_PROMPT = """
 # ⚠️ CORE PRINCIPLE: DATA TRUST HIERARCHY (核心原则：数据信任分级)
 1. **最高信任级 (Trusted Evidence)**：
    * **Screenshot (截图)**：这是唯一的“视觉真值”。
-   * **Action Code (代码)**：这是 Agent 实际发送给系统的指令（坐标点击等）。
+   * **Action Code (代码)**：这是 Agent 实际发送给系统的指令。
 2. **校验级参考 (Intent Validation)**：
-   * **Summary / Thought**：仅视为 Agent 的“操作申请”或“意图声明”。
-   * **准则**：禁止直接采信 Summary 的结论。你必须核对 Action 坐标是否点击在 Summary 声称的按钮上，并必须以【设备说明】是否发生刷新变化作为判定操作成功的唯一最终依据。
+   * **Summary / Thought**：仅视为意图声明，禁止直接采信。
+   * **准则**：必须以【Action是否执行】及【设备说明是否刷新】作为判定依据。
 
-# Evaluation Steps (分项评估标准)
+# Evaluation Steps (分项评估标准 - 总分 1.0)
 
-## 维度 1：环境启动与筛选 (Start & Setup) - 0.2分
-* **SOP 事实核查**：冷启动核查、目标页面核查、筛选条件核查（盘点计划、盘点审核结果）。
+## 维度 1：环境启动与筛选 (Start & Setup) - 满分 0.2
+* **SOP 事实核查**：冷启动、页面跳转、筛选条件（计划、审核结果）是否正确。
+* **计分**：完全正确得 0.2，否则 0 分。
 
-## 维度 2：审核逻辑准确性与数量 (Core Logic & Quantity) - 0.5分
+## 维度 2：审核逻辑准确性与数量 (Core Logic & Quantity) - 满分 0.5
 **此项遵循严格的“有效性优先”审计链条：**
+1. **有效性判定 (Existence Check)**：对比点击前后列表第一行【设备说明】。若文字**完全一致**，视为无效操作（页面未刷新），该条记录得 0 分。若发生变化，视为有效，进入下一步。
+2. **准确性判定 (Logic Check)**：
+    * **通过准则**：截图包含与系统条码**完全一致**的子字符串 -> 必须点“通过”。
+    * **驳回准则**：截图中无法识别到匹配条码 -> 必须点“驳回”。
+* **计分公式**：
+    $$ RawScore = 0.5 \times \frac{\text{审核有效且逻辑正确的条数}}{\text{总要求审核数 N}} $$
+    * **限制**：此维度最高得分不超过 0.5 分（即使正确条数超过 N，也只记 0.5）。
 
-* **SOP 事实核查 (必须按顺序执行)：**
-    1. **第一步：有效性判定 (Existence Check)**：
-        * 对比点击按钮 **前** 列表第一行的【设备说明】文字 vs 点击 **后** 返回页面的第一行【设备说明】文字。
-        * **无效判定**：若返回后【设备说明】与点击前**完全一致**，判定该次审核**无效**。此条记录直接计为 0 分，不进入逻辑比对。
-        * **有效判定**：若【设备说明】发生了内容变化，判定为**有效审核**，进入下一步。
-    2. **第二步：准确性判定 (Logic Check)**：
-        * 提取弹窗图片中的所有可见文字。
-        * [cite_start]**通过准则**：只要图片中包含与系统【资产条码】文本**完全一致的子字符串**，即视为条码匹配。Agent 必须点“通过”。
-        * [cite_start]**驳回准则**：若图片中无法识别到与系统【资产条码】完全匹配的字符串（忽略图片中的额外符号、品牌名、型号名等），Agent 必须点“驳回”。
-* **判定 (最高 0.5分)**：
-    * **计分公式**：$得分 = 0.5 * (审核有效 且 逻辑正确 的条数 / 总要求审核数 N)$
-    * **特殊规则**：若审核有效（列表刷新）但逻辑判定错误（如图片包含条码却点驳回，或不包含却点通过），该条计 0 分。
+## 维度 3：任务终止控制 (Flow Control) - 满分 0.2
+* **SOP 事实核查**：
+    * 恰好完成 N 条后停止：得 0.2 分。
+    * 未完成 N 条 或 大幅超额审核：得 0 分。
 
-## 维度 3：任务终止控制 (Flow Control) - 0.2分
-* **SOP 事实核查**：完成 N 条后停止给 0.2 分；未完成或超额审核给 0 分。
-
-## 维度 4：工具操作精准度 (Tool Proficiency) - 0.1分
-* **SOP 事实核查**：检查 Action 字段。无 `bad_function_call` 给 0.1 分。
+## 维度 4：工具操作精准度 (Tool Proficiency) - 满分 0.1
+* **SOP 事实核查**：Action 字段无 `bad_function_call` 且无明显误触。符合得 0.1，否则 0 分。
 
 ---
 
-# 🛑 Penalty Mechanism (惩罚机制)
-* **死循环判定**：连续 3 个 Step 执行相似动作且界面无变化，-0.2分。
+# 🛑 Penalty Mechanism (惩罚机制 - 仅扣分)
+* **死循环判定**：连续 3 个 Step 执行相似动作且界面无变化，**扣除 0.2 分**。
+
+# 🧮 Final Score Calculation (最终分数计算逻辑)
+请严格按以下步骤计算最终得分，防止数值溢出：
+1. **Sum (初次求和)** = 维度1 + 维度2 + 维度3 + 维度4
+2. **Apply Penalty (应用惩罚)** = Sum - 惩罚分数
+3. **Clamp (边界修正)**:
+    * 如果结果 < 0.0，则 **Final Score = 0.0**
+    * 如果结果 > 1.0，则 **Final Score = 1.0**
 
 # Output Format (输出格式)
 请严格按照以下 JSON 格式输出：
@@ -83,11 +89,12 @@ CUA_EVALUATION_PROMPT = """
 {
   "score": <0.0 到 1.0>,
   "reason": "评估详情：
-  1. 启动与筛选：[评价]
-  2. 审核逻辑与数量：[必须列出：1. 实际有效点击次数；2. 每一条条码比对的对错情况，例如：第一条记录系统为A图片为B，Agent点击通过，判定为逻辑错误]
-  3. 任务终止：[评价]
-  4. 操作精准：[评价]
-  总结：[简评]",
+  1. 启动与筛选：[得分/0.2] - [简评]
+  2. 审核逻辑与数量：[得分/0.5] - 实际有效并正确 [X] 条 / 要求 [N] 条。详情：[列出错误项，如：第x条系统A图片B，Agent误判为通过]
+  3. 任务终止：[得分/0.2] - [简评]
+  4. 操作精准：[得分/0.1] - [简评]
+  5. 惩罚扣分：[若有则写分数，无则写0]
+  总结：[一句话简评]",
 }
 """
 
@@ -290,13 +297,14 @@ class CuaTraceScorer:
         prompt: str = CUA_EVALUATION_PROMPT,
         review_prompt: str = CUA_REVIEW_PROMPT
     ) -> None:
-        if not OPENAI_AVAILABLE or OpenAI is None:
+        if not OPENAI_AVAILABLE or OpenAI is None or AsyncOpenAI is None:
             raise RuntimeError("OpenAI 客户端不可用，请先 pip install openai")
         if not base_url:
             raise ValueError("base_url 不能为空")
         if not api_key:
             raise ValueError("api_key 不能为空")
-        self.client = OpenAI(base_url=base_url, api_key=api_key)
+        # self.client = OpenAI(base_url=base_url, api_key=api_key)
+        self.client = AsyncOpenAI(base_url=base_url, api_key=api_key)
         self.model = model
         self.prompt = prompt
         self.review_prompt = review_prompt
@@ -346,7 +354,7 @@ class CuaTraceScorer:
                 
         return content
 
-    def score_trace(
+    async def score_trace(
         self,
         trace: Union[str, List[Dict[str, Any]], Dict[str, Any]],
         user_instruction: str,
@@ -361,7 +369,7 @@ class CuaTraceScorer:
             contents = self._build_content(parsed, user_instruction)
 
             # 仅发送一个包含评估 Prompt 与用户指令、轨迹的 user 消消息
-            resp = self.client.beta.chat.completions.parse(
+            resp =  await self.client.beta.chat.completions.parse(
                 model=self.model,
                 temperature=temperature,
                 messages=[
@@ -384,7 +392,7 @@ class CuaTraceScorer:
                 "reason": ""
             }
 
-    def review_trace(
+    async def review_trace(
         self,
         trace: List[Dict[str, Any]],
         temperature: float = 0.0,
@@ -399,7 +407,7 @@ class CuaTraceScorer:
         
         print(f"contents: {contents}")
         try:
-            resp = self.client.chat.completions.create(
+            resp = await self.client.chat.completions.create(
                 model=self.model,
                 temperature=temperature,
                 messages=contents
@@ -433,7 +441,7 @@ async def score_trace(
     request: ScoreRequest
 ):
     try:
-        result = scorer.score_trace(
+        result = await scorer.score_trace(
             trace=request.trace,
             user_instruction=request.user_instruction,
             temperature=request.temperature,
@@ -447,7 +455,7 @@ async def review_trace(
     request: ReviewRequest
 ):
     try:
-        result = scorer.review_trace(
+        result = await scorer.review_trace(
             trace=request.trace,
             temperature=request.temperature,
         )
@@ -460,4 +468,10 @@ def health_check():
     return {"status": "healthy"}
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8003)
+    uvicorn.run(
+        app, 
+        host="0.0.0.0", 
+        port=8003,
+        timeout_keep_alive=600, # 保持连接时间
+        timeout_graceful_shutdown=60 # 优雅关闭时间
+    )

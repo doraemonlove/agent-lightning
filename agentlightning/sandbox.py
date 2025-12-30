@@ -1,6 +1,5 @@
 import threading, time
 from typing import Optional, Dict, Any, List, Set
-import traceback
 from enum import Enum
 import requests
 import time
@@ -68,10 +67,10 @@ class SandboxManager:
             sandboxes = resp.get("Result", []) or []
             running_uris = [sb.get("SandboxId") for sb in sandboxes if sb.get("Status") == "RUNNING"]
             running_uris = [
-                "i-yebwczn8xsqc6io24lrp", "i-yebwczdeyowh2yrawo46", "i-yebwcz4zk0xjd1xk3d14", "i-yebwcypjb4qc6ip4x7l1", "i-yebwaldjb4qc6inlbbas", "i-yebwal2arkqc6iolez8y", "i-yebwaksgsgqc6iq0l2v0", "i-yebwakimtcqc6ikyy1h3", "i-yebwak7e9s5i3z3leejg", "i-yebwajw5q8xjd1y6j0tq",
-                "i-yebwajmbr4bw80f0qnz5", "i-yebwajchs0qc6in7px0a", "i-yebwaj2nswcva4h3i01k", "i-yebwaikef4bw80c1nvei", "i-ye8l6vmyo0bw80d82r4h", "i-ye8l6uff28qc6ildofi8", "i-ye8l6tewaoxjd1u610mp", "i-ye8l6scyyowh2yqbccw2", "i-ye8l3ejlz4cva4ex8mm5", "i-ye8l3dj37kbw80ctz5jz",
-                "i-ye8l3cikg0cva4eypkdi", "i-ye8l0nsem85i3z50kujj", "i-ye8kzm3i0wwh2ypyfi0q", "i-ye8kzl1kow5i3z3z21y9", "i-yebyrouj28qc6ipf3ago", "i-yebyrom3nkqc6infvo17", "i-yebyro9gjkbw80d63dwd", "i-yebyro2fpcwh2ypfknls", "i-yebyrnslq8cva4gqydwl", "i-yebyrnirr4bw80foocvh",
-                "i-yebyrnbqwwqc6imkn3rl", "i-yebyrmnv9c5i3z5bpcpu"
+                "i-yebyrouj28qc6ipf3ago", "i-yebyrom3nkqc6infvo17", "i-yebyro9gjkbw80d63dwd", "i-yebyro2fpcwh2ypfknls", "i-yebyrnslq8cva4gqydwl", "i-yebyrnirr4bw80foocvh", "i-yebyrnbqwwqc6imkn3rl", "i-yebyrmnv9c5i3z5bpcpu", "i-yebwczn8xsqc6io24lrp", "i-yebwczdeyowh2yrawo46",
+                "i-yecbu0tmo0wh2yq4ohpb", "i-yecbu0ie4gxjd1w2z7op", "i-yecbu075kwxjd1wcviws", "i-yecbtzxblscva4i9g47w", "i-yecbtzm328bw80c958n5", "i-yecbtzdnnkcva4eylo25", "i-yecbtz588w5i3z3hburf", "i-yecbtyve9swh2yqucaid", "i-yecbtymyv4xjd1u5d2np", "i-yecbtyabr45i3z3f1gku",
+                "i-yecbw4ioe8qc6imlr7tg", "i-yecbw44mpsqc6ilg4f1j", "i-yecbw3usqowh2yoc11gv", "i-yecbw3kyrkqc6iok3scn", "i-yecbw36x34cva4gg41nk", "i-yecbw2x340qc6inu45sg", "i-yecbw2onpc5i3z6wl8gq", "i-yecbw2etq85i3z3mtwyx", "i-yecbw226m85i3z80f1zt", "i-yecbw1qy2oqc6io5pqxl",
+                "i-yecbxszwn4wh2yq1avlb","i-yecbxszwn4wh2yq1avlb"
             ]
             print("✅当前沙箱列表", running_uris)
             if not running_uris:
@@ -96,39 +95,40 @@ class SandboxManager:
             with self._lock:
                 if self._free:
                     uri = self._free.pop()
+                    print(f"task_id: {task_id}, uri: {uri}")
                     self._in_use[uri] = {"task_id": task_id, "ts": time.time()}
                     return uri
-
-                total_current = len(self._free) + len(self._in_use) + self._creating
-                if total_current < self.max_num:
-                    # 预占创建名额，避免并发超配
-                    self._creating += 1
-                else:
-                    # 达到上限，等待释放或删除产生的容量
-                    self._cv.wait()
-                    continue  # 被唤醒后重试
-
-            # 在锁外执行网络创建，避免阻塞其它操作
-            uri_new: Optional[str] = None
-            try:
-                uri_new = self.create_sandbox(SANDBOX_OS_TYPE)
-            except Exception:
-                # 创建失败，释放创建名额并唤醒等待者（容量变化）
-                with self._lock:
-                    self._creating -= 1
-                    self._cv.notify_all()
-                raise
-            else:
-                # 创建成功，释放创建名额，并尽量立即分配该新沙箱
-                with self._lock:
-                    self._creating -= 1
-                    # create_sandbox 会调用 _register_sandbox 将其加入 _free
-                    if uri_new in self._free:
-                        self._free.remove(uri_new)
-                        self._in_use[uri_new] = {"task_id": task_id, "ts": time.time()}
-                        return uri_new
-                    # 若被其他线程先占用，则唤醒等待者并回到循环重试
-                    self._cv.notify_all()
+                print(f"task_id: {task_id}, no available sandbox")
+                # total_current = len(self._free) + len(self._in_use) + self._creating
+                # if total_current < self.max_num:
+                #     # 预占创建名额，避免并发超配
+                #     self._creating += 1
+                # else:
+                #     # 达到上限，等待释放或删除产生的容量
+                #     self._cv.wait()
+                #     continue  # 被唤醒后重试
+                self._cv.wait()
+            # # 在锁外执行网络创建，避免阻塞其它操作
+            # uri_new: Optional[str] = None
+            # try:
+            #     uri_new = self.create_sandbox(SANDBOX_OS_TYPE)
+            # except Exception:
+            #     # 创建失败，释放创建名额并唤醒等待者（容量变化）
+            #     with self._lock:
+            #         self._creating -= 1
+            #         self._cv.notify_all()
+            #     raise
+            # else:
+            #     # 创建成功，释放创建名额，并尽量立即分配该新沙箱
+            #     with self._lock:
+            #         self._creating -= 1
+            #         # create_sandbox 会调用 _register_sandbox 将其加入 _free
+            #         if uri_new in self._free:
+            #             self._free.remove(uri_new)
+            #             self._in_use[uri_new] = {"task_id": task_id, "ts": time.time()}
+            #             return uri_new
+            #         # 若被其他线程先占用，则唤醒等待者并回到循环重试
+            #         self._cv.notify_all()
 
     def release(self, uri: str):
         """释放沙箱回到空闲池"""
@@ -137,6 +137,7 @@ class SandboxManager:
                 return
             self._in_use.pop(uri, None)
             self._free.add(uri)
+            print(f"after release, self._free.length: {len(self._free)}")
             # 释放产生空闲，唤醒等待线程
             self._cv.notify()
 

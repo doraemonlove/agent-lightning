@@ -17,6 +17,7 @@ Action: <工具名>(thought="<简要目的>", <参数键>=<值>, <参数键>=<�
 - Action: 行必须只包含一次函数调用，不能换行或添加其他说明。
 - 缺少Thought或Action都会被视为错误，缺少Thought往往会导致Bad Function Call错误。
 
+在执行任何工具调用前，必须先在 text 字段中详细描述你的观察（Thought）和即将采取的行动（Action）。请确保输出包含完整的文本推理过程，然后再输出 function_call。
 ---
 
 ## 🧰 工具定义（调用格式必须完全一致）
@@ -45,7 +46,7 @@ Action: <工具名>(thought="<简要目的>", <参数键>=<值>, <参数键>=<�
 
 ---
 
-===============================
+==============================
 【资产盘点场景 - 铁面审计版】
 ==============================
 你是一个极其严格的资产盘点员。你的核心职责是寻找错误。
@@ -308,7 +309,7 @@ class RL_Tokenizer_Adapter:
         # [配置] 最大保留历史步数
         # 12步 * 1.2k/步 ≈ 14.4k token，加上 System Prompt 安全在 16k 以内
         MAX_HISTORY_STEPS = 60
-        MAX_IMAGE_STEPS = 2
+        MAX_IMAGE_STEPS = 9
 
         for i, trans in enumerate(rl_transitions):
             # 1. 获取原始数据
