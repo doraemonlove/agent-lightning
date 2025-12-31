@@ -30,6 +30,7 @@ async def run_planner_task(
     model_endpoint: str,
     api_key: str = "",
     out_path: str = "./model_output.json",
+    rollout_id: str = ""
 ) -> list[dict[str, Any]]:
     """
     调用 planner 的 stream 接口。
@@ -51,16 +52,17 @@ async def run_planner_task(
         "model_name": model_name,
         "model_endpoint": model_endpoint,
         "model_api_key": api_key,
-        "max_actions": 35,
+        "max_actions": 25,
         "max_images": 3,
         "thinking_type": "enabled",
         "is_training": True,
-        "turn_on_review": False
+        "turn_on_review": False,
+        "rollout_id": rollout_id
     }
     result = []
     try:
-        print(f"📝 开始执行任务：{user_prompt}（沙箱ID: {sandbox_id}）")
-        with requests.post(url, headers=headers, data=json.dumps(data), stream=True, timeout=300) as response:
+        print(f"📝 开始执行任务：{user_prompt}（沙箱ID: {sandbox_id}）,rollout_id: {rollout_id}")
+        with requests.post(url, headers=headers, data=json.dumps(data), stream=True, timeout=(10, 600)) as response:
             response.raise_for_status()
             for line in response.iter_lines(decode_unicode=True):
                 if line.startswith("data: "):
@@ -163,15 +165,19 @@ class LitCUAAgent(agentlightning.LitAgent):
                 model_endpoint=llm.endpoint,
                 api_key="wangjiaju",  # 确保已在环境里设置 VERL_API_KEY
                 out_path=f"./trace/{rollout_id}_model_output.json",
+                rollout_id=rollout_id
             )
             
         except Exception:
-            raise
+            result = []
 
         end_time_rollout = time.time()
         logger.info("[Rollout %s] Time taken for rollout: %.2f seconds", rollout_id, end_time_rollout - start_time)
         
-        reward = await score_trace(url=self.score_endpoint, trace=result, user_instruction=sample["instruction"])
+        if result:
+            reward = await score_trace(url=self.score_endpoint, trace=result, user_instruction=sample["instruction"])
+        else:
+            reward = 0.0
         logger.info("[Rollout %s] Reward: %s", rollout_id, reward)
         end_time_eval = time.time()
         logger.info(

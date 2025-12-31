@@ -11,8 +11,7 @@ import csv
 import sys
 
 
-ZQL_KEY_AUTH = "32e0a153-827d-4972-9bbc-c5209f14c3ef"
-WJJ_KEY_AUTH = "fff9c14f-5eac-493a-aff4-9789bfbced27"
+WJJ_KEY_AUTH = os.getenv("sandbox_key_auth")
 
 
 logging.basicConfig(
@@ -38,7 +37,7 @@ class cua_evaluation:
         model_endpoint: str,
         model_api_key: str,
         agent_planner_url: str = "http://0.0.0.0:8331/planner",
-        key_auth: str = ZQL_KEY_AUTH,
+        key_auth: str = WJJ_KEY_AUTH,
     ) -> list[dict[str, Any]]:
 
         url = f"{agent_planner_url}/run/task"
@@ -237,9 +236,6 @@ def main():
     model_endpoint = "http://localhost:8002/v1"
     serve_model_name = "models/Qwen3-VL-8B-Instruct"
     model_api_key = "wangjiaju"
-    # model_endpoint = "https://ark.cn-beijing.volces.com/api/v3"
-    # serve_model_name = "doubao-1.5-ui-tars-250428"
-    # model_api_key = "38484cc0-29ab-4119-99b1-e453e23aeb5c"
     agent_planner_url = "http://0.0.0.0:8331/planner"
     trace_save_dir = "./trace/Qwen3-VL-8B-Instruct"
     # 读取 eval 数据集

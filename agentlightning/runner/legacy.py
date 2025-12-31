@@ -104,62 +104,19 @@ class LegacyAgentRunner(Runner[Any]):
         Returns:
             A standardized `RolloutLegacy` object for reporting to the server.
         """
-        # logger.info(f"to_rollout_object: {result}")
-        # trace: Any = None
-        final_reward: Optional[float] = None
-        # triplets: Optional[List[Triplet]] = None
-        # trace_spans: Optional[List[ReadableSpan]] = None
-
-        # Handle different types of results from the agent
-        # Case 1: result is a float (final reward)
-        # if isinstance(result, float):
-        #     final_reward = result
-        # Case 2: result is a list of Triplets
-        # if isinstance(result, list) and all(isinstance(t, Triplet) for t in result):
-        #     triplets = result  # type: ignore
-        # # Case 3: result is a list of ReadableSpan (OpenTelemetry spans)
-        # if isinstance(result, list) and all(isinstance(t, ReadableSpan) for t in result):
-        #     trace_spans = result  # type: ignore
-        #     trace = [json.loads(readable_span.to_json()) for readable_span in trace_spans]  # type: ignore
-        # # Case 4: result is a list of dict (trace JSON)
-        # if isinstance(result, list) and all(isinstance(t, dict) for t in result):
-        #     trace = result
-        # # Case 5: result is a Rollout object
-        # if isinstance(result, Rollout):
-        #     final_reward = result.final_reward
-        #     triplets = result.triplets
-        #     trace = result.trace
-
-        # If the agent has tracing enabled, use the tracer's last trace if not already set
-        # if self.tracer and (trace is None or trace_spans is None):
-        #     spans = self.tracer.get_last_trace()
-        #     if spans:
-        #         trace = [json.loads(readable_span.to_json()) for readable_span in spans]
-        #         trace_spans = spans
-
-        # # Always extract triplets from the trace using TraceTripletAdapter
-        # if trace_spans:
-        #     triplets = self.triplet_exporter(trace_spans)
-
-        # If the agent has triplets, use the last one for final reward if not set
-        # if triplets and triplets[-1].reward is not None and final_reward is None:
-        #     final_reward = triplets[-1].reward
-        final_reward = result[-1].reward
-        # logger.info(f"final_reward: {final_reward}, triplets: {result}")
+        final_reward: Optional[float] = 0.0
+        
+        if result:
+            final_reward = result[-1].reward
         # Create the Rollout object with standardized fields
         result_dict: Dict[str, Any] = {
             "rollout_id": rollout_id,
         }
         if final_reward is not None:
             result_dict["final_reward"] = final_reward
-        # if triplets is not None:
-        #     result_dict["triplets"] = triplets
-        result_dict["triplets"] = result
-        # if trace is not None:
-        #     result_dict["trace"] = trace
 
-        # if isinstance(result, RolloutLegacy):
-        #     return result.model_copy(update=result_dict)
+        result_dict["triplets"] = result
+
         return RolloutLegacy(**result_dict)
 
     def run(self) -> bool:  # type: ignore

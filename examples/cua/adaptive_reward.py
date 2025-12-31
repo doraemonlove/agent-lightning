@@ -429,10 +429,11 @@ app = FastAPI(
     description="提供 CUA 轨迹评分服务",
 )
 
-
+import os
+api_key = os.getenv("score_api_key")
 scorer = CuaTraceScorer(
     base_url="https://ark.cn-beijing.volces.com/api/v3",
-    api_key="",
+    api_key=api_key,
     model="doubao-seed-1-6-251015",
 )
 
