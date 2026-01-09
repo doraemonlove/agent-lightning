@@ -430,6 +430,8 @@ app = FastAPI(
 )
 
 import os
+from dotenv import load_dotenv
+load_dotenv()
 api_key = os.getenv("score_api_key")
 scorer = CuaTraceScorer(
     base_url="https://ark.cn-beijing.volces.com/api/v3",
