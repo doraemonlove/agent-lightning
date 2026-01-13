@@ -107,13 +107,16 @@ class LegacyAgentRunner(Runner[Any]):
         final_reward: Optional[float] = 0.0
         
         if result:
-            final_reward = result[-1].reward
+            length = len(result)
+            for item in result:
+                final_reward += item.reward
+            final_reward /= length
         # Create the Rollout object with standardized fields
         result_dict: Dict[str, Any] = {
             "rollout_id": rollout_id,
         }
         if final_reward is not None:
-            result_dict["final_reward"] = final_reward
+            result_dict["final_reward"] = round(final_reward, 2)
 
         result_dict["triplets"] = result
 

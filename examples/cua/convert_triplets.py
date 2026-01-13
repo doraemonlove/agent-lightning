@@ -694,8 +694,6 @@ def convert_single_trace_to_triplet(
 
     # Step 2: dataset_sample → llama factory
     llama_entries = convert_to_llama_factory_format(dataset_sample)
-    with open("llama.json", "w", encoding="utf-8") as f:
-        json.dump(llama_entries, f, ensure_ascii=False, indent=4)
     # Step 3: llama → triplet
     triplet = convert_to_triplet_format(
         llama_entries,
