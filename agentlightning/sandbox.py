@@ -5,16 +5,14 @@ import requests
 import time
 from typing import Optional, Dict
 import traceback
+from dotenv import load_dotenv
+import os
 
-ZQL_SANDBOX_MANAGER_URL = " https://sd39p23u6uj313gtop150.apigateway-cn-beijing.volceapi.com/mgr/"
-ZQL_KEY_AUTH = "32e0a153-827d-4972-9bbc-c5209f14c3ef"
-
-WJJ_SANDBOX_MANAGER_URL = "https://sd3adap5049upp79roojg.apigateway-cn-beijing.volceapi.com/mgr/"
-WJJ_KEY_AUTH = "fff9c14f-5eac-493a-aff4-9789bfbced27"
+load_dotenv()
 
 # 沙箱管理器配置（对应前端 sandboxManagerClient）
-SANDBOX_MANAGER_URL = WJJ_SANDBOX_MANAGER_URL
-KEY_AUTH = WJJ_KEY_AUTH  # 前端 process.env.KEY_AUTH
+SANDBOX_MANAGER_URL = os.getenv("sandbox_manager_url")
+KEY_AUTH = os.getenv("sandbox_key_auth")
 SANDBOX_OS_TYPE = "Linux"
 
 

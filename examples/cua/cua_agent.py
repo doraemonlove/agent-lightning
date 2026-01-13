@@ -10,11 +10,10 @@ import requests
 import traceback
 import json
 
-from convert_triplets import convert_trace_to_triplets
+from convert_triplets import convert_traces_to_triplets
+from dotenv import load_dotenv
 
-from requests.adapters import HTTPAdapter
-from urllib3.util.retry import Retry
-
+load_dotenv()
 # VERL_API_BASE=http://localhost:9999/ python
 agentlightning.configure_logger()
 
@@ -38,11 +37,9 @@ async def run_planner_task(
     最终把完整的 result 追加为一条 "result" 记录到同一文件。
     （不使用 rollout_id，按要求简化）
     """
-    ZQL_AUTH = "32e0a153-827d-4972-9bbc-c5209f14c3ef"
-    WJJ_AUTH = "fff9c14f-5eac-493a-aff4-9789bfbced27"
     AGENT_PLANNER_URL = "http://0.0.0.0:8331/planner"  # 前端 process.env.AGENT_PLANNER_URL
     # 统一认证密钥（沙箱和Planner共享，前端均使用 process.env.KEY_AUTH）
-    KEY_AUTH = WJJ_AUTH
+    KEY_AUTH = os.getenv("sandbox_key_auth")
 
     url = f"{AGENT_PLANNER_URL}/run/task"
     headers = {"Content-Type": "application/json", "Authorization": KEY_AUTH}
@@ -98,49 +95,9 @@ def test_llm_endpoint(endpoint: str, model_name: str):
         logger.exception(f"❌ LLM 接口测试失败: {e}")
         return False
 
-async def score_trace(url, trace: list[dict]=None, user_instruction: str=None, temperature: float=0.0):
-    try:
-        # 1. 检查数据量，防止发送过大炸弹
-        # 如果 trace 中包含 image，建议在此处做截断或只发 url
-        payload = {
-            "trace": trace,
-            "user_instruction": user_instruction,
-            "temperature": temperature,
-            "contents": None,
-        }
-        
-        # 打印大小日志
-        payload_str = json.dumps(payload)
-        payload_mb = len(payload_str) / (1024 * 1024)
-        logger.info(f"正在发送评分请求，数据大小: {payload_mb:.2f} MB")
-        
-        if payload_mb > 50: # 假设阈值是 50MB
-            logger.warning("数据包过大，可能会导致连接中断！建议检查 trace 是否包含过多 Base64 图片。")
-
-        # 2. 配置重试策略
-        session = requests.Session()
-        retries = Retry(total=3, backoff_factor=1, status_forcelist=[500, 502, 503, 504])
-        session.mount('http://', HTTPAdapter(max_retries=retries))
-        session.mount('https://', HTTPAdapter(max_retries=retries))
-
-        # 3. 发送请求 (使用 json=payload 自动处理 header)
-        # 这里的 timeout=(连接超时, 读取超时)
-        response = session.post(url, json=payload, timeout=(10, 600)) 
-        
-        response.raise_for_status()
-        result = response.json()
-        logger.info(f"Planner 评分轨迹成功: {result}")
-        return result["score"]
-
-    except requests.exceptions.ConnectionError as e:
-        logger.error(f"连接被重置/断开。原因可能是数据包过大或服务端崩溃。Error: {e}")
-        return 0.0
-    except Exception as e:
-        logger.exception("评分轨迹失败: %s", e)
-        return 0.0
-
 class LitCUAAgent(agentlightning.LitAgent):
     score_endpoint: str = "http://localhost:8003/score"
+    group_score_endpoint: str = "http://localhost:8003/group_score"
 
     async def _execute_rollout(
         self, sample: dict[str, Any], *, resources: agentlightning.NamedResources, rollout_id: str, is_training: bool
@@ -156,7 +113,7 @@ class LitCUAAgent(agentlightning.LitAgent):
         try:
             llm: agentlightning.LLM = cast(agentlightning.LLM, resources["main_llm"])
 
-            model_name = "/models/Qwen3-VL-8B-Instruct"
+            model_name = "/models/Qwen3-VL-8B-Instruct-0112"
             # test_llm_endpoint(llm.endpoint, model_name)
             result = await run_planner_task(
                 sandbox_id=sandbox_uri,
@@ -164,28 +121,32 @@ class LitCUAAgent(agentlightning.LitAgent):
                 model_name=model_name,
                 model_endpoint=llm.endpoint,
                 api_key="wangjiaju",  # 确保已在环境里设置 VERL_API_KEY
-                out_path=f"./trace/{rollout_id}_model_output.json",
+                out_path=f"./trace/0112/rl/{rollout_id}_model_output.json",
                 rollout_id=rollout_id
             )
             
         except Exception:
+            traceback.print_exc()
             result = []
 
         end_time_rollout = time.time()
         logger.info("[Rollout %s] Time taken for rollout: %.2f seconds", rollout_id, end_time_rollout - start_time)
         
         if result:
-            reward = await score_trace(url=self.score_endpoint, trace=result, user_instruction=sample["instruction"])
+            result = await convert_traces_to_triplets(
+                score_url=self.group_score_endpoint, 
+                traces=result, 
+                instruction=sample["instruction"],
+                model_path="/models/Qwen3-VL-8B-Instruct-0112"
+            )
+            triplets = result
         else:
-            reward = 0.0
-        logger.info("[Rollout %s] Reward: %s", rollout_id, reward)
+            triplets = []
+        
         end_time_eval = time.time()
         logger.info(
             "[Rollout %s] Time taken for evaluation: %.2f seconds", rollout_id, end_time_eval - end_time_rollout
         )
-
-        triplets = convert_trace_to_triplets(sample["instruction"], result, reward)
-
         logger.info(f"triplets: {len(triplets)}")
         return triplets
 

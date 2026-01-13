@@ -11,9 +11,11 @@ import csv
 import sys
 import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from dotenv import load_dotenv
 
+load_dotenv()
 # ================= 配置与常量 =================
-WJJ_KEY_AUTH = "fff9c14f-5eac-493a-aff4-9789bfbced27"
+WJJ_KEY_AUTH = os.getenv("sandbox_key_auth")
 
 logging.basicConfig(
     level=logging.INFO,
@@ -105,7 +107,7 @@ class cua_evaluation:
         model_api_key: str,
         model_provider: str = "openai",
         agent_planner_url: str = "http://0.0.0.0:8331/planner",
-        key_auth: str = WJJ_KEY_AUTH,
+        key_auth: str = "",
         rollout_id: str = ""
     ) -> list[dict[str, Any]]:
 
@@ -167,7 +169,7 @@ class cua_evaluation:
         model_api_key: str = "",
         model_provider: str = "bedrock",
         agent_planner_url: str = "http://0.0.0.0:8331/planner",
-        key_auth: str = WJJ_KEY_AUTH,
+        key_auth: str = "",
     ) -> tuple[float, float] | None:
 
         start_time = time.time()
@@ -295,7 +297,8 @@ def worker_process_sample_variant(
             model_endpoint=config["model_endpoint"],
             trace_save_dir=config["trace_save_dir"],
             model_provider=config["model_provider"],
-            agent_planner_url=config["agent_planner_url"]
+            agent_planner_url=config["agent_planner_url"],
+            key_auth=config["key_auth"]
         )
     except Exception as e:
         logger.error(f"Worker execution failed for {unique_task_id}: {e}")
@@ -319,13 +322,14 @@ def main():
     # 配置
     config = {
         "eval_path": "data/train.parquet",
-        "result_csv": "Qwen3-VL-8B-Instruct-eval-normal.csv",
+        "result_csv": "trace/0112/Qwen3-VL-8B-Instruct-eval-lora-602112.csv",
         "model_name": "models/Qwen3-VL-8B-Instruct",
-        "model_endpoint": "http://localhost:8004/v1",
+        "model_endpoint": "http://localhost:8002/v1",
         "model_api_key": "wangjiaju",
         "model_provider": "openai",
-        "trace_save_dir": "./trace/normal",
-        "agent_planner_url": "http://0.0.0.0:8330/planner"
+        "trace_save_dir": "./trace/0112/lora-602112",
+        "agent_planner_url": "http://0.0.0.0:8330/planner",
+        "key_auth": WJJ_KEY_AUTH
     }
     
     # 1. 初始化组件
@@ -348,7 +352,7 @@ def main():
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         for idx, original_sample in iterate_parquet_samples(config["eval_path"]):
             
-            variants = ["WJJ_TEST_05"]
+            variants = ["WJJ_TEST_08"]
             
             for i, plan_name in enumerate(variants):
                 # 深拷贝样本以防修改冲突
