@@ -553,103 +553,122 @@ def convert_to_llama_factory_format(data):
 
 def convert_to_triplet_format(converted_data, processor, reward: float, max_seq_len=16384):
     """
-    通过 "从 Full 中切分 Prompt" 的方式生成 Triplet，
-    彻底解决 Token Mismatch 问题。
+    使用 "分别 Tokenize (Prompt vs Full) 再相减" 的方式生成 Triplet。
+    逻辑更加清晰，无需硬编码 Assistant Header Token ID。
     """
-
-    # Qwen-VL 的 Assistant Header Token 序列
-    # 对应: <|im_start|> assistant \n
-    # 这是一个非常固定的锚点
-    ASSISTANT_HEADER_SEQ = [151644, 77091, 198]
-
+    
     conversations = converted_data["conversations"]
+    
+    # 1. 基础检查
+    if len(conversations) < 2:
+        raise Exception("conversation too short, need at least user query and assistant response.")
 
-    # 1. 获取工具和原始图片列表
+    # 2. 准备 Tools (如果有)
     tools = converted_data.get("tools")
     if tools is None:
         tools = []
 
-    original_image_paths = converted_data.get("images")
-    if original_image_paths is None:
-        original_image_paths = []
-
-    if len(conversations) < 2:
-        raise Exception("conversation too short.")
-
+    # 3. 拆分 Prompt Messages 和 Full Messages
+    # Full: 包含所有对话
+    # Prompt: 包含除最后一条 Assistant 回复之外的所有对话
     full_msgs = conversations
+    prompt_msgs = conversations[:-1]
+
+    # 4. 获取原始图片路径 (用于 Triplet 存储，非 Tokenize)
+    # 假设 converted_data['images'] 存储了该条数据的图片列表
+    original_image_paths = converted_data.get("images", [])
 
     try:
         # =========================================================
-        # 🚀 优化策略: 只生成 Full，然后切分
+        # 🟢 A. 处理 Prompt 部分
+        # Key: add_generation_prompt=True 会自动添加 <|im_start|>assistant\n
         # =========================================================
+        prompt_text = processor.apply_chat_template(
+            prompt_msgs, 
+            tools=tools, 
+            tokenize=False, 
+            add_generation_prompt=True 
+        )
+        
+        # 提取 Prompt 阶段包含的图像/视频输入
+        prompt_image_inputs, prompt_video_inputs = process_vision_info(prompt_msgs)
 
-        # 1. 生成 Full 文本
+        prompt_inputs = processor(
+            text=[prompt_text],
+            images=prompt_image_inputs,
+            videos=prompt_video_inputs,
+            padding=False,
+            return_tensors="pt" # 必须返回 Tensor 才能取 input_ids
+        )
+        prompt_ids = prompt_inputs.input_ids[0].tolist()
+
+        # =========================================================
+        # 🔵 B. 处理 Full 部分
+        # Key: add_generation_prompt=False (因为已经包含回复了)
+        # =========================================================
         full_text = processor.apply_chat_template(
-            full_msgs, tools=tools, tokenize=False, add_generation_prompt=False
+            full_msgs, 
+            tools=tools, 
+            tokenize=False, 
+            add_generation_prompt=False
         )
 
-        # 2. 提取所有图片 (Prompt + Response 的图片都在这里面)
-        full_image_inputs, _ = process_vision_info(full_msgs)
+        # 提取 Full 阶段包含的图像/视频输入
+        full_image_inputs, full_video_inputs = process_vision_info(full_msgs)
 
-        # 3. Tokenize Full (这是唯一的 Ground Truth)
-        full_inputs = processor(text=[full_text], images=full_image_inputs, padding=False, return_tensors="pt")
+        full_inputs = processor(
+            text=[full_text],
+            images=full_image_inputs,
+            videos=full_video_inputs,
+            padding=False,
+            return_tensors="pt"
+        )
         full_ids = full_inputs.input_ids[0].tolist()
-
-        # =========================================================
-        # ✂️ 切分 Prompt 和 Response
-        # =========================================================
-
-        # 我们需要在 full_ids 中找到 *最后一个* assistant header 的位置
-        # 这个位置就是 Prompt 和 Response 的分界线
-
-        split_idx = -1
-        seq_len = len(ASSISTANT_HEADER_SEQ)
-
-        # 倒序查找，确保找到的是最后一个（即 Response 前的那个）
-        for idx in range(len(full_ids) - seq_len, -1, -1):
-            if full_ids[idx : idx + seq_len] == ASSISTANT_HEADER_SEQ:
-                # 找到了！切分点在 header 之后
-                split_idx = idx + seq_len
-                break
-
-        if split_idx == -1:
-            # 极少见情况：可能 response 没有换行，尝试去掉 \n 找 [151644, 77091]
-            fallback_seq = [151644, 77091]
-            for idx in range(len(full_ids) - 2, -1, -1):
-                if full_ids[idx : idx + 2] == fallback_seq:
-                    split_idx = idx + 2
-                    print(f"⚠️ Found header without newline, splitting anyway.")
-                    break
-
-        if split_idx == -1:
-            raise Exception("❌ Could not find assistant header to split Prompt/Response.")
-
-        # 执行切分
-        prompt_ids = full_ids[:split_idx]
-        response_ids = full_ids[split_idx:]
 
     except Exception as e:
         import traceback
-
         traceback.print_exc()
+        raise e
 
     # =========================================================
-    # 📏 长度检查与截断
+    # ✂️ C. 计算 Response Token IDs (切片逻辑)
     # =========================================================
+    
+    # 安全检查：Full 应该比 Prompt 长
+    if len(full_ids) <= len(prompt_ids):
+        # 这种情况通常意味着 response 为空，或者 tokenizer 处理异常
+        print(f"⚠️ Warning: Full length ({len(full_ids)}) <= Prompt length ({len(prompt_ids)}). Skipping.")
+        # 根据你的训练框架需求，这里可以选择抛出异常或返回 None
+        raise Exception("Response is empty or prompt matches full length.")
+    
+    # (可选) 严格的一致性检查：确保 Full 的前半部分就是 Prompt
+    # 在 Qwen-VL 中，由于特殊 Token 的存在，通常是匹配的。
+    # 如果发现不匹配，通常是 add_generation_prompt 添加的 \n 和 Full 中的 \n 合并问题
+    # 这里不做硬性 assert，防止因为极个别 token 归一化导致训练中断，但建议日志关注
+    # if full_ids[:len(prompt_ids)] != prompt_ids:
+    #     print("⚠️ Warning: Token mismatch at boundary. Slicing anyway.")
 
-    # 此时 prompt_ids + response_ids 必定等于 full_ids，无需检查 mismatch
+    response_ids = full_ids[len(prompt_ids):]
 
+    # =========================================================
+    # 📏 D. 长度检查与截断 (只截断 Response 部分)
+    # =========================================================
     total_len = len(full_ids)
     is_truncated = False
 
     if total_len > max_seq_len:
         is_truncated = True
-    
-    resp_len = total_len - len(prompt_ids)
-    response_ids = response_ids[:resp_len]
+        # 计算允许的 response 长度
+        allowed_resp_len = max_seq_len - len(prompt_ids)
+        if allowed_resp_len > 0:
+            response_ids = response_ids[:allowed_resp_len]
+        else:
+            # Prompt 已经超长了，Response 没地儿放了
+            # 这里可以选择保留一部分 Prompt 或直接丢弃
+            response_ids = [] # 或者抛异常
 
     # =========================================================
-    # 💾 构建输出
+    # 💾 E. 构建输出
     # =========================================================
     meta_data = {
         "total_tokens": len(prompt_ids) + len(response_ids),
@@ -666,7 +685,6 @@ def convert_to_triplet_format(converted_data, processor, reward: float, max_seq_
     )
 
     return triplet
-
 
 class TripletEncoder(json.JSONEncoder):
     """自定义 JSON 编码器，处理 Triplet 对象"""

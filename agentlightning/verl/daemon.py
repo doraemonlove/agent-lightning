@@ -121,7 +121,6 @@ def _to_native(obj: Any) -> Any:
     # 5) Anything else: leave as-is
     return obj
 
-
 class AgentModeDaemon:
     """
     AgentModeDaemon using the AgentLightningServer SDK.
@@ -435,12 +434,14 @@ class AgentModeDaemon:
 
         # 1. Update resources on the server for clients to use
         if self.mode == "v0":
+            sampling_params = {
+                "temperature": self.train_information.get("temperature", 0.7 if is_train else 0.0),
+            }
+
             llm_resource = LLM(
                 endpoint=f"http://127.0.0.1:{self.proxy_port}/v1",
                 model=self.train_information.get("model", "default-model"),
-                sampling_parameters={
-                    "temperature": self.train_information.get("temperature", 0.7 if is_train else 0.0)
-                },
+                sampling_parameters=sampling_params,
             )
         else:
             llm_resource = self.llm_proxy.as_resource(

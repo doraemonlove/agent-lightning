@@ -2,7 +2,7 @@
 
 set -e
 export N_GPUS=8
-export BASE_MODEL=/models/Qwen3-VL-8B-Instruct-0112
+export BASE_MODEL=/models/Qwen3-VL-8B-Instruct
 export DATA_DIR=/root/code/wangjiaju/agent-lightning/examples/cua/data
 export ROLLOUT_TP_SIZE=4
 export EXPERIMENT_NAME=cua

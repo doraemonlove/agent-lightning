@@ -322,13 +322,13 @@ def main():
     # 配置
     config = {
         "eval_path": "data/train.parquet",
-        "result_csv": "trace/0112/Qwen3-VL-8B-Instruct-eval-lora-602112.csv",
+        "result_csv": "trace/0114/Qwen3-VL-8B-Instruct-eval-normal.csv",
         "model_name": "models/Qwen3-VL-8B-Instruct",
         "model_endpoint": "http://localhost:8002/v1",
         "model_api_key": "wangjiaju",
         "model_provider": "openai",
-        "trace_save_dir": "./trace/0112/lora-602112",
-        "agent_planner_url": "http://0.0.0.0:8330/planner",
+        "trace_save_dir": "./trace/0114/normal",
+        "agent_planner_url": "http://0.0.0.0:8331/planner",
         "key_auth": WJJ_KEY_AUTH
     }
     

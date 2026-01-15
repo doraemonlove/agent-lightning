@@ -113,7 +113,7 @@ class LitCUAAgent(agentlightning.LitAgent):
         try:
             llm: agentlightning.LLM = cast(agentlightning.LLM, resources["main_llm"])
 
-            model_name = "/models/Qwen3-VL-8B-Instruct-0112"
+            model_name = "/models/Qwen3-VL-8B-Instruct"
             # test_llm_endpoint(llm.endpoint, model_name)
             result = await run_planner_task(
                 sandbox_id=sandbox_uri,
@@ -121,7 +121,7 @@ class LitCUAAgent(agentlightning.LitAgent):
                 model_name=model_name,
                 model_endpoint=llm.endpoint,
                 api_key="wangjiaju",  # 确保已在环境里设置 VERL_API_KEY
-                out_path=f"./trace/0112/rl/{rollout_id}_model_output.json",
+                out_path=f"./trace/0114/rl/{rollout_id}_model_output.json",
                 rollout_id=rollout_id
             )
             
@@ -137,7 +137,7 @@ class LitCUAAgent(agentlightning.LitAgent):
                 score_url=self.group_score_endpoint, 
                 traces=result, 
                 instruction=sample["instruction"],
-                model_path="/models/Qwen3-VL-8B-Instruct-0112"
+                model_path="/models/Qwen3-VL-8B-Instruct"
             )
             triplets = result
         else:
