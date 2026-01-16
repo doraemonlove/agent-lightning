@@ -430,9 +430,9 @@ def process_trace(events, instruction):
     # 至少应该保留 [System, User, Assistant] 三条
     if len(convs) < 3: 
         print("Warning: Trace dropped because no valid assistant action found at the end.")
+        print(f"convs: {convs}")
         return {}
     
-    save_triplets_to_json(dataset_sample, "sample.json")
     return dataset_sample
 
 def convert_to_triplet_format(converted_data, processor, reward: float, max_seq_len=16384):
@@ -575,7 +575,7 @@ def convert_single_trace_to_triplet(
 ) -> List[Dict[str, Any]]:
 
     # Step 1: 原始 trace → dataset_sample
-    dataset_sample = process_trace(trace_data[:-1], instruction)
+    dataset_sample = process_trace(trace_data, instruction)
 
     # Step 3: llama → triplet
     triplet = convert_to_triplet_format(
@@ -631,6 +631,9 @@ async def convert_traces_to_triplets(
 ) -> List[List[Dict[str, Any]]]:
     result = await group_score_trace(score_url, traces, instruction)
     grouped_traces = result["grouped_traces"]
+    if "status" in result and result["status"] == "error":
+        logger.warning("grouped trace went wrong!!!")
+        return []
     
     logger.info(f"segmented trace type:{type(grouped_traces)}, length:{len(grouped_traces)}")
 
@@ -642,9 +645,8 @@ async def convert_traces_to_triplets(
 
     all_tokenized_data = []
     for segmented_trace in grouped_traces:
-        reward = float(segmented_trace[-1].get("reward", 0.0)) if segmented_trace else 0.0
         converted_trace = convert_single_trace_to_triplet(
-            instruction=instruction, trace_data=segmented_trace, processor=processor, reward=reward
+            instruction=segmented_trace["instruction"], trace_data=segmented_trace["events"], processor=processor, reward=segmented_trace["reward"]
         )
         all_tokenized_data.append(converted_trace)
 

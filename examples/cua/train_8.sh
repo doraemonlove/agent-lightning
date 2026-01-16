@@ -27,7 +27,7 @@ python -m agentlightning.verl \
     data.max_prompt_length=24576 \
     data.max_response_length=512  \
     data.truncation='error' \
-    actor_rollout_ref.rollout.n=1 \
+    actor_rollout_ref.rollout.n=4 \
     actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu=1 \
     actor_rollout_ref.rollout.multi_turn.format=hermes \
     actor_rollout_ref.rollout.name=vllm \
