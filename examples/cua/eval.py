@@ -322,12 +322,12 @@ def main():
     # 配置
     config = {
         "eval_path": "data/train.parquet",
-        "result_csv": "trace/0114/Qwen3-VL-8B-Instruct-eval-normal.csv",
+        "result_csv": "trace/0115/Qwen3-VL-8B-Instruct-eval-normal.csv",
         "model_name": "models/Qwen3-VL-8B-Instruct",
         "model_endpoint": "http://localhost:8002/v1",
         "model_api_key": "wangjiaju",
         "model_provider": "openai",
-        "trace_save_dir": "./trace/0114/normal",
+        "trace_save_dir": "./trace/0115/normal",
         "agent_planner_url": "http://0.0.0.0:8331/planner",
         "key_auth": WJJ_KEY_AUTH
     }
@@ -352,7 +352,7 @@ def main():
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         for idx, original_sample in iterate_parquet_samples(config["eval_path"]):
             
-            variants = ["WJJ_TEST_08"]
+            variants = ["WJJ_TEST_07"]
             
             for i, plan_name in enumerate(variants):
                 # 深拷贝样本以防修改冲突

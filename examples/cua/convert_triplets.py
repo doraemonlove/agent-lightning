@@ -165,11 +165,6 @@ def get_tools_schema():
             "parameters": {"type": "object", "properties": {"thought": {"type": "string"}}, "required": ["thought"]},
         },
         {
-            "name": "call_user",
-            "description": "呼叫用户人工接管。",
-            "parameters": {"type": "object", "properties": {"thought": {"type": "string"}}, "required": ["thought"]},
-        },
-        {
             "name": "output",
             "description": "输出信息或结果。",
             "parameters": {
@@ -260,296 +255,185 @@ def parse_action_to_json(action_str, summary_text):
     return tool_name, arguments
 
 
-def normalize_coordinates(text, width, height):
+def normalize_coordinates(tool_calls, width, height):
+    new_tool_calls = copy.deepcopy(tool_calls)
+
+    # 定义需要转换的参数集合
+    # 集合查找速度快，且易于扩展
+    x_keys = {"x", "start_x", "end_x"}
+    y_keys = {"y", "start_y", "end_y"}
+
+    for tool in new_tool_calls:
+        # 1. 安全检查结构
+        if "function" not in tool:
+            continue
+        
+        func_node = tool["function"]
+        args = func_node.get("arguments", {})
+
+        # 2. 如果 arguments 是字符串（有些 OpenAI 响应是 JSON 字符串），先转字典
+        is_json_str = False
+        if isinstance(args, str):
+            try:
+                import json
+                args = json.loads(args)
+                is_json_str = True
+            except:
+                continue # 解析失败跳过
+
+        if not isinstance(args, dict):
+            continue
+
+        # 3. 遍历参数进行归一化
+        for key, val in args.items():
+            # 跳过非数字类型 (比如 thought, content, direction 等)
+            if not isinstance(val, (int, float)):
+                continue
+            
+            # 处理 X 轴相关
+            if key in x_keys:
+                norm_val = int((val / width) * 1000)
+                args[key] = max(0, min(1000, norm_val)) # 钳制在 0-1000
+            
+            # 处理 Y 轴相关
+            elif key in y_keys:
+                norm_val = int((val / height) * 1000)
+                args[key] = max(0, min(1000, norm_val)) # 钳制在 0-1000
+
+        # 4. 写回 arguments
+        # 如果原来是字符串，这里可能需要根据你的下游任务决定是否 dump 回去
+        # 通常在内部处理时，保持 dict 更方便
+        if is_json_str:
+             import json
+             func_node["arguments"] = json.dumps(args, ensure_ascii=False)
+        else:
+             func_node["arguments"] = args
+
+    return new_tool_calls
+
+def process_trace(events, instruction):
     """
-    将文本中的绝对坐标转换为 0-1000 的相对坐标。
-    支持的键: x, y, start_x, start_y, end_x, end_y
-    """
-    if not text:
-        return text
-
-    # 定义 X 轴相关的键 (使用单词边界 \b 防止匹配错误)
-    # 匹配模式: 单词边界 + (key) + 可能空格 + = + 可能空格 + 数字
-
-    def replace_x(match):
-        key = match.group(1)
-        val = int(match.group(2))
-        # 归一化计算: (val / width) * 1000，取整
-        norm_val = int((val / width) * 1000)
-        # 边界保护，防止超出0-1000（虽然理论上不会，但安全起见）
-        norm_val = max(0, min(1000, norm_val))
-        return f"{key}={norm_val}"
-
-    def replace_y(match):
-        key = match.group(1)
-        val = int(match.group(2))
-        norm_val = int((val / height) * 1000)
-        norm_val = max(0, min(1000, norm_val))
-        return f"{key}={norm_val}"
-
-    # 处理 X 轴: x, start_x, end_x
-    text = re.sub(r"\b(x|start_x|end_x)\s*=\s*(\d+)", replace_x, text)
-
-    # 处理 Y 轴: y, start_y, end_y
-    text = re.sub(r"\b(y|start_y|end_y)\s*=\s*(\d+)", replace_y, text)
-
-    return text
-
-
-def process_trace(data, current_instruction):
-    """
-    data 结构（严格）:
+    处理标准化的 GUI Agent 轨迹数据。
+    假设 data 结构严格如下:
     [
-        {"instruction": "..."},
-        ... trace steps (screenshot / action) ...
-        {"reward": float}
+      1: {"screenshot": "base64...", "task_id": ...},  <-- Initial State
+      2: {"tool_calls": [...], "summary": "..."},      <-- Turn 1 Action
+      3: {"tool_outputs": [...], "screenshot": "..."}, <-- Turn 1 Response
+      ...
+
     ]
     """
-
-    # =============================
-    # 0. 基本校验
-    # =============================
-    if not isinstance(data, list) or len(data) < 3:
-        return None
-
-    if "instruction" not in data[0]:
-        raise ValueError("segmented_trace[0] 必须是 instruction")
-
-    if "reward" not in data[-1]:
-        raise ValueError("segmented_trace[-1] 必须是 reward")
-    print(f"reward:{data[-1].get('reward')}")
-    # =============================
-    # 1. 拆 meta
-    # =============================
-    instruction = data[0]["instruction"]
-    reward = float(data[-1]["reward"])
-
-    # 只保留真正的 trace event
-    trace_steps = data[1:-1]
-
-    if not trace_steps:
-        return None
-
-    current_instruction = instruction
-
-    # =============================
-    # 2. 找第一张有效截图
-    # =============================
-    init_screenshot = None
-    for entry in trace_steps:
-        if "screenshot" in entry and entry["screenshot"]:
-            init_screenshot = entry["screenshot"]
-            break
-
-    if not init_screenshot:
-        print("no images")
-        # 没有截图，无法继续
-        return None
-
-    # =============================
-    # 3. 解析图片尺寸
-    # =============================
-    try:
-        pil_img = base64_to_pil(init_screenshot)
-        if pil_img:
-            img_width, img_height = pil_img.size
-    except Exception as e:
-        print(f"Error parsing image size: {e}")
-        return None
-
-    # =============================
-    # 4. 初始化 dataset_sample
-    # =============================
+    
     dataset_sample = {
         "tools": get_tools_schema(),
-        "messages": [],
-        "images": [],
-        "reward": reward,
+        "conversations": [],
+        "images": []
     }
 
-    # -----------------------------
-    # system
-    # -----------------------------
-    dataset_sample["messages"].append({"role": "system", "content": CUA_PROMPT})
-
-    # -----------------------------
-    # user (初始截图 + instruction)
-    # -----------------------------
-    dataset_sample["images"].append(init_screenshot)
-    dataset_sample["messages"].append(
-        {
-            "role": "user", 
-            "content": [
-                {"type": "image", "image": init_screenshot},
-                {"type": "text", "text": current_instruction}
-            ]
-        }
-    )
-
     # =============================
-    # 5. 遍历 trace events
+    # 1. 处理初始状态 (Step 0)
     # =============================
-    total_len = len(trace_steps)
+    init_event = events[0]
+    if "screenshot" not in init_event or not init_event["screenshot"]:
+        print("Error: Missing initial screenshot")
+        return {}
 
-    for i, entry in enumerate(trace_steps):
-        if "action" not in entry:
-            continue
-
-        action_raw = entry["action"]
-
-        # 跳过 start
-        if isinstance(action_raw, str) and action_raw.lower() == "start":
-            continue
-
-        summary = entry.get("summary", "")
-
-        raw_text = entry.get("raw_text") or summary or ""
-        # raw_text = entry.get("raw_text", summary)
-
-        # 坐标归一化
-        raw_text = normalize_coordinates(raw_text, img_width, img_height)
-        action_raw = normalize_coordinates(action_raw, img_width, img_height)
-
-        tool_name, tool_args = parse_action_to_json(action_raw, summary)
-        if not tool_name:
-            continue
-
-        # ---------- assistant (thought) ----------
-        dataset_sample["messages"].append({"role": "assistant", "content": raw_text})
-
-        # ---------- tool_call ----------
-        dataset_sample["messages"].append(
-            {
-                "role": "tool_call",
-                "content": json.dumps(
-                    {"name": tool_name, "arguments": tool_args},
-                    ensure_ascii=False,
-                ),
-            }
-        )
-
-        if tool_name == "finished":
-            break
-
-        # ---------- tool_response + screenshot ----------
-        has_screenshot = False
-        next_idx = i + 1
-        if next_idx < total_len:
-            next_entry = trace_steps[next_idx]
-            if "screenshot" in next_entry and next_entry["screenshot"]:
-                dataset_sample["images"].append(next_entry["screenshot"])
-                dataset_sample["messages"].append(
-                    {
-                        "role": "tool_response",
-                        "content": [
-                            {"type": "image", "image": next_entry["screenshot"]}
-                        ],
-                    }
-                )
-                has_screenshot = True
-
-        if not has_screenshot:
-            dataset_sample["messages"].append(
-                {
-                    "role": "tool_response",
-                    "content": json.dumps(
-                        {"status": "success"},
-                        ensure_ascii=False,
-                    ),
-                }
-            )
-
-    return dataset_sample
-
-
-def convert_to_llama_factory_format(data):
-    """
-    data: List[Dict]
-        每个 Dict 包含 "images", "tools", "messages" 等字段
-
-    return: List[Dict]
-        每个 Dict 包含 "images", "tools", "conversations" 等字段
-    """
+    init_screenshot = init_event["screenshot"]
     
-    new_entry = {}
-    new_entry["images"] = data.get("images", [])
-    new_entry["tools"] = data.get("tools", [])  # 确保包含工具定义
+    # 解析图片尺寸 (常用于 System Prompt 注入分辨率信息，或者单纯校验图片有效性)
+    try:
+        pil_img = base64_to_pil(init_screenshot)
+        width, height = pil_img.size
+    except Exception as e:
+        print(f"Error processing initial image: {e}")
+        return {}
 
-    new_messages = []
-    messages = data.get("messages", [])
+    # 保存图片
+    dataset_sample["images"].append(init_screenshot)
 
-    # 用于追踪最近的一个 call_id，以便 tool_response 使用
-    current_tool_call_id = None
+    # 构造 System Prompt (建议带上分辨率信息)
+    system_content = CUA_PROMPT
+    # 如果你的 Prompt 需要动态插入分辨率，可以在这里做:
+    system_content += f"\nCurrent Screen Resolution: {width}x{height}"
+    
+    dataset_sample["conversations"].append({"role": "system", "content": system_content})
 
-    for i, msg in enumerate(messages):
-        role = msg["role"]
-        content = msg["content"]
+    # 构造 User Initial Message
+    dataset_sample["conversations"].append({
+        "role": "user",
+        "content": [
+            {"type": "text", "text": instruction},
+            {"type": "text", "text": "### Step 0: Initial State"},
+            {"type": "image", "image": init_screenshot}
+        ]
+    })
 
-        if role == "system":
-            new_messages.append({"role": "system", "content": content})
+    # =============================
+    # 2. 遍历后续交互 (Step 1 -> N)
+    # =============================
+    # 从 events[1] 开始遍历 (跳过初始截图)
+    for i, ev in enumerate(events[1:]):
+        
+        # --- Case A: 模型动作 (Assistant) ---
+        if "tool_calls" in ev:
+            # summary = ev.get("summary", "Thinking...")
+            # raw_text = ev.get("raw_text", "")
+            # if not raw_text:
+            #     raw_text = summary
+            tool_calls = ev["tool_calls"]
+            
+            tool_calls = normalize_coordinates(tool_calls, width, height)
 
-        elif role == "user":
-            new_messages.append({"role": "user", "content": content})
-
-        elif role == "assistant":
-            # 添加纯文本思考
-            new_messages.append({"role": "assistant", "content": content})
-
-        elif role == "tool_call":
-            # 解析 tool_call 内容
-            tool_call_json = json.loads(content)
-
-            # 生成唯一的 ID (使用 uuid 或者简单的索引都可以，只要对应即可)
-            call_id = f"call_{len(new_messages)}_{random.randint(1000,9999)}"
-            current_tool_call_id = call_id  # 记录下来给 tool_response 用
-
-            # 检查上一条消息是否是 assistant
-            if new_messages and new_messages[-1]["role"] == "assistant":
-                # 合并进去
-                new_messages[-1]["tool_calls"] = [
+            # 1. 思考过程 (Thought)
+            dataset_sample["conversations"].append({
+                "role": "assistant",
+                "content": "",
+                "tool_calls": tool_calls
+            })
+            
+        # --- Case B: 环境反馈 (Tool/User) ---
+        elif "tool_outputs" in ev:
+            tool_outputs = ev["tool_outputs"]
+            
+            for tool_output in tool_outputs:
+                dataset_sample["conversations"].append(tool_output)
+        
+        elif "screenshot" in ev:
+            if "screenshot" in ev and ev["screenshot"]:
+                dataset_sample["images"].append(ev["screenshot"])
+                dataset_sample["conversations"].append(
                     {
-                        "id": call_id,
-                        "type": "function",
-                        "function": {
-                            "name": tool_call_json["name"],
-                            "arguments": json.dumps(tool_call_json["arguments"], ensure_ascii=False),
-                        },
-                    }
-                ]
-            else:
-                # 如果上一条不是 assistant（极少见），新建一条
-                new_messages.append(
-                    {
-                        "role": "assistant",
-                        "content": "",  # 空 thought
-                        "tool_calls": [
-                            {
-                                "id": call_id,
-                                "type": "function",
-                                "function": {
-                                    "name": tool_call_json["name"],
-                                    "arguments": json.dumps(tool_call_json["arguments"], ensure_ascii=False),
-                                },
-                            }
+                        "role": "user",
+                        "content": [
+                            {"type": "image", "image": ev["screenshot"]}
                         ],
                     }
                 )
 
-        elif role == "tool_response":
-            # 必须改成 "tool"
-            # 如果没有对应的 ID，LLaMA-Factory 可能会报错，这里做个兜底
-            if not current_tool_call_id:
-                current_tool_call_id = "call_default"
-
-            new_messages.append({"role": "tool", "content": content, "tool_call_id": current_tool_call_id})
-
-            # 重置 ID，防止错位
-            current_tool_call_id = None
-
-    new_entry["conversations"] = new_messages
-
-    return new_entry
-
+    # =============================
+    # 3. [新增] 截断逻辑：只保留到最后一个 Assistant
+    # =============================
+    convs = dataset_sample["conversations"]
+    
+    # 从后往前检查，只要最后一条不是 assistant，就移除
+    # 使用 while 循环是因为可能结尾连续跟着 [tool_output, screenshot, user_msg] 等多条非 assistant 消息
+    while len(convs) > 0 and convs[-1]["role"] != "assistant":
+        # 移除最后一条
+        removed_msg = convs.pop()
+        # 注意：这里我们只移除了对话记录。
+        # 之前存在 dataset_sample["images"] 里的图片数据（base64）可以保留，
+        # 因为只要 conversation 里不引用它，训练框架通常会忽略多余的资源，
+        # 或者你也可以选择在这里根据 logic 复杂的去清理 images 列表，但通常没必要。
+    
+    # 安全检查：如果截断后 conversation 只剩下 system 或者 user (Step 0)，
+    # 说明整个 trace 没有有效的 assistant 动作，这条数据通常没有训练价值。
+    # 至少应该保留 [System, User, Assistant] 三条
+    if len(convs) < 3: 
+        print("Warning: Trace dropped because no valid assistant action found at the end.")
+        return {}
+    
+    save_triplets_to_json(dataset_sample, "sample.json")
+    return dataset_sample
 
 def convert_to_triplet_format(converted_data, processor, reward: float, max_seq_len=16384):
     """
@@ -560,7 +444,7 @@ def convert_to_triplet_format(converted_data, processor, reward: float, max_seq_
     conversations = converted_data["conversations"]
     
     # 1. 基础检查
-    if len(conversations) < 2:
+    if len(conversations) < 3:
         raise Exception("conversation too short, need at least user query and assistant response.")
 
     # 2. 准备 Tools (如果有)
@@ -686,37 +570,18 @@ def convert_to_triplet_format(converted_data, processor, reward: float, max_seq_
 
     return triplet
 
-class TripletEncoder(json.JSONEncoder):
-    """自定义 JSON 编码器，处理 Triplet 对象"""
-
-    def default(self, obj):
-        # 如果是 Triplet (Pydantic 对象)，转为字典
-        if hasattr(obj, "model_dump"):
-            return obj.model_dump()
-        if hasattr(obj, "dict"):
-            return obj.dict()
-        return super().default(obj)
-
-
 def convert_single_trace_to_triplet(
-    instruction: str, trace_data: List[Dict[str, Any]], processor
+    instruction: str, trace_data: List[Dict[str, Any]], processor, reward
 ) -> List[Dict[str, Any]]:
 
-    # reward
-    reward_value = float(trace_data[-1].get("reward", 0.0)) if trace_data else 0.0
-
     # Step 1: 原始 trace → dataset_sample
-    dataset_sample = process_trace(trace_data, instruction)
-    if dataset_sample is None:
-        return {}
+    dataset_sample = process_trace(trace_data[:-1], instruction)
 
-    # Step 2: dataset_sample → llama factory
-    llama_entries = convert_to_llama_factory_format(dataset_sample)
     # Step 3: llama → triplet
     triplet = convert_to_triplet_format(
-        llama_entries,
+        dataset_sample,
         processor=processor,
-        reward=reward_value,
+        reward=reward,
     )
 
     return triplet
@@ -764,29 +629,38 @@ async def group_score_trace(url, trace: list[dict]=None, user_instruction: str=N
 async def convert_traces_to_triplets(
     score_url: str, instruction: str, traces: List[Dict[str, Any]], model_path: str
 ) -> List[List[Dict[str, Any]]]:
-    logger.info(f"score_url: {score_url}")
     result = await group_score_trace(score_url, traces, instruction)
     grouped_traces = result["grouped_traces"]
-    # 测试直接输入代码
-    # input_segmented_trace = "/root/code/wangjiaju/zql_workspace/agent-lightning/examples/cua/reward_result.json"
-    # with open(input_segmented_trace, "r", encoding="utf-8") as f:
-    #     segmented_traces = json.load(f)
+    
     logger.info(f"segmented trace type:{type(grouped_traces)}, length:{len(grouped_traces)}")
 
     processor = AutoProcessor.from_pretrained(
         model_path,
-        min_pixels=256*28*28, 
-        max_pixels=1280*28*28
+        min_pixels=200704, 
+        max_pixels=1350000
     )
 
     all_tokenized_data = []
     for segmented_trace in grouped_traces:
+        reward = float(segmented_trace[-1].get("reward", 0.0)) if segmented_trace else 0.0
         converted_trace = convert_single_trace_to_triplet(
-            instruction=instruction, trace_data=segmented_trace, processor=processor
+            instruction=instruction, trace_data=segmented_trace, processor=processor, reward=reward
         )
         all_tokenized_data.append(converted_trace)
 
     return all_tokenized_data
+
+def convert_trace_to_triplet(instruction, trace, model_path):
+    processor = AutoProcessor.from_pretrained(
+        model_path,
+        min_pixels=200704, 
+        max_pixels=1350000
+    )
+    reward = 0.0
+    converted_trace = convert_single_trace_to_triplet(
+        instruction=instruction, trace_data=trace, processor=processor, reward=reward
+    )
+    return [converted_trace]
 
 
 # ---- test -----
@@ -835,8 +709,7 @@ async def main():
     # ==============================
     # 路径配置
     # ==============================
-    input_trace_path = "/root/code/wangjiaju/agent-lightning/examples/cua/trace/0112/lora-602112/sample_3_ver_0.json"
-    output_triplets_path = "output_triplets.json"
+    input_trace_path = "/root/code/wangjiaju/agent-lightning/examples/cua/trace/0115/normal/sample_0_ver_0.json"
 
     # ⚠️ 必须是真实存在的 Qwen-VL / Qwen2.5-VL 模型路径
     model_path = "/models/Qwen3-VL-8B-Instruct"
@@ -853,12 +726,13 @@ async def main():
     # ==============================
     # Step 2: trace → triplets
     # ==============================
-    all_triplets = await convert_traces_to_triplets(
-        score_url="http://localhost:8003/group_score",
-        instruction=instruction,
-        traces=trace_data,
-        model_path=model_path,
-    )
+    # all_triplets = await convert_traces_to_triplets(
+    #     score_url="http://localhost:8003/group_score",
+    #     instruction=instruction,
+    #     traces=trace_data,
+    #     model_path=model_path,
+    # )
+    all_triplets = convert_trace_to_triplet(instruction=instruction, trace=trace_data, model_path=model_path)
 
     print(f"📌 Generated {len(all_triplets)} segmented triplet groups")
 

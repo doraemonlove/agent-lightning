@@ -81,46 +81,164 @@ class GroupedActionsRewardModel:
         self.client = AsyncOpenAI(base_url=base_url, api_key=api_key)
         self.model = model
         self.reward_prompt = reward_prompt
-
+    
     def _build_content(self, parsed_trace: Any, user_instruction: str) -> List[Dict[str, Any]]:
-        content = [
+        content: List[Dict[str, Any]] = [
             {"type": "text", "text": self.reward_prompt.strip()},
-            {"type": "text", "text": f"User Instruction: {user_instruction}"},
+            {"type": "text", "text": f"User Instruction: {user_instruction.strip()}"},
         ]
 
         events = _iter_events(parsed_trace)
+        step_count = 1
 
-        for idx, ev in enumerate(events):
+        for ev in events:
             if not isinstance(ev, dict):
                 continue
 
-            # 跳过纯指令项（如果列表第0项是指令，通常不包含action/screenshot）
-            if "instruction" in ev and "action" not in ev and "screenshot" not in ev:
+            # --- 1. 初始截图 (Initial State) ---
+            if "screenshot" in ev and ev["screenshot"] and "tool_outputs" not in ev:
+                content.append({"type": "text", "text": "### Step 0: Initial State (Before Start)"})
+                content.extend(_normalize_image_url(ev["screenshot"]))
                 continue
 
-            idx_str = f"[Index {idx}] "
+            # --- 2. 模型动作 (Tool Calls) -> JSON Dumps ---
+            if "tool_calls" in ev:
+                summary = ev.get("summary", "Thinking...")
+                
+                # 直接 Dump 原始的 tool_calls 列表
+                # 使用 ensure_ascii=False 保证中文正常显示
+                # 使用 indent=2 让结构清晰，利于评分模型理解层级
+                tool_calls_json = json.dumps(ev["tool_calls"], ensure_ascii=False, indent=2)
+                
+                content.append({
+                    "type": "text", 
+                    "text": (
+                        f"### Step {step_count} Agent Action\n"
+                        f"**Thought:** {summary}\n"
+                        f"**Function Call (JSON):**\n"
+                        f"```json\n{tool_calls_json}\n```"
+                    )
+                })
+                step_count += 1
+                continue
 
-            # 处理 Screenshot
-            if "screenshot" in ev:
-                # 你的数据里 screenshot 是空的，所以这里增加一个占位符逻辑
-                # 只有当 base64 长度足够时才当作真正的图片传给 LLM
-                if ev["screenshot"] and len(ev["screenshot"]) > 100:
+            # --- 3. 工具反馈 (Tool Outputs) -> JSON Dumps + Screenshot ---
+            if "tool_outputs" in ev:
+                # 先展示执行后的截图（对于 GUI Agent 评分，视觉反馈最重要）
+                if "screenshot" in ev and ev["screenshot"]:
+                    content.append({"type": "text", "text": f"### Step {step_count - 1} Execution Result (Screenshot)"})
                     content.extend(_normalize_image_url(ev["screenshot"]))
-                else:
-                    # 空截图或占位符
-                    content.append({"type": "text", "text": f"{idx_str} [Screenshot Placeholder / Empty]"})
+                
+                # 直接 Dump 工具的返回结果
+                # 这对于评分模型判断“工具是否报错”或“是否返回了预期的文本信息”很重要
+                tool_outputs_json = json.dumps(ev["tool_outputs"], ensure_ascii=False, indent=2)
 
-            # 处理 Action
-            # 注意：你的数据里有 'Wrong function tool'，这通常出现在 'action' 字段里
-            action_val = ev.get("action")
-            if action_val:
-                summary = str(ev.get("summary", ""))
-                # 将 Action 转为文本
-                text = f"{idx_str} Action: {action_val} | Summary: {summary}"
-                content.append({"type": "text", "text": text})
+                content.append({
+                    "type": "text", 
+                    "text": (
+                        f"**Tool Outputs (JSON):**\n"
+                        f"```json\n{tool_outputs_json}\n```"
+                    )
+                })
+                continue
 
         return content
 
+    def _build_content(self, parsed_trace: Any, user_instruction: str) -> List[Dict[str, Any]]:
+        content: List[Dict[str, Any]] = [
+            {"type": "text", "text": self.reward_prompt.strip()},
+            {"type": "text", "text": f"User Instruction: {user_instruction.strip()}"},
+        ]
+
+        events = _iter_events(parsed_trace)
+        step_count = 1
+        
+        # 标记是否已经处理过初始状态
+        has_processed_init = False
+
+        for ev in events:
+            if not isinstance(ev, dict):
+                continue
+
+            # ===============================================================
+            # 1. 初始状态 (Initial State)
+            # 逻辑：只要是第一张图，且没有 Action/Output，就是初始状态
+            # ===============================================================
+            if "screenshot" in ev and not has_processed_init:
+                # 只有当它是纯截图，或者作为 trace 的起手式时
+                if "tool_calls" not in ev and "tool_outputs" not in ev:
+                    content.append({"type": "text", "text": "### Step 0: Initial State (Before Start)"})
+                    # 假设 _normalize_image_url 返回的是 [{"type": "image_url", ...}]
+                    content.extend(_normalize_image_url(ev["screenshot"]))
+                    has_processed_init = True
+                    continue
+
+            # ===============================================================
+            # 2. 模型动作 (Agent Action)
+            # 逻辑：这是因果链的“因”
+            # ===============================================================
+            if "tool_calls" in ev:
+                summary = ev.get("summary", "Thinking...")
+                tool_calls_json = json.dumps(ev["tool_calls"], ensure_ascii=False, indent=2)
+                
+                content.append({
+                    "type": "text", 
+                    "text": (
+                        f"\n---\n"  # 分隔线，帮助 LLM 区分回合
+                        f"### Step {step_count}: Agent Action\n"
+                        f"**Thought:** {summary}\n"
+                        f"**Function Call:**\n"
+                        f"```json\n{tool_calls_json}\n```"
+                    )
+                })
+                # 注意：这里增加计数，意味着接下来的 output 属于这个 step
+                step_count += 1
+                continue
+
+            # ===============================================================
+            # 3. 工具执行结果 (Execution Result)
+            # 逻辑：这是因果链的“果”。包含了 文本返回 + 新的截图
+            # ===============================================================
+            if "tool_outputs" in ev:
+                # 对应的 Action Step 是 step_count - 1
+                current_step_idx = step_count - 1
+                
+                # 构建文本部分
+                tool_outputs_json = json.dumps(ev["tool_outputs"], ensure_ascii=False, indent=2)
+                
+                # 3.1 先放入文本结果 (Output)
+                result_text = (
+                    f"### Result of Step {current_step_idx}\n"
+                    f"**Tool Outputs:**\n"
+                    f"```json\n{tool_outputs_json}\n```"
+                )
+                content.append({"type": "text", "text": result_text})
+
+                # 3.2 再放入视觉结果 (Screenshot)
+                # 逻辑：这是 Action 执行“之后”的屏幕状态
+                if "screenshot" in ev and ev["screenshot"]:
+                    content.append({
+                        "type": "text", 
+                        "text": f"**Screen State After Step {current_step_idx}:**"
+                    })
+                    content.extend(_normalize_image_url(ev["screenshot"]))
+                
+                continue
+
+            # ===============================================================
+            # 4. 兜底：处理中间可能出现的独立截图 (Mid-stream Screenshot)
+            # 有些 trace 可能会单独记录截图而不带 tool_output
+            # ===============================================================
+            if "screenshot" in ev and has_processed_init:
+                # 如果这个截图已经在 tool_outputs 里处理过了，就不会走到这里
+                # 这里处理的是“只有截图”的事件
+                content.append({
+                    "type": "text", 
+                    "text": f"**Screen State Update (Observation):**"
+                })
+                content.extend(_normalize_image_url(ev["screenshot"]))
+
+        return content
     async def reward_trace(self, trace, user_instruction) -> List[Dict[str, Any]]:
         # 配置重试参数
         max_retries = 5  # 最大重试次数

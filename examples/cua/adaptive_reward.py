@@ -161,26 +161,93 @@ class CuaTraceScorer:
         ]
 
         events = _iter_events(parsed_trace)
-        for i, ev in enumerate(events, 1): # 使用 enumerate 生成 Step 序号
+        step_count = 1
+        
+        # 标记是否已经处理过初始状态
+        has_processed_init = False
+
+        for ev in events:
             if not isinstance(ev, dict):
                 continue
-            
-            # 1. 插入图片
-            img_contents = []
-            if "screenshot" in ev and ev["screenshot"]:
-                img_contents.extend(_normalize_image_url(ev["screenshot"]))
-            if img_contents:
-                # 在图片前加上步骤标注，方便模型在审计时定位
-                content.append({"type": "text", "text": f"--- Step {i} Screenshot ---"})
-                content.extend(img_contents)
-            
-            # 2. 插入动作（独立字典）
-            if "action" in ev and ev["action"]:
-                action = str(ev.get("action", "")).strip()
-                summary = str(ev.get("summary", "")).strip()
-                # 独立成字典，并标注步骤
-                content.append({"type": "text", "text": f"Step {i} Agent think: {summary}, and agent execute: {action}"})
+
+            # ===============================================================
+            # 1. 初始状态 (Initial State)
+            # 逻辑：只要是第一张图，且没有 Action/Output，就是初始状态
+            # ===============================================================
+            if "screenshot" in ev and not has_processed_init:
+                # 只有当它是纯截图，或者作为 trace 的起手式时
+                if "tool_calls" not in ev and "tool_outputs" not in ev:
+                    content.append({"type": "text", "text": "### Step 0: Initial State (Before Start)"})
+                    # 假设 _normalize_image_url 返回的是 [{"type": "image_url", ...}]
+                    content.extend(_normalize_image_url(ev["screenshot"]))
+                    has_processed_init = True
+                    continue
+
+            # ===============================================================
+            # 2. 模型动作 (Agent Action)
+            # 逻辑：这是因果链的“因”
+            # ===============================================================
+            if "tool_calls" in ev:
+                summary = ev.get("summary", "Thinking...")
+                tool_calls_json = json.dumps(ev["tool_calls"], ensure_ascii=False, indent=2)
                 
+                content.append({
+                    "type": "text", 
+                    "text": (
+                        f"\n---\n"  # 分隔线，帮助 LLM 区分回合
+                        f"### Step {step_count}: Agent Action\n"
+                        f"**Thought:** {summary}\n"
+                        f"**Function Call:**\n"
+                        f"```json\n{tool_calls_json}\n```"
+                    )
+                })
+                # 注意：这里增加计数，意味着接下来的 output 属于这个 step
+                step_count += 1
+                continue
+
+            # ===============================================================
+            # 3. 工具执行结果 (Execution Result)
+            # 逻辑：这是因果链的“果”。包含了 文本返回 + 新的截图
+            # ===============================================================
+            if "tool_outputs" in ev:
+                # 对应的 Action Step 是 step_count - 1
+                current_step_idx = step_count - 1
+                
+                # 构建文本部分
+                tool_outputs_json = json.dumps(ev["tool_outputs"], ensure_ascii=False, indent=2)
+                
+                # 3.1 先放入文本结果 (Output)
+                result_text = (
+                    f"### Result of Step {current_step_idx}\n"
+                    f"**Tool Outputs:**\n"
+                    f"```json\n{tool_outputs_json}\n```"
+                )
+                content.append({"type": "text", "text": result_text})
+
+                # 3.2 再放入视觉结果 (Screenshot)
+                # 逻辑：这是 Action 执行“之后”的屏幕状态
+                if "screenshot" in ev and ev["screenshot"]:
+                    content.append({
+                        "type": "text", 
+                        "text": f"**Screen State After Step {current_step_idx}:**"
+                    })
+                    content.extend(_normalize_image_url(ev["screenshot"]))
+                
+                continue
+
+            # ===============================================================
+            # 4. 兜底：处理中间可能出现的独立截图 (Mid-stream Screenshot)
+            # 有些 trace 可能会单独记录截图而不带 tool_output
+            # ===============================================================
+            if "screenshot" in ev and has_processed_init:
+                # 如果这个截图已经在 tool_outputs 里处理过了，就不会走到这里
+                # 这里处理的是“只有截图”的事件
+                content.append({
+                    "type": "text", 
+                    "text": f"**Screen State Update (Observation):**"
+                })
+                content.extend(_normalize_image_url(ev["screenshot"]))
+
         return content
 
     async def score_trace(

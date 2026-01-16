@@ -121,6 +121,159 @@ def _to_native(obj: Any) -> Any:
     # 5) Anything else: leave as-is
     return obj
 
+def get_tools_schema():
+    # 基础工具列表
+    base_tools = [
+        {
+            "name": "click",
+            "description": "左键单击，用于选中元素或点击按钮。",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "thought": {"type": "string", "description": "思考过程"},
+                    "x": {"type": "integer", "description": "X坐标"},
+                    "y": {"type": "integer", "description": "Y坐标"},
+                },
+                "required": ["thought", "x", "y"],
+            },
+        },
+        {
+            "name": "left_double_click",
+            "description": "左键双击，用于打开应用或文件。",
+            "parameters": {
+                "type": "object",
+                "properties": {"thought": {"type": "string"}, "x": {"type": "integer"}, "y": {"type": "integer"}},
+                "required": ["thought", "x", "y"],
+            },
+        },
+        {
+            "name": "right_click",
+            "description": "右键单击，打开上下文菜单。",
+            "parameters": {
+                "type": "object",
+                "properties": {"thought": {"type": "string"}, "x": {"type": "integer"}, "y": {"type": "integer"}},
+                "required": ["thought", "x", "y"],
+            },
+        },
+        {
+            "name": "drag",
+            "description": "拖拽，从起点拖到终点。",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "thought": {"type": "string"},
+                    "start_x": {"type": "integer"},
+                    "start_y": {"type": "integer"},
+                    "end_x": {"type": "integer"},
+                    "end_y": {"type": "integer"},
+                },
+                "required": ["thought", "start_x", "start_y", "end_x", "end_y"],
+            },
+        },
+        {
+            "name": "type",
+            "description": "输入文字（需确保焦点正确）。",
+            "parameters": {
+                "type": "object",
+                "properties": {"thought": {"type": "string"}, "content": {"type": "string"}},
+                "required": ["thought", "content"],
+            },
+        },
+        {
+            "name": "hotkey",
+            "description": "按单个键或组合键。",
+            "parameters": {
+                "type": "object",
+                "properties": {"thought": {"type": "string"}, "key": {"type": "string"}},
+                "required": ["thought", "key"],
+            },
+        },
+        {
+            "name": "scroll",
+            "description": "滚动操作。",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "thought": {"type": "string"},
+                    "direction": {"type": "string", "enum": ["up", "down"]},
+                    "x": {"type": "integer"},
+                    "y": {"type": "integer"},
+                },
+                "required": ["thought", "direction", "x", "y"],
+            },
+        },
+        {
+            "name": "wait",
+            "description": "等待界面稳定。",
+            "parameters": {"type": "object", "properties": {"thought": {"type": "string"}}, "required": ["thought"]},
+        },
+        {
+            "name": "finished",
+            "description": "标记任务完成。",
+            "parameters": {"type": "object", "properties": {"thought": {"type": "string"}}, "required": ["thought"]},
+        },
+        {
+            "name": "call_user",
+            "description": "呼叫用户人工接管。",
+            "parameters": {"type": "object", "properties": {"thought": {"type": "string"}}, "required": ["thought"]},
+        },
+        {
+            "name": "output",
+            "description": "输出信息或结果。",
+            "parameters": {
+                "type": "object",
+                "properties": {"thought": {"type": "string"}, "content": {"type": "string"}},
+                "required": ["thought", "content"],
+            },
+        }
+    ]
+
+    # 包装成 OpenAI 格式: [{"type": "function", "function": {...}}]
+    openai_tools = []
+    for tool in base_tools:
+        openai_tools.append({"type": "function", "function": tool})
+
+    # return json.dumps(openai_tools, ensure_ascii=False)
+    return openai_tools
+
+def build_vllm_guided_schema(openai_tools):
+    """
+    将 OpenAI 格式的工具列表转换为 vLLM guided_json 需要的 JSON Schema。
+    使用 'oneOf' 来根据 name 字段约束 arguments 的结构。
+    """
+    one_of_list = []
+    
+    for tool in openai_tools:
+        function_def = tool["function"]
+        tool_name = function_def["name"]
+        
+        # 跳过 bad_function_call，因为我们希望强制模型输出正确的调用
+        if tool_name == "bad_function_call":
+            continue
+            
+        # 构建针对该工具的独立 Schema
+        # 要求：name 必须等于当前工具名，arguments 必须符合该工具的 parameters 定义
+        single_tool_schema = {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "const": tool_name  # 强制 name 字段匹配
+                },
+                "arguments": function_def["parameters"] # 直接复用你定义的 parameters
+            },
+            "required": ["name", "arguments"],
+            "additionalProperties": False # 禁止输出多余字段
+        }
+        one_of_list.append(single_tool_schema)
+
+    # 最终的 Schema：输出必须是上述列表中的某一种
+    full_schema = {
+        "type": "object",
+        "oneOf": one_of_list
+    }
+    
+    return full_schema
+
 class AgentModeDaemon:
     """
     AgentModeDaemon using the AgentLightningServer SDK.
@@ -434,8 +587,21 @@ class AgentModeDaemon:
 
         # 1. Update resources on the server for clients to use
         if self.mode == "v0":
+            # 1. 获取原始工具定义
+            raw_tools = get_tools_schema() 
+            
+            # 2. 构建 vLLM 需要的 guided_json schema
+            # 只有在 RL 训练(is_train=True) 且通常是 rollout 阶段才强烈建议开启
+            # 如果你在 SFT 阶段也想用，也可以一直开启
+            vllm_schema = build_vllm_guided_schema(raw_tools)
+            
+            # 3. 准备采样参数
             sampling_params = {
                 "temperature": self.train_information.get("temperature", 0.7 if is_train else 0.0),
+                # 【关键修改】加入 guided_json
+                # 注意：这里假设底层的 LLM 类会将 sampling_parameters 直接透传给 vLLM 的 API
+                # 如果底层库用的参数名是 'extra_body' 或其他，请相应调整，但标准 vLLM 接受这个键
+                "guided_json": vllm_schema 
             }
 
             llm_resource = LLM(
