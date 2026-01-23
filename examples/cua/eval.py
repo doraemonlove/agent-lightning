@@ -51,7 +51,7 @@ class SandboxManager:
             # ]
             running_uris = [
                 # "i-yecewfij28xjd1u1ok94"
-                "i-yecbw3usqowh2yoc11gv"
+                "i-yee0gfw1s0wh2ysa318r"
             ]
             running_uris = list(set(running_uris)) # 简单的去重
             logger.info(f"✅ 初始化沙箱池，共 {len(running_uris)} 个沙箱")
@@ -322,13 +322,13 @@ def main():
     # 配置
     config = {
         "eval_path": "data/train.parquet",
-        "result_csv": "trace/0115/Qwen3-VL-8B-Instruct-eval-normal.csv",
+        "result_csv": "trace/0121/Qwen3-VL-8B-Instruct-eval-normal.csv",
         "model_name": "models/Qwen3-VL-8B-Instruct",
-        "model_endpoint": "http://localhost:8002/v1",
+        "model_endpoint": "http://localhost:8004/v1",
         "model_api_key": "wangjiaju",
         "model_provider": "openai",
-        "trace_save_dir": "./trace/0115/normal",
-        "agent_planner_url": "http://0.0.0.0:8331/planner",
+        "trace_save_dir": "./trace/0121/normal",
+        "agent_planner_url": "http://0.0.0.0:8332/planner",
         "key_auth": WJJ_KEY_AUTH
     }
     
@@ -352,7 +352,7 @@ def main():
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         for idx, original_sample in iterate_parquet_samples(config["eval_path"]):
             
-            variants = ["WJJ_TEST_07"]
+            variants = ["RL_07"]
             
             for i, plan_name in enumerate(variants):
                 # 深拷贝样本以防修改冲突

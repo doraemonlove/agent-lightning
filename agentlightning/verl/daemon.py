@@ -941,6 +941,7 @@ class AgentModeDaemon:
                     "prompt_ids": t.prompt.get("token_ids", []),
                     "response_ids": t.response.get("token_ids", []),
                     "image_urls": t.prompt.get("image_urls", []),
+                    "reward": t.reward if t.reward else 0.0
                 }
                 for t in rollout.triplets
             ]
@@ -977,7 +978,7 @@ class AgentModeDaemon:
         for rollout_id, sample_info in finished_id_to_sample_info.items():
             for turn_index, trace in enumerate(sample_info["trace_list"]):
 
-                reward_list.append(sample_info["reward"])
+                reward_list.append(trace["reward"])
                 prompt_ids, response_ids = trace["prompt_ids"], trace["response_ids"]
 
                 # Mark samples with prompts exceeding max_prompt_length to be dropped later

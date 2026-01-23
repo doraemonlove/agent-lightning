@@ -300,7 +300,7 @@ class TrainerLegacy(ParallelWorkerBase):
                 logger.info(f"Running with n_workers={self.n_workers} ({mode} multiprocessing).")
                 for i in range(self.n_workers):
                     process_name = f"AgentLightning-Worker-{i}"
-                    plan_name = f"RL_0{i+1}"
+                    plan_name = f"RL_0{i+5}"
                     p = multiprocessing.Process(
                         target=self._worker_main_loop,
                         args=(agent, i, agent.is_async(), plan_name),

@@ -377,10 +377,10 @@ class GroupedActionsRewardModel:
             # =========================================================
             
             # 拼接指令：建议加个分隔符让模型分清层级
-            combined_instruction = f"Main Task: {user_instruction}\nSub Task: {sub_instruction}"
+            # combined_instruction = f"Main Task: {user_instruction}\nSub Task: {sub_instruction}"
 
             sample = {
-                "instruction": combined_instruction,
+                "instruction": sub_instruction,
                 "reward": seg.get("reward", 0.0),
                 "events": segment_events,
                 # 也可以保留一些元数据方便 debug

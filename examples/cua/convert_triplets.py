@@ -354,7 +354,7 @@ def process_trace(events, instruction):
     # 构造 System Prompt (建议带上分辨率信息)
     system_content = CUA_PROMPT
     # 如果你的 Prompt 需要动态插入分辨率，可以在这里做:
-    system_content += f"\nCurrent Screen Resolution: {width}x{height}"
+    # system_content += f"\nCurrent Screen Resolution: {width}x{height}"
     
     dataset_sample["conversations"].append({"role": "system", "content": system_content})
 
@@ -376,10 +376,10 @@ def process_trace(events, instruction):
         
         # --- Case A: 模型动作 (Assistant) ---
         if "tool_calls" in ev:
-            # summary = ev.get("summary", "Thinking...")
-            # raw_text = ev.get("raw_text", "")
-            # if not raw_text:
-            #     raw_text = summary
+            summary = ev.get("summary", "Thinking...")
+            raw_text = ev.get("raw_text", "")
+            if not raw_text:
+                raw_text = summary
             tool_calls = ev["tool_calls"]
             
             tool_calls = normalize_coordinates(tool_calls, width, height)
@@ -387,7 +387,7 @@ def process_trace(events, instruction):
             # 1. 思考过程 (Thought)
             dataset_sample["conversations"].append({
                 "role": "assistant",
-                "content": "",
+                "content": raw_text,
                 "tool_calls": tool_calls
             })
             
@@ -612,7 +612,7 @@ async def group_score_trace(url, trace: list[dict]=None, user_instruction: str=N
 
         # 3. 发送请求 (使用 json=payload 自动处理 header)
         # 这里的 timeout=(连接超时, 读取超时)
-        response = session.post(url, json=payload, timeout=(10, 600)) 
+        response = session.post(url, json=payload, timeout=(10, 1200)) 
         
         response.raise_for_status()
         result = response.json()
