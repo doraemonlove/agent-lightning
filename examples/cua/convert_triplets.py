@@ -14,9 +14,11 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 import agentlightning
 from qwen_vl_utils import process_vision_info
+
 agentlightning.configure_logger()
 
 logger = agentlightning.configure_logger(name=__name__)
+
 
 def base64_to_pil(image_data):
     """将 base64 字符串或 URL 格式转为 PIL Image"""
@@ -267,7 +269,7 @@ def normalize_coordinates(tool_calls, width, height):
         # 1. 安全检查结构
         if "function" not in tool:
             continue
-        
+
         func_node = tool["function"]
         args = func_node.get("arguments", {})
 
@@ -276,10 +278,11 @@ def normalize_coordinates(tool_calls, width, height):
         if isinstance(args, str):
             try:
                 import json
+
                 args = json.loads(args)
                 is_json_str = True
             except:
-                continue # 解析失败跳过
+                continue  # 解析失败跳过
 
         if not isinstance(args, dict):
             continue
@@ -289,27 +292,29 @@ def normalize_coordinates(tool_calls, width, height):
             # 跳过非数字类型 (比如 thought, content, direction 等)
             if not isinstance(val, (int, float)):
                 continue
-            
+
             # 处理 X 轴相关
             if key in x_keys:
                 norm_val = int((val / width) * 1000)
-                args[key] = max(0, min(1000, norm_val)) # 钳制在 0-1000
-            
+                args[key] = max(0, min(1000, norm_val))  # 钳制在 0-1000
+
             # 处理 Y 轴相关
             elif key in y_keys:
                 norm_val = int((val / height) * 1000)
-                args[key] = max(0, min(1000, norm_val)) # 钳制在 0-1000
+                args[key] = max(0, min(1000, norm_val))  # 钳制在 0-1000
 
         # 4. 写回 arguments
         # 如果原来是字符串，这里可能需要根据你的下游任务决定是否 dump 回去
         # 通常在内部处理时，保持 dict 更方便
         if is_json_str:
-             import json
-             func_node["arguments"] = json.dumps(args, ensure_ascii=False)
+            import json
+
+            func_node["arguments"] = json.dumps(args, ensure_ascii=False)
         else:
-             func_node["arguments"] = args
+            func_node["arguments"] = args
 
     return new_tool_calls
+
 
 def process_trace(events, instruction):
     """
@@ -323,12 +328,8 @@ def process_trace(events, instruction):
 
     ]
     """
-    
-    dataset_sample = {
-        "tools": get_tools_schema(),
-        "conversations": [],
-        "images": []
-    }
+
+    dataset_sample = {"tools": get_tools_schema(), "conversations": [], "images": []}
 
     # =============================
     # 1. 处理初始状态 (Step 0)
@@ -339,7 +340,7 @@ def process_trace(events, instruction):
         return {}
 
     init_screenshot = init_event["screenshot"]
-    
+
     # 解析图片尺寸 (常用于 System Prompt 注入分辨率信息，或者单纯校验图片有效性)
     try:
         pil_img = base64_to_pil(init_screenshot)
@@ -355,25 +356,27 @@ def process_trace(events, instruction):
     system_content = CUA_PROMPT
     # 如果你的 Prompt 需要动态插入分辨率，可以在这里做:
     # system_content += f"\nCurrent Screen Resolution: {width}x{height}"
-    
+
     dataset_sample["conversations"].append({"role": "system", "content": system_content})
 
     # 构造 User Initial Message
-    dataset_sample["conversations"].append({
-        "role": "user",
-        "content": [
-            {"type": "text", "text": instruction},
-            {"type": "text", "text": "### Step 0: Initial State"},
-            {"type": "image", "image": init_screenshot}
-        ]
-    })
+    dataset_sample["conversations"].append(
+        {
+            "role": "user",
+            "content": [
+                {"type": "text", "text": instruction},
+                {"type": "text", "text": "### Step 0: Initial State"},
+                {"type": "image", "image": init_screenshot},
+            ],
+        }
+    )
 
     # =============================
     # 2. 遍历后续交互 (Step 1 -> N)
     # =============================
     # 从 events[1] 开始遍历 (跳过初始截图)
     for i, ev in enumerate(events[1:]):
-        
+
         # --- Case A: 模型动作 (Assistant) ---
         if "tool_calls" in ev:
             summary = ev.get("summary", "Thinking...")
@@ -381,32 +384,26 @@ def process_trace(events, instruction):
             if not raw_text:
                 raw_text = summary
             tool_calls = ev["tool_calls"]
-            
+
             tool_calls = normalize_coordinates(tool_calls, width, height)
 
             # 1. 思考过程 (Thought)
-            dataset_sample["conversations"].append({
-                "role": "assistant",
-                "content": raw_text,
-                "tool_calls": tool_calls
-            })
-            
+            dataset_sample["conversations"].append({"role": "assistant", "content": raw_text, "tool_calls": tool_calls})
+
         # --- Case B: 环境反馈 (Tool/User) ---
         elif "tool_outputs" in ev:
             tool_outputs = ev["tool_outputs"]
-            
+
             for tool_output in tool_outputs:
                 dataset_sample["conversations"].append(tool_output)
-        
+
         elif "screenshot" in ev:
             if "screenshot" in ev and ev["screenshot"]:
                 dataset_sample["images"].append(ev["screenshot"])
                 dataset_sample["conversations"].append(
                     {
                         "role": "user",
-                        "content": [
-                            {"type": "image", "image": ev["screenshot"]}
-                        ],
+                        "content": [{"type": "image", "image": ev["screenshot"]}],
                     }
                 )
 
@@ -414,7 +411,7 @@ def process_trace(events, instruction):
     # 3. [新增] 截断逻辑：只保留到最后一个 Assistant
     # =============================
     convs = dataset_sample["conversations"]
-    
+
     # 从后往前检查，只要最后一条不是 assistant，就移除
     # 使用 while 循环是因为可能结尾连续跟着 [tool_output, screenshot, user_msg] 等多条非 assistant 消息
     while len(convs) > 0 and convs[-1]["role"] != "assistant":
@@ -424,25 +421,28 @@ def process_trace(events, instruction):
         # 之前存在 dataset_sample["images"] 里的图片数据（base64）可以保留，
         # 因为只要 conversation 里不引用它，训练框架通常会忽略多余的资源，
         # 或者你也可以选择在这里根据 logic 复杂的去清理 images 列表，但通常没必要。
-    
+
     # 安全检查：如果截断后 conversation 只剩下 system 或者 user (Step 0)，
     # 说明整个 trace 没有有效的 assistant 动作，这条数据通常没有训练价值。
     # 至少应该保留 [System, User, Assistant] 三条
-    if len(convs) < 3: 
+    if len(convs) < 3:
         print("Warning: Trace dropped because no valid assistant action found at the end.")
         print(f"convs: {convs}")
         return {}
-    
+
     return dataset_sample
 
-def convert_to_triplet_format(converted_data, processor, reward: float, max_seq_len=16384):
+
+def convert_to_triplet_format(
+    converted_data, processor, reward: float, overall_score: float, rollout_id: str, max_seq_len=16384
+):
     """
     使用 "分别 Tokenize (Prompt vs Full) 再相减" 的方式生成 Triplet。
     逻辑更加清晰，无需硬编码 Assistant Header Token ID。
     """
-    
+
     conversations = converted_data["conversations"]
-    
+
     # 1. 基础检查
     if len(conversations) < 3:
         raise Exception("conversation too short, need at least user query and assistant response.")
@@ -468,12 +468,9 @@ def convert_to_triplet_format(converted_data, processor, reward: float, max_seq_
         # Key: add_generation_prompt=True 会自动添加 <|im_start|>assistant\n
         # =========================================================
         prompt_text = processor.apply_chat_template(
-            prompt_msgs, 
-            tools=tools, 
-            tokenize=False, 
-            add_generation_prompt=True 
+            prompt_msgs, tools=tools, tokenize=False, add_generation_prompt=True
         )
-        
+
         # 提取 Prompt 阶段包含的图像/视频输入
         prompt_image_inputs, prompt_video_inputs = process_vision_info(prompt_msgs)
 
@@ -482,7 +479,7 @@ def convert_to_triplet_format(converted_data, processor, reward: float, max_seq_
             images=prompt_image_inputs,
             videos=prompt_video_inputs,
             padding=False,
-            return_tensors="pt" # 必须返回 Tensor 才能取 input_ids
+            return_tensors="pt",  # 必须返回 Tensor 才能取 input_ids
         )
         prompt_ids = prompt_inputs.input_ids[0].tolist()
 
@@ -490,41 +487,33 @@ def convert_to_triplet_format(converted_data, processor, reward: float, max_seq_
         # 🔵 B. 处理 Full 部分
         # Key: add_generation_prompt=False (因为已经包含回复了)
         # =========================================================
-        full_text = processor.apply_chat_template(
-            full_msgs, 
-            tools=tools, 
-            tokenize=False, 
-            add_generation_prompt=False
-        )
+        full_text = processor.apply_chat_template(full_msgs, tools=tools, tokenize=False, add_generation_prompt=False)
 
         # 提取 Full 阶段包含的图像/视频输入
         full_image_inputs, full_video_inputs = process_vision_info(full_msgs)
 
         full_inputs = processor(
-            text=[full_text],
-            images=full_image_inputs,
-            videos=full_video_inputs,
-            padding=False,
-            return_tensors="pt"
+            text=[full_text], images=full_image_inputs, videos=full_video_inputs, padding=False, return_tensors="pt"
         )
         full_ids = full_inputs.input_ids[0].tolist()
 
     except Exception as e:
         import traceback
+
         traceback.print_exc()
         raise e
 
     # =========================================================
     # ✂️ C. 计算 Response Token IDs (切片逻辑)
     # =========================================================
-    
+
     # 安全检查：Full 应该比 Prompt 长
     if len(full_ids) <= len(prompt_ids):
         # 这种情况通常意味着 response 为空，或者 tokenizer 处理异常
         print(f"⚠️ Warning: Full length ({len(full_ids)}) <= Prompt length ({len(prompt_ids)}). Skipping.")
         # 根据你的训练框架需求，这里可以选择抛出异常或返回 None
         raise Exception("Response is empty or prompt matches full length.")
-    
+
     # (可选) 严格的一致性检查：确保 Full 的前半部分就是 Prompt
     # 在 Qwen-VL 中，由于特殊 Token 的存在，通常是匹配的。
     # 如果发现不匹配，通常是 add_generation_prompt 添加的 \n 和 Full 中的 \n 合并问题
@@ -532,7 +521,7 @@ def convert_to_triplet_format(converted_data, processor, reward: float, max_seq_
     # if full_ids[:len(prompt_ids)] != prompt_ids:
     #     print("⚠️ Warning: Token mismatch at boundary. Slicing anyway.")
 
-    response_ids = full_ids[len(prompt_ids):]
+    response_ids = full_ids[len(prompt_ids) :]
 
     # =========================================================
     # 📏 D. 长度检查与截断 (只截断 Response 部分)
@@ -549,7 +538,7 @@ def convert_to_triplet_format(converted_data, processor, reward: float, max_seq_
         else:
             # Prompt 已经超长了，Response 没地儿放了
             # 这里可以选择保留一部分 Prompt 或直接丢弃
-            response_ids = [] # 或者抛异常
+            response_ids = []  # 或者抛异常
 
     # =========================================================
     # 💾 E. 构建输出
@@ -559,6 +548,8 @@ def convert_to_triplet_format(converted_data, processor, reward: float, max_seq_
         "prompt_length": len(prompt_ids),
         "response_length": len(response_ids),
         "is_truncated": is_truncated,
+        "rollout_id": rollout_id,
+        "overall_score": overall_score,
     }
 
     triplet = Triplet(
@@ -570,23 +561,29 @@ def convert_to_triplet_format(converted_data, processor, reward: float, max_seq_
 
     return triplet
 
+
 def convert_single_trace_to_triplet(
-    instruction: str, trace_data: List[Dict[str, Any]], processor, reward
+    instruction: str, trace_data: List[Dict[str, Any]], processor, reward: float, overall_score: float, rollout_id: str
 ) -> List[Dict[str, Any]]:
 
     # Step 1: 原始 trace → dataset_sample
     dataset_sample = process_trace(trace_data, instruction)
 
+    # debug,检查llama 格式 triplet
+    # with open(
+    #     f"/root/code/wangjiaju/agent-lightning/examples/cua/trace/llama_triplet_example.json", "w", encoding="utf-8"
+    # ) as f:
+    #     json.dump(dataset_sample, f, ensure_ascii=False, indent=4)
+
     # Step 3: llama → triplet
     triplet = convert_to_triplet_format(
-        dataset_sample,
-        processor=processor,
-        reward=reward,
+        dataset_sample, processor=processor, reward=reward, overall_score=overall_score, rollout_id=rollout_id
     )
 
     return triplet
 
-async def group_score_trace(url, trace: list[dict]=None, user_instruction: str=None):
+
+async def group_score_trace(url, trace: list[dict] = None, user_instruction: str = None):
     try:
         # 1. 检查数据量，防止发送过大炸弹
         # 如果 trace 中包含 image，建议在此处做截断或只发 url
@@ -595,25 +592,25 @@ async def group_score_trace(url, trace: list[dict]=None, user_instruction: str=N
             "user_instruction": user_instruction,
             "contents": None,
         }
-        
+
         # 打印大小日志
         payload_str = json.dumps(payload)
         payload_mb = len(payload_str) / (1024 * 1024)
         print(f"正在发送评分请求，数据大小: {payload_mb:.2f} MB")
-        
-        if payload_mb > 50: # 假设阈值是 50MB
+
+        if payload_mb > 50:  # 假设阈值是 50MB
             print("数据包过大，可能会导致连接中断！建议检查 trace 是否包含过多 Base64 图片。")
 
         # 2. 配置重试策略
         session = requests.Session()
         retries = Retry(total=3, backoff_factor=1, status_forcelist=[500, 502, 503, 504])
-        session.mount('http://', HTTPAdapter(max_retries=retries))
-        session.mount('https://', HTTPAdapter(max_retries=retries))
+        session.mount("http://", HTTPAdapter(max_retries=retries))
+        session.mount("https://", HTTPAdapter(max_retries=retries))
 
         # 3. 发送请求 (使用 json=payload 自动处理 header)
         # 这里的 timeout=(连接超时, 读取超时)
-        response = session.post(url, json=payload, timeout=(10, 1200)) 
-        
+        response = session.post(url, json=payload, timeout=(10, 1200))
+
         response.raise_for_status()
         result = response.json()
         print(f"Planner 评分轨迹成功")
@@ -625,42 +622,52 @@ async def group_score_trace(url, trace: list[dict]=None, user_instruction: str=N
     except Exception as e:
         print("评分轨迹失败: %s", e)
         return {}
-    
+
+
 async def convert_traces_to_triplets(
-    score_url: str, instruction: str, traces: List[Dict[str, Any]], model_path: str
+    score_url: str,
+    instruction: str,
+    rollout_id: str,
+    overall_score: float,
+    traces: List[Dict[str, Any]],
+    model_path: str,
 ) -> List[List[Dict[str, Any]]]:
     result = await group_score_trace(score_url, traces, instruction)
     grouped_traces = result["grouped_traces"]
+
+    # # 保存grouped_traces以便调试
+    # with open("result.json", "w", encoding="utf-8") as f:
+    #     json.dump(result, f, ensure_ascii=False, indent=4)
+
     if "status" in result and result["status"] == "error":
         logger.warning("grouped trace went wrong!!!")
         return []
-    
+
     logger.info(f"segmented trace type:{type(grouped_traces)}, length:{len(grouped_traces)}")
 
-    processor = AutoProcessor.from_pretrained(
-        model_path,
-        min_pixels=200704, 
-        max_pixels=1350000
-    )
+    processor = AutoProcessor.from_pretrained(model_path, min_pixels=200704, max_pixels=1350000)
 
     all_tokenized_data = []
     for segmented_trace in grouped_traces:
         converted_trace = convert_single_trace_to_triplet(
-            instruction=segmented_trace["instruction"], trace_data=segmented_trace["events"], processor=processor, reward=segmented_trace["reward"]
+            instruction=segmented_trace["instruction"],
+            trace_data=segmented_trace["events"],
+            processor=processor,
+            reward=segmented_trace["reward"],
+            overall_score=overall_score,
+            rollout_id=rollout_id,
         )
         all_tokenized_data.append(converted_trace)
 
     return all_tokenized_data
 
-def convert_trace_to_triplet(instruction, trace, model_path):
-    processor = AutoProcessor.from_pretrained(
-        model_path,
-        min_pixels=200704, 
-        max_pixels=1350000
-    )
+
+# deprecated
+def convert_trace_to_triplet(instruction, trace, model_path, rollout_id: str) -> List[Dict[str, Any]]:
+    processor = AutoProcessor.from_pretrained(model_path, min_pixels=200704, max_pixels=1350000)
     reward = 0.0
     converted_trace = convert_single_trace_to_triplet(
-        instruction=instruction, trace_data=trace, processor=processor, reward=reward
+        instruction=instruction, trace_data=trace, processor=processor, reward=reward, rollout_id=rollout_id
     )
     return [converted_trace]
 
@@ -684,6 +691,7 @@ def load_trace_json(path: str) -> List[Dict[str, Any]]:
         raise ValueError("JSON 第一条必须包含 instruction")
 
     instruction = data[0]["instruction"]
+    rollout_id = data[0].get("rollout_id", "unknown_rollout")
     trace = data[1:]  # 剩余是真正的 trace
 
     return instruction, trace
@@ -691,19 +699,21 @@ def load_trace_json(path: str) -> List[Dict[str, Any]]:
 
 class TripletEncoder(json.JSONEncoder):
     """自定义 JSON 编码器，处理 Triplet 对象"""
+
     def default(self, obj):
         # 如果是 Triplet (Pydantic 对象)，转为字典
-        if hasattr(obj, 'model_dump'):
+        if hasattr(obj, "model_dump"):
             return obj.model_dump()
-        if hasattr(obj, 'dict'):
+        if hasattr(obj, "dict"):
             return obj.dict()
         return super().default(obj)
 
+
 def save_triplets_to_json(triplets: List[Any], filename: str):
-    with open(filename, 'w', encoding='utf-8') as f:
+    with open(filename, "w", encoding="utf-8") as f:
         # indent=2 让文件可读性更好，但体积会变大
         json.dump(triplets, f, cls=TripletEncoder, indent=2, ensure_ascii=False)
-    
+
     print(f"Saved to {filename}")
 
 
@@ -711,7 +721,9 @@ async def main():
     # ==============================
     # 路径配置
     # ==============================
-    input_trace_path = "/root/code/wangjiaju/agent-lightning/examples/cua/trace/0115/normal/sample_0_ver_0.json"
+    input_trace_path = (
+        "/root/code/wangjiaju/llamafactory-0.9.4/data/cua/cua_data_json/claude_0121_807/sample_1_ver_0.json"
+    )
 
     # ⚠️ 必须是真实存在的 Qwen-VL / Qwen2.5-VL 模型路径
     model_path = "/models/Qwen3-VL-8B-Instruct"
@@ -728,21 +740,24 @@ async def main():
     # ==============================
     # Step 2: trace → triplets
     # ==============================
-    # all_triplets = await convert_traces_to_triplets(
-    #     score_url="http://localhost:8003/group_score",
-    #     instruction=instruction,
-    #     traces=trace_data,
-    #     model_path=model_path,
-    # )
-    all_triplets = convert_trace_to_triplet(instruction=instruction, trace=trace_data, model_path=model_path)
+    all_triplets = await convert_traces_to_triplets(
+        score_url="http://localhost:8003/group_score",
+        instruction=instruction,
+        rollout_id="test_rollout_001",
+        traces=trace_data,
+        overall_score=0.0,
+        model_path=model_path,
+    )
 
     print(f"📌 Generated {len(all_triplets)} segmented triplet groups")
 
     # ==============================
     # Step 3: 保存结果
     # ==============================
-    save_triplets_to_json(all_triplets, "triplets.json")
+    save_triplets_to_json(all_triplets, "/root/code/wangjiaju/agent-lightning/examples/cua/trace/example_triplets.json")
+
 
 if __name__ == "__main__":
     import asyncio
+
     asyncio.run(main())

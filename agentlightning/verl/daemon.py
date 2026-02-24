@@ -121,6 +121,7 @@ def _to_native(obj: Any) -> Any:
     # 5) Anything else: leave as-is
     return obj
 
+
 def get_tools_schema():
     # 基础工具列表
     base_tools = [
@@ -225,7 +226,7 @@ def get_tools_schema():
                 "properties": {"thought": {"type": "string"}, "content": {"type": "string"}},
                 "required": ["thought", "content"],
             },
-        }
+        },
     ]
 
     # 包装成 OpenAI 格式: [{"type": "function", "function": {...}}]
@@ -236,43 +237,40 @@ def get_tools_schema():
     # return json.dumps(openai_tools, ensure_ascii=False)
     return openai_tools
 
+
 def build_vllm_guided_schema(openai_tools):
     """
     将 OpenAI 格式的工具列表转换为 vLLM guided_json 需要的 JSON Schema。
     使用 'oneOf' 来根据 name 字段约束 arguments 的结构。
     """
     one_of_list = []
-    
+
     for tool in openai_tools:
         function_def = tool["function"]
         tool_name = function_def["name"]
-        
+
         # 跳过 bad_function_call，因为我们希望强制模型输出正确的调用
         if tool_name == "bad_function_call":
             continue
-            
+
         # 构建针对该工具的独立 Schema
         # 要求：name 必须等于当前工具名，arguments 必须符合该工具的 parameters 定义
         single_tool_schema = {
             "type": "object",
             "properties": {
-                "name": {
-                    "const": tool_name  # 强制 name 字段匹配
-                },
-                "arguments": function_def["parameters"] # 直接复用你定义的 parameters
+                "name": {"const": tool_name},  # 强制 name 字段匹配
+                "arguments": function_def["parameters"],  # 直接复用你定义的 parameters
             },
             "required": ["name", "arguments"],
-            "additionalProperties": False # 禁止输出多余字段
+            "additionalProperties": False,  # 禁止输出多余字段
         }
         one_of_list.append(single_tool_schema)
 
     # 最终的 Schema：输出必须是上述列表中的某一种
-    full_schema = {
-        "type": "object",
-        "oneOf": one_of_list
-    }
-    
+    full_schema = {"type": "object", "oneOf": one_of_list}
+
     return full_schema
+
 
 class AgentModeDaemon:
     """
@@ -403,14 +401,10 @@ class AgentModeDaemon:
             return f"file://{resolved}"
 
         images: List[Image.Image] = [
-            process_image({
-                "image": to_image_uri(url),
-                "min_pixels": 200704,
-                "max_pixels": 1350000
-            }) 
+            process_image({"image": to_image_uri(url), "min_pixels": 200704, "max_pixels": 1350000})
             for url in image_urls
         ]
-    
+
         model_inputs = self.processor(text=["dummy"], images=images, return_tensors="pt")
         return model_inputs.get("image_grid_thw")
 
@@ -588,20 +582,20 @@ class AgentModeDaemon:
         # 1. Update resources on the server for clients to use
         if self.mode == "v0":
             # 1. 获取原始工具定义
-            raw_tools = get_tools_schema() 
-            
+            raw_tools = get_tools_schema()
+
             # 2. 构建 vLLM 需要的 guided_json schema
             # 只有在 RL 训练(is_train=True) 且通常是 rollout 阶段才强烈建议开启
             # 如果你在 SFT 阶段也想用，也可以一直开启
             vllm_schema = build_vllm_guided_schema(raw_tools)
-            
+
             # 3. 准备采样参数
             sampling_params = {
                 "temperature": self.train_information.get("temperature", 0.7 if is_train else 0.0),
                 # 【关键修改】加入 guided_json
                 # 注意：这里假设底层的 LLM 类会将 sampling_parameters 直接透传给 vLLM 的 API
                 # 如果底层库用的参数名是 'extra_body' 或其他，请相应调整，但标准 vLLM 接受这个键
-                "guided_json": vllm_schema 
+                "guided_json": vllm_schema,
             }
 
             llm_resource = LLM(
@@ -922,16 +916,40 @@ class AgentModeDaemon:
         # 1. Reconstruct the `finished_id_to_sample_info` structure from completed rollouts
         finished_id_to_sample_info: Dict[str, Dict[str, Any]] = {}
         finished_id_to_final_reward: Dict[str, float] = {}
+
+        # table容器
+        wandb_table_data = []
+        # 三种reward列表
+        metric_overall_rewards = []
+        metric_seg_rewards = []
+        metric_hybrid_rewards = []
+
         sample_with_reward_count = 0
         for rollout_id, rollout in self._completed_rollouts_v0.items():
             original_sample = self._task_id_to_original_sample[rollout_id]
             sample_with_reward_count += int(rollout.final_reward is not None)
-            final_reward = self._fillna_reward(rollout)
+
+            # 默认值，避免未初始化/复用旧值
+            overall_score = 0.0
 
             if not rollout.triplets:
-                finished_id_to_final_reward[rollout_id] = final_reward
-                print(f"Warning: No triplets found for training rollout {rollout.rollout_id}, skipping.")
-                continue
+                # 没有 triplets 时可选择跳过
+                # finished_id_to_final_reward[rollout_id] = overall_score
+                # continue
+                pass
+
+            # 获取meta_data 中的overall_score和rollout_id
+            if rollout.triplets and len(rollout.triplets) > 0:
+                first_triplet_meta = rollout.triplets[0].metadata
+                if first_triplet_meta and "overall_score" in first_triplet_meta:
+                    overall_score = float(first_triplet_meta["overall_score"])
+                    print(f"DEBUG: Recovered overall_score {overall_score} from triplet metadata for {rollout_id}")
+
+            # 【收集指标】Overall Score
+            metric_overall_rewards.append(overall_score)
+            # 提取rollout_id
+            if len(wandb_table_data) < 1000:
+                wandb_table_data.append([str(rollout_id), overall_score])
 
             # The client should report triplets that contain prompt_ids and response_ids.
             # Example triplet.prompt: {"token_ids": [...], "image_urls": [...]}
@@ -941,17 +959,18 @@ class AgentModeDaemon:
                     "prompt_ids": t.prompt.get("token_ids", []),
                     "response_ids": t.response.get("token_ids", []),
                     "image_urls": t.prompt.get("image_urls", []),
-                    "reward": t.reward if t.reward else 0.0
+                    "reward": t.reward if t.reward else 0.0,
                 }
                 for t in rollout.triplets
             ]
+
             info = {
-                "reward": final_reward,
+                "reward": overall_score if overall_score else 0.0,
                 "trace_list": trace_list,
                 "data_id": original_sample["data_id"],
             }
             finished_id_to_sample_info[rollout_id] = info
-            finished_id_to_final_reward[rollout_id] = final_reward
+            finished_id_to_final_reward[rollout_id] = overall_score
         #
         # --- Data processing and tensor creation logic ---
         # Get all the reported data.
@@ -976,9 +995,21 @@ class AgentModeDaemon:
         n_trunc_sample_because_of_response = 0
 
         for rollout_id, sample_info in finished_id_to_sample_info.items():
+            # 取出该 Rollout 的 overall_score
+            current_overall_score = sample_info["reward"]
+
             for turn_index, trace in enumerate(sample_info["trace_list"]):
 
-                reward_list.append(trace["reward"])
+                # 定义新的reward
+                # reward_list.append(trace["reward"])
+                seg_reward = trace["reward"]
+                hybrid_reward = seg_reward + current_overall_score - 1.0
+                reward_list.append(hybrid_reward)
+
+                # 【收集指标】用于折线图
+                metric_seg_rewards.append(seg_reward)
+                metric_hybrid_rewards.append(hybrid_reward)
+
                 prompt_ids, response_ids = trace["prompt_ids"], trace["response_ids"]
 
                 # Mark samples with prompts exceeding max_prompt_length to be dropped later
@@ -1075,13 +1106,26 @@ class AgentModeDaemon:
         data_proto = DataProto(batch=batch)
 
         data_metrics = {
-            "training/reward": np.mean(list(finished_id_to_final_reward.values())),
+            "training/mean_overall_reward": np.mean(metric_overall_rewards) if metric_overall_rewards else 0.0,
+            "training/mean_seg_reward": np.mean(metric_seg_rewards) if metric_seg_rewards else 0.0,
+            "training/mean_hybrid_reward": np.mean(metric_hybrid_rewards) if metric_hybrid_rewards else 0.0,
             "training/n_rollouts": len(finished_id_to_final_reward),
             "training/n_rollouts_w_trace": len(finished_id_to_sample_info),
             "training/n_rollouts_w_reward": sample_with_reward_count,
             "training/n_truncated_triplets": n_trunc_sample_because_of_response,
             "training/n_triplets": n_transition,
         }
+
+        # id和reward的关系
+        # Training Step 会由 WandB 自动根据 log 时间点记录，无需手动添加
+        if len(wandb_table_data) > 0:
+            import wandb
+
+            columns = ["rollout_id", "overall_reward"]
+            # 创建表格
+            table = wandb.Table(data=wandb_table_data, columns=columns)
+            # 添加到 metrics，Key 名字决定了 WandB 面板上的标题
+            data_metrics["training/rollout_vs_overall_reward"] = table
 
         # Add non-tensor data for advantage calculation and logging
         data_proto.non_tensor_batch["data_id_list"] = np.array(data_id_list)  # type: ignore

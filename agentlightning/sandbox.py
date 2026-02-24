@@ -65,10 +65,39 @@ class SandboxManager:
             sandboxes = resp.get("Result", []) or []
             running_uris = [sb.get("SandboxId") for sb in sandboxes if sb.get("Status") == "RUNNING"]
             running_uris = [
-                "i-yebyrouj28qc6ipf3ago", "i-yebyrom3nkqc6infvo17", "i-yebyro9gjkbw80d63dwd", "i-yebyro2fpcwh2ypfknls", "i-yebyrnslq8cva4gqydwl", "i-yebyrnirr4bw80foocvh", "i-yebyrnbqwwqc6imkn3rl", "i-yebyrmnv9c5i3z5bpcpu", "i-yebwczn8xsqc6io24lrp", "i-yebwczdeyowh2yrawo46",
-                "i-yecbu0tmo0wh2yq4ohpb", "i-yecbu0ie4gxjd1w2z7op", "i-yecbu075kwxjd1wcviws", "i-yecbtzxblscva4i9g47w", "i-yecbtzm328bw80c958n5", "i-yecbtzdnnkcva4eylo25", "i-yecbtz588w5i3z3hburf", "i-yecbtyve9swh2yqucaid", "i-yecbtymyv4xjd1u5d2np", "i-yecbtyabr45i3z3f1gku",
-                "i-yecbw4ioe8qc6imlr7tg", "i-yecbw44mpsqc6ilg4f1j", "i-yecbw3usqowh2yoc11gv", "i-yecbw3kyrkqc6iok3scn", "i-yecbw36x34cva4gg41nk", "i-yecbw2x340qc6inu45sg", "i-yecbw2onpc5i3z6wl8gq", "i-yecbw2etq85i3z3mtwyx", "i-yecbw226m85i3z80f1zt", "i-yecbw1qy2oqc6io5pqxl",
-                "i-yecbxszwn4wh2yq1avlb", "i-yecbxszwn4wh2yq1avlb", "i-yecewfij28xjd1u1ok94"
+                "i-yeelhcavwg5i3z6d6uy1",
+                "i-yeelhbsmiobw80dw6b5g",
+                "i-yeelhbn08wwh2ypul9ra",
+                "i-yeelhbeku84c5qxasle6",
+                "i-yeelhb4qv4bw80erceh8",
+                "i-yeelhaxq0w5i3z48gsf4",
+                "i-yeelhapam8cva4ijs9qf",
+                "i-yeelh9exvkbw80d2txl5",
+                "i-yeelh4gjr4bw80dh8sfh",
+                "i-yeelau9pmowh2yqu93js",
+                "i-yeey3xf11ccva4ikfq3h",
+                "i-yeey3wzksgwh2yr1pkr1",
+                "i-yeey3wr5ds5i3z6987ml",
+                "i-yeey3wipz4wh2yrxosvw",
+                "i-yeey3waakgcva4gzmj2v",
+                "i-yeey3w1v5sxjd1vmrt1h",
+                "i-yeey3vuubk4c5qvhxsru",
+                "i-yeey3vmewwbw80ekt4bh",
+                "i-yeey3vfe2ocva4f710vz",
+                "i-yeey3tmry8cva4ivruuy",
+                "i-yeey8m7ls05i3z6sce45",
+                "i-yef0le1e68xjd1v4i88g",
+                "i-yef0ldudc0cva4f515jf",
+                "i-yef0l8qcxsugm63e2326",
+                "i-yef0l8jc3k5i3z53q72p",
+                "i-yef0l7zo5cxjd1us3ncv",
+                "i-yef0l7r8qougm6255yg1",
+                "i-yef0l7lmgwwh2yq7xus4",
+                "i-yef0l7elmowh2yq9op5m",
+                "i-yef0l6s4jkugm62vudgd",
+                "i-yef0l6iakgugm63l7tvd",
+                "i-yef0q4tlvkcva4frihqn",
+                "i-yef0q5bv9c5i3z6mkj5a",
             ]
             print("✅当前沙箱列表", running_uris)
             if not running_uris:

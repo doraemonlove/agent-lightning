@@ -1,6 +1,7 @@
 wandb/
 outputs/
 checkpoints/
+trained_models/
 trace/
 calc-x-data.zip
 spider-data.zip

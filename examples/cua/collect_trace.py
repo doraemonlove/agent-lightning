@@ -4,7 +4,6 @@ import time
 import requests
 import json
 import logging
-import random
 from typing import Any
 import pandas as pd
 import os
@@ -16,7 +15,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 # ================= 配置与常量 =================
-KEY_AUTH = os.getenv("sandbox_key_auth")
+WJJ_KEY_AUTH = os.getenv("sandbox_key_auth")
 
 logging.basicConfig(
     level=logging.INFO,
@@ -45,7 +44,17 @@ class SandboxManager:
 
     def _bootstrap_free_pool_from_remote(self):
         try:
-            running_uris = ["i-yef0q5bv9c5i3z6mkj5a"]
+            # 你的沙箱列表
+            # running_uris = [
+            #     "i-yebyrouj28qc6ipf3ago", "i-yebyrom3nkqc6infvo17", "i-yebyro9gjkbw80d63dwd", "i-yebyro2fpcwh2ypfknls", "i-yebyrnslq8cva4gqydwl", "i-yebyrnirr4bw80foocvh", "i-yebyrnbqwwqc6imkn3rl", "i-yebyrmnv9c5i3z5bpcpu", "i-yebwczn8xsqc6io24lrp", "i-yebwczdeyowh2yrawo46",
+            #     "i-yecbu0tmo0wh2yq4ohpb", "i-yecbu0ie4gxjd1w2z7op", "i-yecbu075kwxjd1wcviws", "i-yecbtzxblscva4i9g47w", "i-yecbtzm328bw80c958n5", "i-yecbtzdnnkcva4eylo25", "i-yecbtz588w5i3z3hburf", "i-yecbtyve9swh2yqucaid", "i-yecbtymyv4xjd1u5d2np", "i-yecbtyabr45i3z3f1gku",
+            #     "i-yecbw4ioe8qc6imlr7tg", "i-yecbw44mpsqc6ilg4f1j", "i-yecbw3usqowh2yoc11gv", "i-yecbw3kyrkqc6iok3scn", "i-yecbw36x34cva4gg41nk", "i-yecbw2x340qc6inu45sg", "i-yecbw2onpc5i3z6wl8gq", "i-yecbw2etq85i3z3mtwyx", "i-yecbw226m85i3z80f1zt", "i-yecbw1qy2oqc6io5pqxl",
+            #     "i-yecbxszwn4wh2yq1avlb", "i-yecewfij28xjd1u1ok94"
+            # ]
+            running_uris = [
+                # "i-yecewfij28xjd1u1ok94"
+                "i-yee0gfw1s0wh2ysa318r"
+            ]
             running_uris = list(set(running_uris))  # 简单的去重
             logger.info(f"✅ 初始化沙箱池，共 {len(running_uris)} 个沙箱")
 
@@ -315,108 +324,66 @@ def eval_offline():
 
 
 def main():
-    # 1. 配置
+    # 配置
     config = {
         "eval_path": "data/train.parquet",
-        "result_csv": "./trace/0209/0209-qwen3-8b-raw-2/0209-qwen3-8b-raw-2.csv",
-        "model_name": "models/Qwen3-VL-8B-claude",
-        "model_endpoint": "http://0.0.0.0:8441/v1",
-        "model_api_key": "cua",
+        "result_csv": "trace/0121/Qwen3-VL-8B-Instruct-eval-normal.csv",
+        "model_name": "models/Qwen3-VL-8B-Instruct",
+        "model_endpoint": "http://localhost:8004/v1",
+        "model_api_key": "wangjiaju",
         "model_provider": "openai",
-        "trace_save_dir": "./trace/0209/0209-qwen3-8b-raw-2/",
-        "agent_planner_url": "http://0.0.0.0:8331/planner",
-        "key_auth": KEY_AUTH,
+        "trace_save_dir": "./trace/0121/normal",
+        "agent_planner_url": "http://0.0.0.0:8332/planner",
+        "key_auth": WJJ_KEY_AUTH,
     }
 
+    # 1. 初始化组件
     if not os.path.exists(config["eval_path"]):
         logger.error("数据文件不存在")
         return
 
-    # 2. 初始化组件
+    # 初始化管理器，设置TTL防止僵尸占用 (例如 20分钟)
     sandbox_manager = SandboxManager(lease_ttl_s=1200)
     evaluator = cua_evaluation(config["result_csv"])
 
-    # 这里的并发数通常建议设为沙箱的总数
+    # 2. 准备任务队列
+    # 获取沙箱数量来决定并发度，可以稍微多一点以便在评分/处理数据时让出CPU
     max_workers = 1
     logger.info(f"🚀 启动线程池，最大并发数: {max_workers}")
 
-    # 3. 准备均衡分配的随机池 (核心逻辑)
-    # 预先获取所有样本
-    all_samples = list(iterate_parquet_samples(config["eval_path"]))
-    num_samples = len(all_samples)
-
-    # 定义你的变体
-    variants = ["ZQL_TEST", "ZQL_TEST_05", "CUA_TEST", "WJJ_TEST"]
-    num_variants = len(variants)
-
-    # 构造均衡的分配池：例如 n=100, 3个变体，则每个变体约 33-34 次
-    repeat_times = (num_samples // num_variants) + 1
-    assignment_pool = (variants * repeat_times)[:num_samples]
-
-    # 随机洗牌，打破固定顺序但保持总量均衡
-    random.seed(42)  # 设置固定种子使实验可复现
-    random.shuffle(assignment_pool)
-
-    # 4. 提交任务到线程池
     tasks = []
+
+    # 使用 ThreadPoolExecutor
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        for i, (idx, original_sample) in enumerate(all_samples):
+        for idx, original_sample in iterate_parquet_samples(config["eval_path"]):
 
-            # 从随机池中取出一个预分配好的变体
-            plan_name = assignment_pool[i]
+            variants = ["RL_07"]
 
-            # 深拷贝样本以防修改冲突
-            sample_copy = original_sample.copy()
+            for i, plan_name in enumerate(variants):
+                # 深拷贝样本以防修改冲突
+                sample_copy = original_sample.copy()
 
-            try:
-                # 注入当前分配到的变体名称
-                # 假设你的 instruction 中有 {plan_name} 占位符
-                sample_copy["instruction"] = sample_copy["instruction"].format(plan_name=plan_name)
-            except (KeyError, IndexError, ValueError):
-                # 如果 instruction 中没有占位符，format 会抛出异常
-                pass
+                try:
+                    sample_copy["instruction"] = sample_copy["instruction"].format(plan_name=plan_name)
+                except KeyError:
+                    pass
 
-            # 生成唯一的任务 ID，包含 plan_name 方便在 CSV 中区分结果
-            unique_task_id = f"sample_{idx}_plan_{plan_name}"
+                unique_task_id = f"sample_{idx}_ver_{i}"
 
-            # 提交任务
-            future = executor.submit(
-                worker_process_sample_variant,
-                sample_variant=sample_copy,
-                unique_task_id=unique_task_id,
-                sandbox_manager=sandbox_manager,
-                evaluator=evaluator,
-                config=config,
-            )
-            tasks.append(future)
+                # 提交任务到线程池
+                future = executor.submit(
+                    worker_process_sample_variant,
+                    sample_variant=sample_copy,
+                    unique_task_id=unique_task_id,
+                    sandbox_manager=sandbox_manager,
+                    evaluator=evaluator,
+                    config=config,
+                )
+                tasks.append(future)
 
-        logger.info(f"已提交 {len(tasks)} 个随机均衡分配的任务，等待执行...")
+        logger.info(f"已提交 {len(tasks)} 个任务到队列，等待执行...")
 
-    logger.info("所有评估任务完成，正在计算最终得分...")
-
-    # 5. 计算总平均分
-    try:
-        if os.path.exists(config["result_csv"]):
-            # 读取结果文件
-            df_results = pd.read_csv(config["result_csv"])
-
-            if not df_results.empty:
-                # 直接对 reward 列求平均
-                total_avg = df_results["reward"].mean()
-                total_count = len(df_results)
-
-                # 打印结果
-                print("\n" + "=" * 40)
-                logger.info(f"📊 评估完成统计报告")
-                logger.info(f"总计完成样本数: {total_count}")
-                logger.info(f"全量任务平均分: {total_avg:.4f}")
-                print("=" * 40 + "\n")
-            else:
-                logger.warning("结果 CSV 文件为空，无法计算分数。")
-        else:
-            logger.warning(f"未发现结果文件: {config['result_csv']}")
-    except Exception as e:
-        logger.error(f"计算平均分时发生错误: {e}")
+    logger.info("所有评估任务完成。")
 
 
 if __name__ == "__main__":

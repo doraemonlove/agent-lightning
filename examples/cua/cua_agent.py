@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 import time
 from typing import Any, cast
-
+import httpx
 import dotenv
 import agentlightning
 import requests
@@ -22,6 +22,7 @@ logger = agentlightning.configure_logger(name=__name__)
 TRACE_DIR = "./trace"
 os.makedirs(TRACE_DIR, exist_ok=True)
 
+
 async def run_planner_task(
     sandbox_id: str,
     user_prompt: str,
@@ -29,7 +30,7 @@ async def run_planner_task(
     model_endpoint: str,
     api_key: str = "",
     out_path: str = "./model_output.json",
-    rollout_id: str = ""
+    rollout_id: str = "",
 ) -> list[dict[str, Any]]:
     """
     调用 planner 的 stream 接口。
@@ -54,7 +55,7 @@ async def run_planner_task(
         "thinking_type": "enabled",
         "is_training": True,
         "turn_on_review": False,
-        "rollout_id": rollout_id
+        "rollout_id": rollout_id,
     }
     result = []
     try:
@@ -72,10 +73,17 @@ async def run_planner_task(
         traceback.print_exc()
         raise RuntimeError(f"Planner任务执行失败：{str(e)}") from e
 
-    tmp_result = [{"instruction": user_prompt, "sandbox_id": sandbox_id}] + result
+    tmp_result = [{"instruction": user_prompt, "sandbox_id": sandbox_id, "rollout_id": rollout_id}] + result
+
+    # 保存trace
+    dir_name = os.path.dirname(out_path)
+    if dir_name:  # 如果路径中包含文件夹
+        os.makedirs(dir_name, exist_ok=True)
+    # 写入文件（"w" 模式会自动创建不存在的文件）
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(tmp_result, f, ensure_ascii=False, indent=4)
     return result
+
 
 def test_llm_endpoint(endpoint: str, model_name: str):
     """简单测试 vLLM/Verl OpenAI 接口是否正常"""
@@ -95,9 +103,11 @@ def test_llm_endpoint(endpoint: str, model_name: str):
         logger.exception(f"❌ LLM 接口测试失败: {e}")
         return False
 
+
 class LitCUAAgent(agentlightning.LitAgent):
     score_endpoint: str = "http://localhost:8003/score"
     group_score_endpoint: str = "http://localhost:8003/group_score"
+    hybrid_score_endpoint: str = "http://localhost:8003/hybrid_score"
 
     async def _execute_rollout(
         self, sample: dict[str, Any], *, resources: agentlightning.NamedResources, rollout_id: str, is_training: bool
@@ -121,28 +131,49 @@ class LitCUAAgent(agentlightning.LitAgent):
                 model_name=model_name,
                 model_endpoint=llm.endpoint,
                 api_key="wangjiaju",  # 确保已在环境里设置 VERL_API_KEY
-                out_path=f"./trace/0122/rl/{rollout_id}_model_output.json",
-                rollout_id=rollout_id
+                out_path=f"./trace/0206/rl/{rollout_id}_model_output.json",
+                rollout_id=rollout_id,
             )
-            
+
         except Exception:
             traceback.print_exc()
             result = []
 
         end_time_rollout = time.time()
         logger.info("[Rollout %s] Time taken for rollout: %.2f seconds", rollout_id, end_time_rollout - start_time)
-        
+
         if result:
+            # 获取整体评分（异步）
+            try:
+                payload = {
+                    "trace": result,
+                    "user_instruction": sample["instruction"],
+                    "temperature": 0.0,
+                    "contents": None,
+                }
+                async with httpx.AsyncClient(timeout=httpx.Timeout(600.0, connect=10.0)) as client:
+                    response = await client.post(self.score_endpoint, json=payload)
+                    response.raise_for_status()
+                    score_result = response.json()
+                    overall_score = score_result.get("score", 0.0)
+                    logger.info(f"整体评分成功: {overall_score}")
+            except Exception as e:
+                logger.error(f"评分失败: {e}")
+                raise
+
+            # 分割并且转为triplet格式
             result = await convert_traces_to_triplets(
-                score_url=self.group_score_endpoint, 
-                traces=result, 
+                score_url=self.group_score_endpoint,
+                traces=result,
                 instruction=sample["instruction"],
-                model_path="/models/Qwen3-VL-8B-Instruct"
+                rollout_id=rollout_id,
+                overall_score=overall_score,
+                model_path="/models/Qwen3-VL-8B-Instruct",
             )
             triplets = result
         else:
             triplets = []
-        
+
         end_time_eval = time.time()
         logger.info(
             "[Rollout %s] Time taken for evaluation: %.2f seconds", rollout_id, end_time_eval - end_time_rollout

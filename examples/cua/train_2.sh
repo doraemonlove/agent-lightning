@@ -1,11 +1,11 @@
 #!/bin/bash
 
 set -e
-export N_GPUS=8
+export N_GPUS=2
 export BASE_MODEL=/models/Qwen3-VL-8B-Instruct
 export DATA_DIR=/root/code/wangjiaju/agent-lightning/examples/cua/data
 export ROLLOUT_TP_SIZE=1
-export EXPERIMENT_NAME=cua_0206_hybrid
+export EXPERIMENT_NAME=cua_0206_hybrid_toy
 export PROJECT_NAME=AgentLightning
 export WANDB_BASE_URL="http://127.0.0.1:8080"
 export WANDB_API_KEY="local-7e29da0b90d83ce28119ba31776f086ba84a1d46"
@@ -24,12 +24,12 @@ python -m agentlightning.verl \
     algorithm.use_kl_in_reward=False \
     data.train_files=${DATA_DIR}/train.parquet \
     data.val_files=${DATA_DIR}/eval.parquet \
-    data.train_batch_size=8 \
-    data.val_batch_size=8 \
+    data.train_batch_size=1 \
+    data.val_batch_size=1 \
     data.max_prompt_length=32768 \
     data.max_response_length=1024  \
     data.truncation='error' \
-    actor_rollout_ref.rollout.n=4 \
+    actor_rollout_ref.rollout.n=2 \
     actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu=1 \
     actor_rollout_ref.rollout.multi_turn.format=hermes \
     actor_rollout_ref.rollout.name=vllm \
@@ -44,7 +44,7 @@ python -m agentlightning.verl \
     actor_rollout_ref.model.use_remove_padding=True \
     actor_rollout_ref.model.enable_gradient_checkpointing=True \
     actor_rollout_ref.actor.optim.lr=1e-6 \
-    actor_rollout_ref.actor.ppo_mini_batch_size=32 \
+    actor_rollout_ref.actor.ppo_mini_batch_size=2 \
     actor_rollout_ref.actor.ppo_micro_batch_size_per_gpu=1 \
     actor_rollout_ref.actor.use_kl_loss=True \
     actor_rollout_ref.actor.kl_loss_coef=0.05 \
@@ -65,4 +65,4 @@ python -m agentlightning.verl \
     trainer.save_freq=40 \
     trainer.test_freq=20 \
     trainer.resume_mode="disable" \
-    trainer.total_epochs=8 $@
+    trainer.total_epochs=1 $@
