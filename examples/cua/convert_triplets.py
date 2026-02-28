@@ -257,66 +257,40 @@ def parse_action_to_json(action_str, summary_text):
     return tool_name, arguments
 
 
-def normalize_coordinates(tool_calls, width, height):
-    new_tool_calls = copy.deepcopy(tool_calls)
+def normalize_coordinates(args: dict[str, Any], width: int, height: int) -> dict[str, Any]:
+    """
+    清洗坐标数据，将绝对坐标转换为 0-1000 的相对坐标，并返回更新后的字典。
+    支持处理格式如 "587,225" 的字符串，取其首位数字。
+    """
+    # 浅拷贝原始字典，避免修改外部输入
+    new_args = args.copy()
 
-    # 定义需要转换的参数集合
-    # 集合查找速度快，且易于扩展
-    x_keys = {"x", "start_x", "end_x"}
-    y_keys = {"y", "start_y", "end_y"}
+    def clean_val(val: Any) -> float:
+        if val is None:
+            return 0.0
+        # 处理类似 "587,225" 的字符串，只取逗号前的部分
+        cleaned_str = str(val).split(",")[0].strip()
+        try:
+            return float(cleaned_str)
+        except ValueError:
+            return 0.0
 
-    for tool in new_tool_calls:
-        # 1. 安全检查结构
-        if "function" not in tool:
-            continue
+    # 1. 提取原始值并清洗
+    raw_x = clean_val(args.get("x"))
+    raw_y = clean_val(args.get("y"))
 
-        func_node = tool["function"]
-        args = func_node.get("arguments", {})
+    # 2. 计算相对坐标 (归一化到 0-1000)
+    norm_x = max(0, min(1000, int((raw_x / width) * 1000)))
+    norm_y = max(0, min(1000, int((raw_y / height) * 1000)))
 
-        # 2. 如果 arguments 是字符串（有些 OpenAI 响应是 JSON 字符串），先转字典
-        is_json_str = False
-        if isinstance(args, str):
-            try:
-                import json
+    # 3. 更新字典中的键值
+    new_args["x"] = norm_x
+    new_args["y"] = norm_y
 
-                args = json.loads(args)
-                is_json_str = True
-            except:
-                continue  # 解析失败跳过
-
-        if not isinstance(args, dict):
-            continue
-
-        # 3. 遍历参数进行归一化
-        for key, val in args.items():
-            # 跳过非数字类型 (比如 thought, content, direction 等)
-            if not isinstance(val, (int, float)):
-                continue
-
-            # 处理 X 轴相关
-            if key in x_keys:
-                norm_val = int((val / width) * 1000)
-                args[key] = max(0, min(1000, norm_val))  # 钳制在 0-1000
-
-            # 处理 Y 轴相关
-            elif key in y_keys:
-                norm_val = int((val / height) * 1000)
-                args[key] = max(0, min(1000, norm_val))  # 钳制在 0-1000
-
-        # 4. 写回 arguments
-        # 如果原来是字符串，这里可能需要根据你的下游任务决定是否 dump 回去
-        # 通常在内部处理时，保持 dict 更方便
-        if is_json_str:
-            import json
-
-            func_node["arguments"] = json.dumps(args, ensure_ascii=False)
-        else:
-            func_node["arguments"] = args
-
-    return new_tool_calls
+    return new_args
 
 
-def process_trace(events, instruction):
+def convert_trace_to_messages(trace, instruction):
     """
     处理标准化的 GUI Agent 轨迹数据。
     假设 data 结构严格如下:
@@ -329,12 +303,12 @@ def process_trace(events, instruction):
     ]
     """
 
-    dataset_sample = {"tools": get_tools_schema(), "conversations": [], "images": []}
+    dataset_sample = {"tools": get_tools_schema(), "messages": []}
 
     # =============================
     # 1. 处理初始状态 (Step 0)
     # =============================
-    init_event = events[0]
+    init_event = trace[0]
     if "screenshot" not in init_event or not init_event["screenshot"]:
         print("Error: Missing initial screenshot")
         return {}
@@ -349,23 +323,17 @@ def process_trace(events, instruction):
         print(f"Error processing initial image: {e}")
         return {}
 
-    # 保存图片
-    dataset_sample["images"].append(init_screenshot)
-
-    # 构造 System Prompt (建议带上分辨率信息)
+    # 构造 System Prompt
     system_content = CUA_PROMPT
-    # 如果你的 Prompt 需要动态插入分辨率，可以在这里做:
-    # system_content += f"\nCurrent Screen Resolution: {width}x{height}"
 
-    dataset_sample["conversations"].append({"role": "system", "content": system_content})
+    dataset_sample["messages"].append({"role": "system", "content": {"type": "text", "text": system_content}})
 
     # 构造 User Initial Message
-    dataset_sample["conversations"].append(
+    dataset_sample["messages"].append(
         {
             "role": "user",
             "content": [
                 {"type": "text", "text": instruction},
-                {"type": "text", "text": "### Step 0: Initial State"},
                 {"type": "image", "image": init_screenshot},
             ],
         }
@@ -375,98 +343,136 @@ def process_trace(events, instruction):
     # 2. 遍历后续交互 (Step 1 -> N)
     # =============================
     # 从 events[1] 开始遍历 (跳过初始截图)
-    for i, ev in enumerate(events[1:]):
+    skip_indices = set()
+    for i, event in enumerate(trace[1:]):
+
+        if i in skip_indices:
+            continue
 
         # --- Case A: 模型动作 (Assistant) ---
-        if "tool_calls" in ev:
-            summary = ev.get("summary", "Thinking...")
-            raw_text = ev.get("raw_text", "")
-            if not raw_text:
-                raw_text = summary
-            tool_calls = ev["tool_calls"]
-
+        if "tool_calls" in event:
+            tool_calls = event["tool_calls"]
+            args = tool_calls[0]["function"]["arguments"]
+            formatted_args = normalize_coordinates(args, width, height)
+            tool_name = tool_calls[0]["function"]["name"]
             tool_calls = normalize_coordinates(tool_calls, width, height)
 
+            formatted_tool_calls = {
+                "name": tool_name,
+                "arguments": formatted_args,
+            }
             # 1. 思考过程 (Thought)
-            dataset_sample["conversations"].append({"role": "assistant", "content": raw_text, "tool_calls": tool_calls})
+            dataset_sample["messages"].append(
+                {
+                    "role": "assistant",
+                    "content": [{"type": "text", "text": json.dumps(formatted_tool_calls, ensure_ascii=False)}],
+                }
+            )
 
         # --- Case B: 环境反馈 (Tool/User) ---
-        elif "tool_outputs" in ev:
-            tool_outputs = ev["tool_outputs"]
+        elif "tool_outputs" in event:
+            tool_outputs = event["tool_outputs"]
 
-            for tool_output in tool_outputs:
-                dataset_sample["conversations"].append(tool_output)
+            # 1. 预判下一条是否是截图
+            next_idx = i + 1
+            has_next_screenshot = (
+                next_idx < len(trace) and "screenshot" in trace[next_idx] and "tool_calls" not in trace[next_idx]
+            )
 
-        elif "screenshot" in ev:
-            if "screenshot" in ev and ev["screenshot"]:
-                dataset_sample["images"].append(ev["screenshot"])
-                dataset_sample["conversations"].append(
-                    {
-                        "role": "user",
-                        "content": [{"type": "image", "image": ev["screenshot"]}],
-                    }
-                )
+            # 2. 获取截图数据
+            if has_next_screenshot:
+                # 获取截图数据
+                screenshot_data = trace[next_idx]["screenshot"]
+
+                # 标记下一条索引为跳过 (这次是已消费)
+                skip_indices.add(next_idx)
+
+            # 3. 构造 Tool Message
+            tool_output = tool_outputs[0]
+            tool_output_name = tool_output.get("name", "unknown")
+            tool_output_content = json.loads(tool_output.get("content", ""))
+            # 1. 检查 'result' 是否在字典中，且值是否为 None (JSON 中的 null)
+            if tool_output_content.get("result") is None and "result" in tool_output_content:
+                # 2. 移除 'result' 键值对
+                tool_output_content.pop("result")
+
+                # 3. 加入新的键值对 status: success
+                tool_output_content["status"] = "success"
+
+            formatted_tool_output_content = json.dumps(tool_output_content, ensure_ascii=False)
+
+            observation_content = {
+                "tool_name": tool_output_name,
+                "tool_output": formatted_tool_output_content,
+            }
+            observation_content_str = json.dumps(observation_content, ensure_ascii=False)
+            dataset_sample["messages"].append(
+                {
+                    "role": "observation",
+                    "content": [
+                        {"type": "text", "text": observation_content_str},
+                        {"type": "image", "image": screenshot_data} if has_next_screenshot else {},
+                    ],
+                }
+            )
+
+        # === Case C: 独立的 Screenshot ===
+        # 正常情况下，截图应该被 Case B 吞并。
+        # 如果代码走到这里，说明这是一张没有前置 tool_output 的截图（可能是错误的 Trace）。
+        # 为了保证 User-Assistant-Tool 的严密队形，直接丢弃，不生成 User 消息。
+        elif "screenshot" in event:
+            pass
 
     # =============================
-    # 3. [新增] 截断逻辑：只保留到最后一个 Assistant
+    # 3. 只保留到最后一个 Assistant
     # =============================
-    convs = dataset_sample["conversations"]
+    msgs = dataset_sample["messages"]
 
     # 从后往前检查，只要最后一条不是 assistant，就移除
     # 使用 while 循环是因为可能结尾连续跟着 [tool_output, screenshot, user_msg] 等多条非 assistant 消息
-    while len(convs) > 0 and convs[-1]["role"] != "assistant":
+    while len(msgs) > 0 and msgs[-1]["role"] != "assistant":
         # 移除最后一条
-        removed_msg = convs.pop()
-        # 注意：这里我们只移除了对话记录。
-        # 之前存在 dataset_sample["images"] 里的图片数据（base64）可以保留，
-        # 因为只要 conversation 里不引用它，训练框架通常会忽略多余的资源，
-        # 或者你也可以选择在这里根据 logic 复杂的去清理 images 列表，但通常没必要。
+        removed_msg = msgs.pop()
 
-    # 安全检查：如果截断后 conversation 只剩下 system 或者 user (Step 0)，
+    # 安全检查：如果截断后 mssages 只剩下 system 或者 user (Step 0)，
     # 说明整个 trace 没有有效的 assistant 动作，这条数据通常没有训练价值。
     # 至少应该保留 [System, User, Assistant] 三条
-    if len(convs) < 3:
+    if len(msgs) < 3:
         print("Warning: Trace dropped because no valid assistant action found at the end.")
-        print(f"convs: {convs}")
+        print(f"msgs: {msgs}")
         return {}
 
     return dataset_sample
 
 
-def convert_to_triplet_format(
-    converted_data, processor, reward: float, overall_score: float, rollout_id: str, max_seq_len=16384
+def convert_messages_to_triplet(
+    messages, processor, reward: float, overall_score: float, rollout_id: str, max_seq_len=16384
 ):
     """
     使用 "分别 Tokenize (Prompt vs Full) 再相减" 的方式生成 Triplet。
     逻辑更加清晰，无需硬编码 Assistant Header Token ID。
     """
 
-    conversations = converted_data["conversations"]
+    messages = messages["messages"]
 
     # 1. 基础检查
-    if len(conversations) < 3:
-        raise Exception("conversation too short, need at least user query and assistant response.")
+    if len(messages) < 3:
+        raise Exception("messages too short, need at least user query and assistant response.")
 
-    # 2. 准备 Tools (如果有)
-    tools = converted_data.get("tools")
+    # 2. 准备 Tools
+    tools = messages.get("tools")
     if tools is None:
         tools = []
 
     # 3. 拆分 Prompt Messages 和 Full Messages
     # Full: 包含所有对话
     # Prompt: 包含除最后一条 Assistant 回复之外的所有对话
-    full_msgs = conversations
-    prompt_msgs = conversations[:-1]
-
-    # 4. 获取原始图片路径 (用于 Triplet 存储，非 Tokenize)
-    # 假设 converted_data['images'] 存储了该条数据的图片列表
-    original_image_paths = converted_data.get("images", [])
+    full_msgs = messages["messages"]
+    prompt_msgs = messages["messages"][:-1]
 
     try:
-        # =========================================================
-        # 🟢 A. 处理 Prompt 部分
-        # Key: add_generation_prompt=True 会自动添加 <|im_start|>assistant\n
-        # =========================================================
+        #  A. 处理 Prompt 部分
+        # Key: add_generation_prompt=True 会自动添加 assistant\n
         prompt_text = processor.apply_chat_template(
             prompt_msgs, tools=tools, tokenize=False, add_generation_prompt=True
         )
@@ -483,10 +489,8 @@ def convert_to_triplet_format(
         )
         prompt_ids = prompt_inputs.input_ids[0].tolist()
 
-        # =========================================================
-        # 🔵 B. 处理 Full 部分
-        # Key: add_generation_prompt=False (因为已经包含回复了)
-        # =========================================================
+        # B. 处理 Full 部分
+        # Key: add_generation_prompt=False
         full_text = processor.apply_chat_template(full_msgs, tools=tools, tokenize=False, add_generation_prompt=False)
 
         # 提取 Full 阶段包含的图像/视频输入
@@ -503,10 +507,7 @@ def convert_to_triplet_format(
         traceback.print_exc()
         raise e
 
-    # =========================================================
     # ✂️ C. 计算 Response Token IDs (切片逻辑)
-    # =========================================================
-
     # 安全检查：Full 应该比 Prompt 长
     if len(full_ids) <= len(prompt_ids):
         # 这种情况通常意味着 response 为空，或者 tokenizer 处理异常
@@ -523,9 +524,7 @@ def convert_to_triplet_format(
 
     response_ids = full_ids[len(prompt_ids) :]
 
-    # =========================================================
-    # 📏 D. 长度检查与截断 (只截断 Response 部分)
-    # =========================================================
+    # D. 长度检查与截断 (只截断 Response 部分)
     total_len = len(full_ids)
     is_truncated = False
 
@@ -536,13 +535,10 @@ def convert_to_triplet_format(
         if allowed_resp_len > 0:
             response_ids = response_ids[:allowed_resp_len]
         else:
-            # Prompt 已经超长了，Response 没地儿放了
-            # 这里可以选择保留一部分 Prompt 或直接丢弃
+            # Prompt 已经超长了，Response 没地儿放了 , 这里可以选择保留一部分 Prompt 或直接丢弃
             response_ids = []  # 或者抛异常
 
-    # =========================================================
-    # 💾 E. 构建输出
-    # =========================================================
+    # E. 构建输出
     meta_data = {
         "total_tokens": len(prompt_ids) + len(response_ids),
         "prompt_length": len(prompt_ids),
@@ -553,7 +549,7 @@ def convert_to_triplet_format(
     }
 
     triplet = Triplet(
-        prompt={"token_ids": prompt_ids, "image_urls": original_image_paths},
+        prompt={"token_ids": prompt_ids},
         response={"token_ids": response_ids},
         reward=reward,
         metadata=meta_data,
@@ -567,7 +563,7 @@ def convert_single_trace_to_triplet(
 ) -> List[Dict[str, Any]]:
 
     # Step 1: 原始 trace → dataset_sample
-    dataset_sample = process_trace(trace_data, instruction)
+    dataset_sample = convert_trace_to_messages(trace_data, instruction)
 
     # debug,检查llama 格式 triplet
     # with open(
@@ -660,16 +656,6 @@ async def convert_traces_to_triplets(
         all_tokenized_data.append(converted_trace)
 
     return all_tokenized_data
-
-
-# deprecated
-def convert_trace_to_triplet(instruction, trace, model_path, rollout_id: str) -> List[Dict[str, Any]]:
-    processor = AutoProcessor.from_pretrained(model_path, min_pixels=200704, max_pixels=1350000)
-    reward = 0.0
-    converted_trace = convert_single_trace_to_triplet(
-        instruction=instruction, trace_data=trace, processor=processor, reward=reward, rollout_id=rollout_id
-    )
-    return [converted_trace]
 
 
 # ---- test -----
