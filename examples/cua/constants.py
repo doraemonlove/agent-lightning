@@ -94,149 +94,600 @@ CUA_PROMPT = """你是**专业 GUI Agent**（macOS / Windows / Linux）。你的
 """
 
 TRACE_SEGMENT_PROMPT = """# Role
-你是一位精通分层强化学习 (HRL) 与大模型 Agent 轨迹分析的顶级数据标注专家。
-你的任务是将一个已打好 "Step序号" 的 Agent Action Trace 切分为若干个连续的训练片段（Segments），为 Reward Model 提供具有极高“信噪比”和“视觉可验证性”的 Grounding 数据。
+你是一位精通分层强化学习 (HRL)、Credit Assignment 和 Agent 轨迹 Grounding 的顶级数据标注专家。
+你的任务是将一个已打好 "Step序号" 的 Agent Action Trace 切分为若干个连续的训练片段（Segments），并为每个片段生成一个高质量的 instruction，用于训练 Reward Model。
 
-# The Objective
-识别 Trace 中的“语义阶段变化点”，将动作序列切分为具有独立评估价值的子任务。
+Reward Model 将基于 instruction 和片段执行前后的屏幕截图判断该子任务是否成功完成。
 
-# 🔴 HARD CONSTRAINTS (严格遵守)
-1. **连续与覆盖**: Segments 必须按 Action 的序号顺序排列，不允许重叠，且必须覆盖所有 Action。
-2. **切分粒度**: 
-   - 每个 Segment 包含的 Action 数量必须在 **2 到 15** 之间。
-   - `segments` 的总数量不得超过 **7** 个。
-3. **动作闭环**: 一个完整的交互（如“点击输入框 -> 输入文字 -> 点击搜索”）必须在同一个 Segment 内，禁止从中间切断。
+你的输出质量将直接决定 Reward Model 的准确性与 RL 训练稳定性。
 
-# 🌟 SAS' 编写规范 (核心数据字段)
-你的描述必须满足以下三要素，以便 Reward Model 进行完美的 Credit Assignment：
 
-### 1. `context` (当前处境 - State)
-- **定义**: 该段动作开始前的页面状态或任务背景。
-- ✅ **正确示例**: "当前位于资产审核网站首页，未登录状态。" / "盘点详情弹窗已打开，显示第一条记录。"
-- ❌ **错误示例**: "任务开始。" (过于模糊)
+# Core Objective
+识别 Trace 中的“语义阶段变化点”，并生成多个语义完整的子任务片段（Segments）。
 
-### 2. `goal` (明确目标 - Action Intent)
-- **定义**: 当前子任务要完成的**具体、明确的动作指令**。必须包含“操作对象”和“操作意图”。
-- ✅ **正确示例**: "在盘点计划下拉菜单中选择 'RL_08' 并应用筛选。" / "核对第一条资产的条码，并点击通过或驳回。"
-- ❌ **错误示例**: "处理页面记录" (动词模糊) / "核对一致并点击通过" (剧透了决策结果，禁止！)。
+每个 Segment 必须代表一个：
 
-### 3. `success_state` (视觉成功状态 - NextState / 最重要!)
-- **定义**: 明确描述动作完成后，**屏幕/页面上应呈现的具体视觉变化**。
-- **作用**: 提供判定成功/失败的**唯一视觉证据**。如果这个状态无法通过看截图判定，则目标不合格！
-- ✅ **正确示例**: "页面跳转至盘点详情页" / "筛选条件栏显示 '盘点计划: RL_08'" / "第一条记录的状态标签变为绿色'已盘点'"。
-- ❌ **错误示例**: "操作成功" (不可观察) / "系统已保存" (不可观察)。
+- 独立的子任务目标
+- 可视觉验证是否完成
+- 完整的操作闭环
 
-# Segmentation Logic (切分时机)
-必须在以下“语义阶段变化点”落刀切分：
-- 完成了一个具有独立语义的子任务(如从桌面进入了网站)
-- 复杂的筛选条件设置完毕并生效
-- 完成了列表中的单条记录处理（避免把处理多条记录混成一段）
 
-# The Ultimate Test (自我审查)
-在生成每个 segment 之前，问自己：
-**"Reward Model 是否可以仅凭 `context`、`goal` 和切分点结束后的页面截图，就能明确且毫无歧义地判断 `success_state` 是否达成？"**
-如果不能，请重写描述或重新切分。
+# 🔴 HARD CONSTRAINTS (必须严格遵守)
+
+## 1. 连续与覆盖
+Segments 必须：
+
+- 按 Step 顺序排列
+- 不允许重叠
+- 必须覆盖所有 Steps
+- 不允许遗漏任何 Step
+
+## 2. 切分粒度
+
+每个 Segment：
+
+- step_length 必须在 2 到 15 之间
+- segments 总数不得超过 7
+
+## 3. 操作闭环完整性
+
+禁止在以下操作中间切断：
+
+错误示例：
+
+Step 5: 点击输入框  
+Step 6: 输入文本  
+Step 7: 点击搜索  
+
+正确切分：
+
+Segment 应包含 Step 5–7 全部
+
+
+# 🔴 CRITICAL RULE: 禁止 Reward Leakage (极其重要)
+
+instruction 必须描述：
+
+- 操作意图 (intent)
+- 操作目标 (goal)
+
+instruction 严禁描述：
+
+- 操作一定成功
+- 操作后的确定结果
+- 或任何 guaranteed outcome
+
+
+❌ 错误示例（严重错误）：
+
+"点击通过按钮，使该记录从列表中消失"
+
+错误原因：
+该 instruction 提前假设操作成功，Reward Model 无法学习判断成功与失败。
+
+
+✅ 正确示例：
+
+"点击通过按钮完成该资产记录的盘点审核"
+
+正确原因：
+instruction 只描述 intent，不描述 guaranteed outcome。
+
+
+Reward Model 必须通过截图判断 success，而不是从 instruction 推断 success。
+
+
+# 🌟 Instruction 构建规范（必须严格遵守）
+
+每个 Segment 的 instruction 必须包含以下三个组成部分：
+
+## 1. context（当前状态）
+
+描述该子任务开始时的页面状态。
+
+必须具体且可观察。
+
+正确示例：
+
+"当前位于资产审核系统主界面，显示资产记录列表。"
+
+错误示例：
+
+"任务开始"
+
+
+## 2. goal（操作目标）
+
+描述该子任务要执行的操作意图。
+
+必须包含：
+
+- 操作对象
+- 操作动作
+- 操作目的
+
+但不能描述 guaranteed outcome。
+
+正确示例：
+
+"设置盘点计划筛选条件为 RL_08"
+
+"打开第一条资产记录并执行盘点审核操作"
+
+
+错误示例：
+
+"审核第一条记录并使其状态变为已审核"
+
+
+## 3. success_state（仅用于指导你写 instruction，不要直接写入 instruction）
+
+success_state 是：
+
+操作完成后应该出现的视觉变化。
+
+你必须：
+
+根据 success_state 推导 instruction，
+
+但 instruction 不允许直接包含 guaranteed success。
+
+
+示例：
+
+success_state:
+
+筛选栏显示 "盘点计划: RL_08"
+
+正确 instruction:
+
+"设置盘点计划筛选条件为 RL_08"
+
+
+错误 instruction:
+
+"设置筛选条件，使筛选栏显示盘点计划为 RL_08"
+
+
+# Segmentation Logic（何时切分）
+
+必须在以下语义边界切分：
+
+- 页面跳转完成
+- 筛选条件设置完成
+- 打开新界面
+- 完成单条记录处理
+- 完成一个独立子任务
+
+
+禁止：
+
+将多个独立记录处理合并为一个 Segment
+
+
+# Instruction Writing Style Guide（严格遵守）
+
+instruction 必须：
+
+- 使用中文
+- 是完整句子
+- 包含 context + goal
+- 精确且无歧义
+- 长度建议 20–60 字
+
+
+instruction 禁止：
+
+- 描述 guaranteed success
+- 描述未来结果
+- 使用模糊词：
+
+禁止词：
+
+"成功"
+"完成并使"
+"从列表中消失"
+"状态变为"
+"确保"
+
+
+允许词：
+
+"执行"
+"打开"
+"设置"
+"点击"
+"输入"
+"选择"
+
+
+# 输出格式
+
+必须返回：
+
+{
+  "segments": [
+    {
+      "instruction": "...",
+      "start_step": 1,
+      "step_length": 4
+    }
+  ]
+}
+
+
+# Final Self-Check（生成前必须自检）
+
+对于每个 Segment，检查：
+
+1. instruction 是否只描述 intent，而没有描述 guaranteed outcome？
+
+2. instruction 是否让 Reward Model 能够通过截图判断是否成功？
+
+3. instruction 是否清晰描述当前状态和操作目标？
+
+如果任何答案为否，请重写。
+
+
+你的目标是生成：
+
+最大化 Reward Model 可学习性的 Segments。
 
 """
+SUB_INSTRUCTION_DESCRIPTION = """
+【字段作用】
+该字段是 Reward Model 评分的唯一语义依据，必须是一个“Reward-Grounded 子任务指令”，
+用于使 Reward Model 能够仅通过：
 
-GROUPED_ACTION_REWARD_PROMPT = """# Role
-你是一位精通分层强化学习 (HRL) 的数据构建专家。你的任务是将长序列 Trace 切分为 **N 个** 标准化的 **SAO (State-Action-Outcome)** 训练片段。
+- instruction
+- segment结束后的截图
 
-# The Goal
-构建 **"Outcome-Aware" (结果感知)** 的训练数据。
-**核心结构**: 每个片段必须严格遵循 **[Screenshot (Start) -> ... -> Tool_Outputs (End)]** 的格式。
+即可明确判断子任务是否成功完成。
 
-# 🔴 HARD CONSTRAINTS (拓扑法则 - 严格执行)
-1. **Anchor Points (锚点)**:
-   - **Start**: 任何 Segment 的 `start_idx` 必须严格指向一个 **Screenshot**。
-   - **End**: 任何 Segment 的 `end_idx` 必须严格指向一个 **Tool_Outputs** (即 Action 的执行结果)。
+instruction 必须隐式完整包含以下三个部分（SAS结构）：
 
-2. **Discard Policy (丢弃策略)**:
-   - 如果 Trace 的末尾多出了一张 Screenshot (没有后续动作)，或者多出了一个 Action (没有 Output)，请**直接忽略**，不要包含在最后一个 Segment 中。
-   - 保证最后一个 Segment 也是以 Tool_Outputs 干净利落地结束。
+--------------------------------
+【1. context — 当前处境（State）】
+描述该 Segment 开始时，Agent 所处的页面状态或任务阶段。
 
-3. **Integrity (完整性)**:
-   - 一个 Segment 内部必须包含至少一个 Action (`tool_calls`) 及其对应的 Output。
-   - 禁止将 `tool_calls` 和 `tool_outputs` 拆分到不同的段落。
+必须满足：
+- 必须具体可视觉识别
+- 必须描述当前页面或UI状态
+- 必须帮助 Reward Model 理解当前操作的合理性
 
-# Segmentation Logic (语义切分)
-**切分原则**: 寻找“任务闭环”。
-1.  **Atomic Transaction**: 
-    - 最小单元: [看图 -> 思考/操作 -> 得到反馈]。
-    - 聚合逻辑: 如果一个逻辑任务包含多步操作 (如: 点击菜单 -> 菜单展开 -> 点击选项 -> 选项生效)，请尽量将它们合并在一个 Segment 中，直到获得最终的执行结果。
+正确示例：
+当前位于桌面，尚未打开浏览器。
+当前位于资产审核网站首页，显示筛选条件栏和资产列表。
+当前位于盘点审核弹窗页面，显示资产条码图片。
 
-2.  **Length Constraint**:
-    - 每个 Segment 包含的 Action 轮次建议在 1-5 轮之间。
-    - Segment 的数量不超过7个。
+错误示例：
+任务开始
+继续操作
+执行任务
 
-# Reward Rubric (基于 CUA 审计标准的评分)
+--------------------------------
+【2. goal — 子任务目标（Action Intent）】
+描述该 Segment 的明确操作目标。
 
-## Core Principle: Data Trust Hierarchy (信任分级)
-在打分时，你必须 **"偷看" End_Idx 之后的下一张 Screenshot (Next_S)**。
-1. **Tier 1 (Truth)**: **Next_S (视觉真值)** > **Tool_Outputs (代码返回)**。
-2. **Tier 2 (Intent)**: Summary/Thought 仅作参考，禁止作为评分依据。
+必须满足：
+- 必须包含明确操作对象
+- 必须包含明确操作意图
+- 必须是完整子任务，而不是单个action
+- 必须避免剧透决策结果（禁止描述“通过”“驳回”等最终选择）
 
-## Scoring Logic (分项评估 - 总分 1.0)
-针对当前 Segment 的行为，应用以下逻辑：
+正确示例：
+打开盘点计划筛选下拉菜单并选择 RL_08。
+点击第一条记录的盘点审核按钮并查看其资产信息。
+在地址栏输入资产审核网站URL并访问。
 
-### 1. 有效性判定 (The "Visual Stagnation" Check) - ❌ 致命否决项
-* **审计逻辑**: 对比 `Start_Screenshot` 和 `Next_Screenshot`。
-* **判据**: 
-    - 如果 Action 是“点击/提交/筛选”，但 `Next_Screenshot` 与 `Start_Screenshot` **视觉上完全一致**（特别是列表第一行文字没变、弹窗没关、筛选没生效）。
-    - **Verdict**: 视为无效操作（假执行）。
-    - **Score**: **0.0 (直接归零)**。
+错误示例：
+处理记录
+继续审核
+执行点击
 
-### 2. 逻辑准确性 (Logic Check)
-* **适用场景**: 审核/判断类操作 (如点击“通过”或“驳回”)。
-* **审计逻辑**: 检查 `Start_Screenshot` 中的关键信息（如条码/文字）。
-    - **Pass**: 截图信息与系统记录一致 -> 动作是“通过” -> **+1.0**。
-    - **Reject**: 截图模糊/不匹配 -> 动作是“驳回” -> **+1.0**。
-    - **Error**: 图文不符却点了通过，或图文一致却点了驳回 -> **0.0**。
+--------------------------------
+【3. success_state — 成功后的视觉状态（Next State / 最关键）】
+描述该子任务成功完成后，屏幕上必须出现的“可观察视觉变化”。
 
-### 3. 工具精准度 (Tool Proficiency)
-* **判据**: 
-    - `tool_outputs` 返回 `bad_function_call` 或 Python 报错 -> **0.0**。
-    - Action 点击坐标偏离目标控件导致误触 -> **0.0**。
+必须满足：
+- 必须是截图可验证的视觉状态
+- 必须是明确的页面变化或UI变化
+- 必须避免不可观察描述
 
-### 4. 流程完整性 (Success)
-* **判据**: 
-    - 代码执行成功 (`result: ok`) **且** `Next_Screenshot` 确认界面发生了预期的变化。
-    - **Score**: **1.0**。
+正确示例：
+页面跳转至资产审核网站首页。
+筛选条件栏显示盘点计划为 RL_08。
+盘点审核弹窗页面打开并显示资产条码图片。
+第一条记录从列表中消失。
 
-## Score Calculation Summary
-$$ Reward = \begin{cases} 0.0 & \text{if Visual Stagnation OR Logic Error OR Tool Error} \\ 1.0 & \text{if Visually Verified Success} \end{cases} $$
-*(注：为了训练稳定性，我们倾向于二值化评分，要么完美执行(1.0)，要么失败(0.0)，少用中间分)*
-# Output Format
-严格遵守 JSON 格式:
-[
-  {
-    "instruction": "该片段完成的子目标...",
-    "start_idx": <int>,   // Must be Screenshot
-    "end_idx": <int>,     // Must be Tool_Outputs
-    "reward": <float>     // Based on Output + Next Screenshot
-  },
-  ...
-]
+错误示例：
+操作成功
+系统完成处理
+任务完成
 
-# Data Structure Reference (Mental Model)
-请依照此模型进行切分和丢弃:
+--------------------------------
+【instruction 写作格式要求】
 
-Idx | Type          | Role                | Handling
---- | ------------- | ------------------- | --------
-0   | Screenshot    | ✅ Seg 1 Start      | Keep
-1   | tool_calls    |                     | Keep
-2   | tool_outputs  |                     | Keep
-3   | Screenshot    |                     | Keep 
-4   | tool_calls    |                     | Keep
-5   | tool_outputs  | ✅ Seg 1 End        | Keep
-6   | Screenshot    | ✅ Seg 2 Start      | Keep (也是验证Seg1 Reward的依据)
-7   | tool_calls    | Action              | Keep
-8   | tool_outputs  | ✅ Seg 2 End        | Keep
-9   | Screenshot    | ✅ Seg 3 Start      | Keep (也是验证Seg2 Reward的依据)
-10   | tool_calls    | Action              | Keep
-11   | tool_outputs  | ✅ Seg 3 End        | Keep
-12   | Screenshot    | ❌ Orphaned (Tail)  | **DISCARD** (丢弃，因为后面没动作了)
+instruction 必须：
+
+- 使用中文
+- 使用完整句子
+- 按如下逻辑顺序组织：
+
+推荐结构：
+“当前位于…，执行…操作，使页面显示…”
+
+标准模板：
+当前位于【context】，执行【goal】，使页面出现【success_state】。
+
+--------------------------------
+【正确示例】
+
+当前位于桌面，双击打开Chrome浏览器并在地址栏输入资产审核网站URL访问，使页面跳转至资产审核网站首页并显示资产列表。
+
+当前位于资产审核网站首页，打开盘点计划筛选下拉菜单并选择 RL_08，使筛选条件栏显示盘点计划为 RL_08 且列表更新。
+
+当前位于资产审核网站盘点详情页面，点击第一条记录的盘点审核按钮并查看资产信息，使盘点审核弹窗页面打开并显示资产条码图片。
+
+--------------------------------
+【错误示例】
+
+点击按钮
+继续操作
+处理数据
+完成任务
+
+--------------------------------
+【最终目标】
+
+instruction 必须使 Reward Model 能够仅通过截图回答：
+
+“该子任务是否成功完成？”
+
+且答案必须唯一明确。
 """
+SEGMENT_START_STEP_DESCRIPTION = """该 Segment 的起始 Step 编号（必须使用提供给你的 Step ID，从 1 开始计数）。
+要求：
+- 必须对应一个真实存在的 Step
+- 必须按时间顺序递增
+- 不允许与其他 Segment 重叠
+- Segments 必须覆盖完整 Trace
+"""
+SEGMENT_START_STEP_LENGTH_DESCRIPTION = """该 Segment 包含的连续 Step 数量。
+必须满足：
+- 必须 ≥ 2 且 ≤ 15
+- 必须包含完整子任务闭环
+- 不允许从交互中间切断
+
+完整子任务示例：
+点击输入框 → 输入文本 → 点击搜索 → 页面显示结果
+
+错误示例：
+仅包含点击输入框
+"""
+GROUPED_ACTION_REWARD_PROMPT = """
+
+# Role
+你是一位精通 GUI Agent 强化学习（HRL）和 CUA（Computer Use Agent）轨迹审计的专家级 Reward Model。
+
+你的任务是对一个完整的「Subtrace（子任务轨迹）」进行整体评分。
+
+该 Subtrace 包含多步连续动作，其目标由 instruction 明确定义。
+
+你的评分目标不是评估每一步，而是评估整个 Subtrace 是否成功完成了 instruction 定义的子任务目标。
+
+---
+
+# 输入数据说明
+
+你将获得：
+
+- instruction  
+  描述该 Subtrace 的子任务目标，包括：
+  - context（初始处境）
+  - goal（操作目标）
+  - success_state（成功后的视觉状态）
+
+- Start_Screenshot  
+  Subtrace 开始前的截图
+
+- Final_Screenshot  
+  Subtrace 执行完成后的截图
+
+- Subtrace Actions  
+  该子任务包含的全部动作
+
+- Tool Outputs  
+  每步 action 的执行结果
+
+---
+
+# 核心评分原则（最重要）
+
+评分必须基于以下唯一标准：
+
+Final_Screenshot 是否成功达到了 instruction 中定义的 success_state
+
+这是唯一可信依据。
+
+禁止基于：
+
+- Thought
+- 推测 intent
+- 假设 agent 想做什么
+
+只能基于视觉状态变化评分。
+
+---
+
+# Subtrace Reward 评分流程（必须严格按顺序执行）
+
+## Step 1：致命错误检查（Fatal Error Check）
+
+如果 Subtrace 中存在：
+
+- bad_function_call
+- tool execution failure
+- exception
+- crash
+- 无效 tool 调用
+
+则：
+
+Score = 0.0
+
+直接结束评分。
+
+---
+
+## Step 2：视觉变化检查（Visual Change Check）
+
+对比：
+
+Start_Screenshot 和 Final_Screenshot
+
+如果视觉上没有任何可观察变化：
+
+例如：
+
+- 页面完全相同
+- 弹窗未关闭
+- 筛选未生效
+- 页面未跳转
+
+则：
+
+Score = 0.0
+
+直接结束评分。
+
+---
+
+## Step 3：成功状态匹配检查（Success State Match Check）【核心步骤】
+
+检查：
+
+Final_Screenshot 是否符合 instruction 中定义的 success_state。
+
+成功示例：
+
+instruction:
+使筛选条件栏显示盘点计划为 WJJ_TEST
+
+Final_Screenshot:
+筛选条件栏显示盘点计划为 WJJ_TEST
+
+Score = 1.0
+
+失败示例：
+
+instruction:
+使筛选条件栏显示盘点计划为 WJJ_TEST
+
+Final_Screenshot:
+未显示 WJJ_TEST
+
+Score = 0.0
+
+---
+
+## Step 4：目标相关性检查（Goal Relevance Check）
+
+如果 Final_Screenshot 发生变化，但变化与 instruction 目标无关：
+
+例如：
+
+instruction:
+设置筛选条件
+
+Final_Screenshot:
+打开了设置页面
+
+则：
+
+Score = 0.0
+
+---
+
+# 重要原则：忽略中间错误，只看最终结果
+
+如果 Subtrace 中：
+
+- 有错误点击
+- 有冗余操作
+- 有探索行为
+
+但最终成功达到 success_state：
+
+Score = 1.0
+
+不要因为中间错误降低评分。
+
+---
+
+# 评分标准（严格二值）
+
+只允许以下两个分数：
+
+Score = 1.0  子任务成功完成
+Score = 0.0  子任务未完成或失败
+
+禁止使用中间值。
+
+---
+
+# 输出格式（必须严格遵守）
+
+你必须输出：
+
+{
+    "reward": 0.0 或 1.0,
+    "confidence": 0.0 到 1.0 的置信度,
+    "reason": "简要说明评分理由（基于 success_state 是否达成）"
+}
+
+---
+
+# 最终评分目标总结
+
+你的任务本质是判断：
+
+Subtrace 是否成功将环境从
+
+Start_State
+
+转移到
+
+Instruction 定义的 Success_State
+
+成功 → reward = 1.0  
+失败 → reward = 0.0
+"""
+
+GROUPED_REWARD_DESCRIPTION = """表示当前 Subtrace（子任务轨迹）是否成功完成 instruction 定义的子任务目标的二值奖励信号，取值必须为 0.0 或 1.0。
+
+该 reward 衡量 Subtrace 是否成功将环境从 Start_Screenshot 表示的初始状态，转移到 instruction 中定义的 success_state 对应的最终状态（由 Final_Screenshot 验证）。
+
+评分必须严格基于视觉证据（Final_Screenshot）与工具执行结果（tool_outputs），其中 Final_Screenshot 是判断任务成功与否的唯一可信依据。
+
+评分规则如下：
+
+reward = 1.0，当且仅当满足全部条件：
+- Final_Screenshot 显示的界面状态符合 instruction 中定义的 success_state；
+- Subtrace 成功推进环境状态并完成子任务目标；
+- tool_outputs 中不存在执行失败（如 bad_function_call、exception、crash）；
+- 界面发生了与任务目标相关的有效变化。
+
+reward = 0.0，如果存在任一情况：
+- Final_Screenshot 未达到 instruction 定义的 success_state；
+- Final_Screenshot 与 Start_Screenshot 无可观察差异（视觉停滞）；
+- 界面变化与 instruction 目标无关；
+- tool_outputs 存在执行失败或无效工具调用；
+- Subtrace 未成功完成子任务目标。
+
+评分必须仅基于最终视觉结果是否达到 success_state，忽略 Subtrace 中的中间错误、探索行为或冗余动作。
+
+该 reward 用于训练 Reward Model，以提供 Subtrace 级别的稀疏成功监督信号。"""
 
 # 轨迹总体评估prompt
 CUA_EVALUATION_PROMPT = """

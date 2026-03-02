@@ -8,7 +8,15 @@ from typing import Any, Dict, List, Union, Optional
 from pydantic import BaseModel, Field
 from convert_triplets import load_trace_json
 from dotenv import load_dotenv, find_dotenv
-from constants import GROUPED_ACTION_REWARD_PROMPT, TRACE_SEGMENT_PROMPT
+from constants import (
+    GROUPED_ACTION_REWARD_PROMPT,
+    TRACE_SEGMENT_PROMPT,
+    SUB_INSTRUCTION_DESCRIPTION,
+    SEGMENT_START_STEP_DESCRIPTION,
+    SEGMENT_START_STEP_LENGTH_DESCRIPTION,
+    GROUPED_REWARD_DESCRIPTION,
+    CUA_EVALUATION_PROMPT,
+)
 
 # 尝试导入OpenAI库
 try:
@@ -25,60 +33,26 @@ except ImportError:
 # 2. Pydantic 模型
 # ===========================
 class SegmentItem(BaseModel):
-    instruction: str = Field(
-        description="""该 Segment 的完整子任务描述（用于 Reward Model 评分）。
-
-该字段必须是一个 reward-grounded instruction，必须同时隐含以下三个要素：
-1. context（当前处境）: 描述当前所处页面或任务阶段
-2. goal（操作目标）: 明确描述要执行的具体操作对象和操作意图
-3. success_state（成功后的视觉状态）: 描述操作成功后页面上应出现的可观察变化
-
-instruction 必须满足：
-- 必须使用中文
-- 必须具体明确，不允许模糊描述
-- 必须描述完整子任务，而不是单个 click 或单个 action
-- 必须使 Reward Model 能够通过截图判断是否成功
-
-正确示例：
-当前位于资产审核网站首页，打开盘点计划筛选下拉菜单并选择 RL_08，使筛选条件栏显示盘点计划为 RL_08。
-
-错误示例：
-点击筛选
-继续操作
-处理页面"""
-    )
+    instruction: str = Field(description=SUB_INSTRUCTION_DESCRIPTION.strip())
     # 注意：这里要求 LLM 填的是你展示给它的 Step ID (1, 2, 3...)
     start_step: int = Field(
         ge=1,
-        description="""该 Segment 的起始 Step 编号（必须使用提供给你的 Step ID，从 1 开始计数）。
-
-要求：
-- 必须对应一个真实存在的 Step
-- 必须按时间顺序递增
-- 不允许与其他 Segment 重叠
-- Segments 必须覆盖完整 Trace""",
+        description=SEGMENT_START_STEP_DESCRIPTION.strip(),
     )
     # 静态校验直接写在这里，代替之前的 if current_len < min_seg_len
     step_length: int = Field(
         ge=2,
         le=15,
-        description="""该 Segment 包含的连续 Step 数量。
-
-必须满足：
-- 必须 ≥ 2 且 ≤ 15
-- 必须包含完整子任务闭环
-- 不允许从交互中间切断
-
-完整子任务示例：
-点击输入框 → 输入文本 → 点击搜索 → 页面显示结果
-
-错误示例：
-仅包含点击输入框""",
+        description=SEGMENT_START_STEP_LENGTH_DESCRIPTION.strip(),
     )
 
 
-class RewardItem(SegmentItem):
-    reward: float = Field(description="该片段的奖励值")
+class GroupRewardItem(BaseModel):
+    reward: float = Field(description=GROUPED_REWARD_DESCRIPTION.strip())
+
+
+class OverallRewardItem(BaseModel):
+    reward: float
 
 
 class SegmentResultWrapper(BaseModel):
@@ -97,10 +71,6 @@ class SegmentResultWrapper(BaseModel):
     )
 
 
-class RewardResultWrapper(BaseModel):
-    rewards: List[RewardItem]
-
-
 def _iter_events(trace: Any) -> List[Dict[str, Any]]:
     if isinstance(trace, list):
         return trace
@@ -110,19 +80,21 @@ def _iter_events(trace: Any) -> List[Dict[str, Any]]:
 # ===========================
 # 4. reward 类
 # ===========================
-class GroupedActionsRewardModel:
+class GroupActionsRewardModel:
     def __init__(
         self,
         base_url: str = "",
         api_key: str = "",
         model: str = "",
         segment_prompt: str = TRACE_SEGMENT_PROMPT,
-        reward_prompt: str = GROUPED_ACTION_REWARD_PROMPT,
+        grouped_reward_prompt: str = GROUPED_ACTION_REWARD_PROMPT,
+        overall_reward_prompt: str = CUA_EVALUATION_PROMPT,  # 可以根据需要区分不同的 prompt
     ) -> None:
         self.client = AsyncOpenAI(base_url=base_url, api_key=api_key)
         self.model = model
         self.segment_prompt = segment_prompt
-        self.reward_prompt = reward_prompt
+        self.group_reward_prompt = grouped_reward_prompt
+        self.overall_reward_prompt = overall_reward_prompt
 
     def _normalize_image_url(self, val: Any) -> List[Dict[str, Any]]:
         urls = []
@@ -224,35 +196,36 @@ class GroupedActionsRewardModel:
 
         return content, step_map
 
-    def _build_content(self, parsed_trace: Any, user_instruction: str, system_prompt: str) -> List[Dict[str, Any]]:
+    def _build_reward_content(self, trace: list, user_instruction: str, reward_prompt: str) -> List[Dict[str, Any]]:
         content: List[Dict[str, Any]] = [
-            {"type": "text", "text": f"System Prompt: {system_prompt.strip()}"},
+            {"type": "text", "text": f"System Prompt: {reward_prompt.strip()}"},
             {"type": "text", "text": f"User Instruction: {user_instruction.strip()}"},
         ]
 
-        events = _iter_events(parsed_trace)
-        step_count = 1
+        events = _iter_events(trace)
 
-        # 标记是否已经处理过初始状态
         has_processed_init = False
 
         for ev in events:
             if not isinstance(ev, dict):
                 continue
 
-            # 1. 初始状态 (Initial State)
-            # 逻辑：只要是第一张图，且没有 Action/Output，就是初始状态
-            if "screenshot" in ev and not has_processed_init:
-                # 只有当它是纯截图，或者作为 trace 的起手式时
-                if "tool_calls" not in ev and "tool_outputs" not in ev:
-                    content.append({"type": "text", "text": "### Step 0: Initial State (Before Start)"})
-                    content.extend(_normalize_image_url(ev["screenshot"]))
-                    has_processed_init = True
-                    continue
+            # 只要看到截图，就更新“最新状态”的物理索引
+            if "screenshot" in ev:
 
-            # 2. 模型动作 (Agent Action)
-            # 逻辑：这是因果链的“因”
+                if not has_processed_init and "tool_calls" not in ev and "tool_outputs" not in ev:
+                    content.append({"type": "text", "text": "**Initial State:**"})
+                    content.extend(self._normalize_image_url(ev["screenshot"]))
+                    has_processed_init = True
+                elif has_processed_init and "tool_outputs" not in ev:
+                    # 中间独立的截图
+                    content.append({"type": "text", "text": "**Screen State Update (Observation):**"})
+                    content.extend(self._normalize_image_url(ev["screenshot"]))
+                continue
+
+            # 遇到动作，绑定当前 Step 的寻址信息
             if "tool_calls" in ev:
+
                 tool_calls = ev["tool_calls"][0]["function"]
                 tool_name = tool_calls.get("name", "unknown")
                 tool_args = tool_calls.get("arguments", {})
@@ -263,27 +236,13 @@ class GroupedActionsRewardModel:
                 content.append(
                     {
                         "type": "text",
-                        "text": (
-                            f"\n---\n"  # 分隔线，帮助 LLM 区分回合
-                            f"### Step {step_count}: Agent Action\n"
-                            f"**Function Call:**\n"
-                            f"``````{json.dumps(formatted_tool_calls, ensure_ascii=False, indent=2)}`````"
-                        ),
+                        "text": f"Agent Action\n**Function Call:**\n```json\n{json.dumps(formatted_tool_calls, ensure_ascii=False, indent=2)}\n```",
                     }
                 )
-                # 注意：这里增加计数，意味着接下来的 output 属于这个 step
-                step_count += 1
                 continue
 
-            # ===============================================================
-            # 3. 工具执行结果 (Execution Result)
-            # 逻辑：这是因果链的“果”。包含了 文本返回 + 新的截图
-            # ===============================================================
+            # 处理动作输出
             if "tool_outputs" in ev:
-                # 对应的 Action Step 是 step_count - 1
-                current_step_idx = step_count - 1
-
-                # 构建文本部分
                 tool_outputs_json = ev["tool_outputs"][0]
                 tool_output_name = tool_outputs_json.get("name", "unknown")
                 tool_output_content = json.loads(tool_outputs_json.get("content", ""))
@@ -291,37 +250,18 @@ class GroupedActionsRewardModel:
                     "tool_name": tool_output_name,
                     "output_content": tool_output_content,
                 }
-                # 3.1 先放入文本结果 (Output)
-                result_text = (
-                    f"### Result of Step {current_step_idx}\n"
-                    f"**Tool Outputs:**\n"
-                    f"```json\n{json.dumps(formatted_tool_output, ensure_ascii=False, indent=2)}\n```"
+                content.append(
+                    {
+                        "type": "text",
+                        "text": f"**Tool Outputs:**\n```json\n{json.dumps(formatted_tool_output, ensure_ascii=False, indent=2)}\n```",
+                    }
                 )
-                content.append({"type": "text", "text": result_text})
-
-                # 3.2 再放入视觉结果 (Screenshot)
-                # 逻辑：这是 Action 执行“之后”的屏幕状态
-                if "screenshot" in ev and ev["screenshot"]:
-                    content.append({"type": "text", "text": f"**Screen State After Step {current_step_idx}:**"})
-                    content.extend(_normalize_image_url(ev["screenshot"]))
-
-                continue
-
-            # ===============================================================
-            # 4. 兜底：处理中间可能出现的独立截图 (Mid-stream Screenshot)
-            # 有些 trace 可能会单独记录截图而不带 tool_output
-            # ===============================================================
-            if "screenshot" in ev and has_processed_init:
-                # 如果这个截图已经在 tool_outputs 里处理过了，就不会走到这里
-                # 这里处理的是“只有截图”的事件
-                content.append({"type": "text", "text": f"**Screen State Update (Observation):**"})
-                content.extend(_normalize_image_url(ev["screenshot"]))
 
         return content
 
-    async def segment_trace(self, trace: list, user_instruction: str) -> List[Dict[str, Any]]:
+    async def segment_trace(self, trace: list, user_instruction: str) -> Dict[str, Any]:
         max_retries = 3
-        fixed_temperature = 0.7
+        fixed_temperature = 0.0
         previous_feedback = None
 
         # 1. 在循环外部构建 Content 和 Mapping，极大节省 CPU 和内存
@@ -331,7 +271,10 @@ class GroupedActionsRewardModel:
         # 异常兜底：如果 trace 里面没有任何有效 step
         if max_steps == 0:
             print("⚠️ 轨迹中未检测到任何有效的 Step。")
-            return []
+            return {
+                "segments": [],
+                "step_map": {},
+            }
 
         for attempt in range(max_retries):
             try:
@@ -409,18 +352,24 @@ class GroupedActionsRewardModel:
                     previous_feedback = None
 
         print("❌ 已达到最大重试次数，操作中止")
-        return []
+        return {
+            "segments": [],
+            "step_map": {},
+        }
 
     def extract_subtraces(self, trace: list, segment_result: dict) -> list:
         subtraces = []
         step_map = segment_result["step_map"]
-
+        count = 0
         for seg in segment_result["segments"]:
             start_s = seg["start_step"]
             end_s = start_s + seg["step_length"] - 1
 
             # 1. 抓取该片段最开头的状态截图索引
-            init_state_idx = step_map[start_s]["state_screenshot_idx"]
+            step_info = step_map.get(start_s)
+            if step_info is None:
+                continue
+            init_state_idx = step_info["state_screenshot_idx"]
 
             # 2. 抓取动作区间
             action_start = step_map[start_s]["action_idx"]
@@ -430,122 +379,118 @@ class GroupedActionsRewardModel:
             # 3. 组装：起始状态截图 + 中间所有的动作与输出
             sub_trace = [trace[init_state_idx]] + trace[action_start:action_end]
 
-            subtraces.append({"instruction": seg["instruction"], "trace_data": sub_trace})
+            subtraces.append({"segment_id": count, "instruction": seg["instruction"], "trace_data": sub_trace})
+            count += 1
 
         return subtraces
 
-    def segment_trace_by_reward(
-        self,
-        original_trace: List[Dict[str, Any]],
-        reward_segments: List[Dict[str, Any]],
-        user_instruction: str,
-    ) -> List[Dict[str, Any]]:
-        """
-        根据模型返回的 reward_segments 将 original_trace 切分成多个独立的训练样本。
+    async def call_group_reward_model(self, trace: List, user_instruction: str) -> float:
+        fixed_temperature = 0.0
+        base_content = self._build_reward_content(trace, user_instruction, self.group_reward_prompt)
+        messages = [{"role": "user", "content": base_content}]
+        resp = await asyncio.wait_for(
+            self.client.beta.chat.completions.parse(
+                model=self.model,
+                temperature=fixed_temperature,
+                messages=messages,
+                response_format=GroupRewardItem,
+            ),
+            timeout=120,
+        )
+        return resp.choices[0].message.parsed.reward  # Return the parsed reward value
 
-        逻辑变更：
-        1. 结构变更：返回字典列表，包含 instruction, reward, events。
-        2. 开头强制校验：如果 start_idx 不是截图，向前回溯寻找最近的截图。
-        3. 结尾宽松处理：严格按照 end_idx 切分，不做额外校验。
-        """
-        segmented_samples = []
+    async def call_overall_reward_model(self, trace: List, user_instruction: str) -> float:
+        fixed_temperature = 0.0
+        base_content = self._build_reward_content(trace, user_instruction, self.overall_reward_prompt)
+        messages = [{"role": "user", "content": base_content}]
+        resp = await asyncio.wait_for(
+            self.client.beta.chat.completions.parse(
+                model=self.model,
+                temperature=fixed_temperature,
+                messages=messages,
+                response_format=OverallRewardItem,
+            ),
+            timeout=120,
+        )
+        return resp.choices[0].message.parsed.reward  # Return the parsed reward value
 
-        print(f"\n✂️ 开始切分 Trace，共找到 {len(reward_segments)} 个片段...")
-
-        for i, seg in enumerate(reward_segments):
-            # 1. 获取索引 (兼容 start/length 和 start/end 两种格式)
-            start_idx = seg.get("start_idx")
-
-            # 优先使用 end_idx (新版逻辑)，如果没有则用 length (旧版逻辑)
-            if "end_idx" in seg:
-                end_idx = seg["end_idx"]
-            elif "length" in seg:
-                end_idx = start_idx + seg["length"] - 1
-            else:
-                print(f"⚠️ 跳过无效片段 (缺索引): {seg}")
-                continue
-
-            sub_instruction = seg.get("instruction", "未命名子任务")
-
-            # 边界检查
-            if start_idx is None or start_idx >= len(original_trace):
-                print(f"⚠️ Start Index {start_idx} 无效，跳过。")
-                continue
-
-            # 修正 end_idx 越界问题 (防止切分超出列表)
-            end_idx = min(end_idx, len(original_trace) - 1)
-
-            # =========================================================
-            # 🖼️ 上下文补全 (Backtracking for Screenshot)
-            # =========================================================
-            effective_start_idx = start_idx
-
-            # 检查 start_idx 是否指向有效截图
-            first_event = original_trace[effective_start_idx]
-            is_start_screenshot = "screenshot" in first_event and first_event["screenshot"]
-
-            if not is_start_screenshot:
-                # print(f"🔍 片段 {i} (start={start_idx}) 缺少初始截图，正在向前回溯...")
-
-                found_idx = -1
-                # 从 start_idx - 1 倒着找，直到开头
-                for back_i in range(effective_start_idx - 1, -1, -1):
-                    ev = original_trace[back_i]
-                    if "screenshot" in ev and ev["screenshot"]:
-                        found_idx = back_i
-                        break
-
-                if found_idx != -1:
-                    effective_start_idx = found_idx
-                    # print(f"✅ 上下文补全成功: Start 修正为 {effective_start_idx} (原 {start_idx})")
-                else:
-                    print(f"⚠️ 警告: 片段 {i} 回溯到开头仍未找到截图，可能导致状态丢失。")
-                    # 即使没找到，也只能硬着头皮用原来的 start_idx，或者选择丢弃
-
-            # =========================================================
-            # ✂️ 执行切片
-            # =========================================================
-            # Python 切片是左闭右开 [start, end)，所以要 end_idx + 1
-            segment_events = original_trace[effective_start_idx : end_idx + 1]
-
-            if not segment_events:
-                print(f"⚠️ 切片结果为空，跳过。")
-                continue
-
-            # =========================================================
-            # 📦 封装样本 (Dict Structure)
-            # =========================================================
-
-            # 拼接指令：建议加个分隔符让模型分清层级
-            # combined_instruction = f"Main Task: {user_instruction}\nSub Task: {sub_instruction}"
-
-            sample = {
-                "instruction": sub_instruction,
-                "reward": seg.get("reward", 0.0),
-                "events": segment_events,
-                # 也可以保留一些元数据方便 debug
-                "meta": {
-                    "original_start": start_idx,
-                    "effective_start": effective_start_idx,
-                    "end": end_idx,
-                },
+    async def score_single_subtrace(self, subtrace: dict) -> Dict[str, Any]:
+        trace_data = subtrace["trace_data"]
+        user_instruction = subtrace["instruction"]
+        segment_id = subtrace["segment_id"]
+        try:
+            reward = await asyncio.wait_for(
+                self.call_group_reward_model(trace_data, user_instruction),
+                timeout=120,
+            )
+            return {
+                "segment_id": segment_id,
+                "reward": reward,
+            }
+        except asyncio.TimeoutError as e:
+            return {
+                "segment_id": segment_id,
+                "reward": None,
+                "error": f"timeout: {e}",
+            }
+        except Exception as e:
+            return {
+                "segment_id": segment_id,
+                "reward": None,
+                "error": str(e),
             }
 
-            segmented_samples.append(sample)
-
-        return segmented_samples
-
-    async def grouped_actions_reward(
+    async def score_subtrace_list(
         self,
-        trace: List[Dict[str, Any]],
-        user_instruction: str,
-    ):
-        segments = await self.reward_trace(trace, user_instruction)
-        print(f"segments: {segments}")
-        if not segments:
-            return {"grouped_traces": [], "status": "error"}
-        segmented_traces = self.segment_trace_by_reward(trace, segments, user_instruction)
-        return {"grouped_traces": segmented_traces}
+        subtrace_list: List[dict],
+        max_concurrency: int = 8,
+        max_retries: int = 3,
+        base_delay: float = 1.0,
+    ) -> List[Dict[str, Any]]:
+        assert all("segment_id" in s for s in subtrace_list)
+
+        for attempt in range(max_retries):
+            semaphore = asyncio.Semaphore(max_concurrency)
+
+            async def sem_task(subtrace):
+                async with semaphore:
+                    return await self.score_single_subtrace(subtrace)
+
+            tasks = [asyncio.create_task(sem_task(subtrace)) for subtrace in subtrace_list]
+
+            results = []
+            for task in asyncio.as_completed(tasks):
+                r = await task
+                results.append(r)
+
+            assert len(results) == len(subtrace_list)
+            results.sort(key=lambda x: x["segment_id"])
+
+            failed = [item for item in results if item.get("reward") is None]
+            if not failed:
+                return results
+
+            print(
+                f"[Trace Retry] failed_segments={len(failed)} "
+                f"(attempt {attempt + 1}/{max_retries})"
+            )
+
+            if attempt < max_retries - 1:
+                delay = base_delay * (2**attempt)
+                await asyncio.sleep(delay)
+
+        print(f"[Trace FAILED] whole-trace scoring failed after {max_retries} attempts")
+        return results
+
+    async def get_group_rewards(self, subtrace_list: list) -> List[float]:
+
+        results = await self.score_subtrace_list(subtrace_list)
+
+        return [item["reward"] for item in results]
+
+    async def get_overall_reward(self, trace: list, user_instruction: str) -> float:
+        reward = await self.call_overall_reward_model(trace, user_instruction)
+        return reward
 
 
 # ===========================
