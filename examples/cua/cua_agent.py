@@ -10,7 +10,7 @@ import requests
 import traceback
 import json
 
-from convert_triplets import convert_traces_to_triplets
+from convert_triplets import convert_traces_to_triplets, score_trace
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -38,12 +38,14 @@ async def run_planner_task(
     最终把完整的 result 追加为一条 "result" 记录到同一文件。
     （不使用 rollout_id，按要求简化）
     """
-    AGENT_PLANNER_URL = "http://0.0.0.0:8331/planner"  # 前端 process.env.AGENT_PLANNER_URL
+    AGENT_PLANNER_URL = os.getenv("AGENT_PLANNER_URL", "http://127.0.0.1:8331/planner")
     # 统一认证密钥（沙箱和Planner共享，前端均使用 process.env.KEY_AUTH）
     KEY_AUTH = os.getenv("sandbox_key_auth")
 
     url = f"{AGENT_PLANNER_URL}/run/task"
-    headers = {"Content-Type": "application/json", "Authorization": KEY_AUTH}
+    headers = {"Content-Type": "application/json"}
+    if KEY_AUTH:
+        headers["Authorization"] = KEY_AUTH
     data = {
         "user_prompt": user_prompt,
         "sandbox_id": sandbox_id,
@@ -105,13 +107,12 @@ def test_llm_endpoint(endpoint: str, model_name: str):
 
 
 class LitCUAAgent(agentlightning.LitAgent):
-    score_endpoint: str = "http://localhost:8003/score"
+    overall_score_endpoint: str = "http://localhost:8003/overall_score"
     group_score_endpoint: str = "http://localhost:8003/group_score"
-    hybrid_score_endpoint: str = "http://localhost:8003/hybrid_score"
 
     async def _execute_rollout(
         self, sample: dict[str, Any], *, resources: agentlightning.NamedResources, rollout_id: str, is_training: bool
-    ) -> float | None:
+    ) -> list[dict[str, Any]]:
         start_time = time.time()
 
         # 获取sandbox_uri
@@ -144,22 +145,13 @@ class LitCUAAgent(agentlightning.LitAgent):
 
         if result:
             # 获取整体评分（异步）
-            try:
-                payload = {
-                    "trace": result,
-                    "user_instruction": sample["instruction"],
-                    "temperature": 0.0,
-                    "contents": None,
-                }
-                async with httpx.AsyncClient(timeout=httpx.Timeout(600.0, connect=10.0)) as client:
-                    response = await client.post(self.score_endpoint, json=payload)
-                    response.raise_for_status()
-                    score_result = response.json()
-                    overall_score = score_result.get("score", 0.0)
-                    logger.info(f"整体评分成功: {overall_score}")
-            except Exception as e:
-                logger.error(f"评分失败: {e}")
-                raise
+            overall_score_response = await score_trace(
+                url=self.overall_score_endpoint,
+                trace=result,
+                user_instruction=sample["instruction"],
+            )
+            overall_score = overall_score_response.get("score", 0.0)
+            logger.info(f"整体评分成功: {overall_score}")
 
             # 分割并且转为triplet格式
             result = await convert_traces_to_triplets(

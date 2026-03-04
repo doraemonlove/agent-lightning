@@ -38,43 +38,6 @@ def base64_to_pil(image_data):
     return None
 
 
-def extract_vision_inputs(messages: List[Dict], all_images_list: List[Any]) -> Tuple[List[Image.Image], List[Any]]:
-    """
-    自定义图片提取器：
-    遍历 messages 中的文本，每遇到一个 <image> 标签，就从 all_images_list 中取出一张图，
-    将其转为 PIL 对象并放入列表返回。
-    """
-    prompt_image_inputs = []
-    prompt_video_inputs = []  # 暂时留空
-
-    # 简单的迭代器，确保按顺序取图
-    if all_images_list is None:
-        all_images_list = []
-
-    image_iter = iter(all_images_list)
-
-    for msg in messages:
-        content = msg.get("content", "")
-        if isinstance(content, str):
-            # 计算当前消息里有几个 <image> 标签
-            count = content.count("<image>")
-            for _ in range(count):
-                try:
-                    img_data = next(image_iter)
-                    pil_img = base64_to_pil(img_data)
-                    if pil_img:
-                        prompt_image_inputs.append(pil_img)
-                    else:
-                        # 如果图片解码失败，给一个黑色占位图，防止报错
-                        print("⚠️ Warning: Image decode failed, using placeholder.")
-                        prompt_image_inputs.append(Image.new("RGB", (224, 224), (0, 0, 0)))
-                except StopIteration:
-                    print("⚠️ Warning: More <image> tags than images provided!")
-                    break
-
-    return prompt_image_inputs, prompt_video_inputs
-
-
 def get_tools_schema():
     # 基础工具列表
     base_tools = [
@@ -305,6 +268,10 @@ def convert_trace_to_messages(trace, instruction):
 
     dataset_sample = {"tools": get_tools_schema(), "messages": []}
 
+    if not isinstance(trace, list) or len(trace) == 0:
+        print("Error: trace 必须是非空列表")
+        return {}
+
     # =============================
     # 1. 处理初始状态 (Step 0)
     # =============================
@@ -344,7 +311,7 @@ def convert_trace_to_messages(trace, instruction):
     # =============================
     # 从 events[1] 开始遍历 (跳过初始截图)
     skip_indices = set()
-    for i, event in enumerate(trace[1:]):
+    for i, event in enumerate(trace[1:], start=1):
 
         if i in skip_indices:
             continue
@@ -353,9 +320,13 @@ def convert_trace_to_messages(trace, instruction):
         if "tool_calls" in event:
             tool_calls = event["tool_calls"]
             args = tool_calls[0]["function"]["arguments"]
+            if isinstance(args, str):
+                try:
+                    args = json.loads(args)
+                except json.JSONDecodeError:
+                    args = {}
             formatted_args = normalize_coordinates(args, width, height)
             tool_name = tool_calls[0]["function"]["name"]
-            tool_calls = normalize_coordinates(tool_calls, width, height)
 
             formatted_tool_calls = {
                 "name": tool_name,
@@ -446,29 +417,27 @@ def convert_trace_to_messages(trace, instruction):
 
 
 def convert_messages_to_triplet(
-    messages, processor, reward: float, overall_score: float, rollout_id: str, max_seq_len=16384
+    dataset_sample, processor, reward: float, overall_score: float, rollout_id: str, max_seq_len=16384
 ):
     """
     使用 "分别 Tokenize (Prompt vs Full) 再相减" 的方式生成 Triplet。
     逻辑更加清晰，无需硬编码 Assistant Header Token ID。
     """
 
-    messages = messages["messages"]
+    messages = dataset_sample.get("messages", [])
 
     # 1. 基础检查
     if len(messages) < 3:
         raise Exception("messages too short, need at least user query and assistant response.")
 
     # 2. 准备 Tools
-    tools = messages.get("tools")
-    if tools is None:
-        tools = []
+    tools = dataset_sample.get("tools", [])
 
     # 3. 拆分 Prompt Messages 和 Full Messages
     # Full: 包含所有对话
     # Prompt: 包含除最后一条 Assistant 回复之外的所有对话
-    full_msgs = messages["messages"]
-    prompt_msgs = messages["messages"][:-1]
+    full_msgs = messages
+    prompt_msgs = messages[:-1]
 
     try:
         #  A. 处理 Prompt 部分
@@ -564,6 +533,8 @@ def convert_single_trace_to_triplet(
 
     # Step 1: 原始 trace → dataset_sample
     dataset_sample = convert_trace_to_messages(trace_data, instruction)
+    if not dataset_sample:
+        return {}
 
     # debug,检查llama 格式 triplet
     # with open(
@@ -572,21 +543,20 @@ def convert_single_trace_to_triplet(
     #     json.dump(dataset_sample, f, ensure_ascii=False, indent=4)
 
     # Step 3: llama → triplet
-    triplet = convert_to_triplet_format(
+    triplet = convert_messages_to_triplet(
         dataset_sample, processor=processor, reward=reward, overall_score=overall_score, rollout_id=rollout_id
     )
 
     return triplet
 
 
-async def group_score_trace(url, trace: list[dict] = None, user_instruction: str = None):
+async def score_trace(url, trace: list[dict] = None, user_instruction: str = None):
     try:
         # 1. 检查数据量，防止发送过大炸弹
         # 如果 trace 中包含 image，建议在此处做截断或只发 url
         payload = {
             "trace": trace,
             "user_instruction": user_instruction,
-            "contents": None,
         }
 
         # 打印大小日志
@@ -609,7 +579,7 @@ async def group_score_trace(url, trace: list[dict] = None, user_instruction: str
 
         response.raise_for_status()
         result = response.json()
-        print(f"Planner 评分轨迹成功")
+        print(f"轨迹成功")
         return result
 
     except requests.exceptions.ConnectionError as e:
@@ -628,32 +598,48 @@ async def convert_traces_to_triplets(
     traces: List[Dict[str, Any]],
     model_path: str,
 ) -> List[List[Dict[str, Any]]]:
-    result = await group_score_trace(score_url, traces, instruction)
-    grouped_traces = result["grouped_traces"]
-
-    # # 保存grouped_traces以便调试
-    # with open("result.json", "w", encoding="utf-8") as f:
-    #     json.dump(result, f, ensure_ascii=False, indent=4)
+    result = await score_trace(score_url, traces, instruction)
+    if not isinstance(result, dict):
+        logger.warning("score service 返回非 dict，跳过本轮")
+        return []
 
     if "status" in result and result["status"] == "error":
         logger.warning("grouped trace went wrong!!!")
         return []
 
-    logger.info(f"segmented trace type:{type(grouped_traces)}, length:{len(grouped_traces)}")
+    context_traces = result.get("context_traces")
+    if context_traces is None:
+        context_traces = result.get("grouped_traces", [])
+
+    if not isinstance(context_traces, list):
+        logger.warning("score service 返回的 context_traces 格式错误")
+        return []
+
+    # # 保存grouped_traces以便调试
+    # with open("result.json", "w", encoding="utf-8") as f:
+    #     json.dump(result, f, ensure_ascii=False, indent=4)
+
+    logger.info(f"context trace type:{type(context_traces)}, length:{len(context_traces)}")
 
     processor = AutoProcessor.from_pretrained(model_path, min_pixels=200704, max_pixels=1350000)
 
     all_tokenized_data = []
-    for segmented_trace in grouped_traces:
+    for segmented_trace in context_traces:
+        reward = segmented_trace.get("reward")
+        if reward is None:
+            logger.warning("skip one segmented_trace because reward is None")
+            continue
+
         converted_trace = convert_single_trace_to_triplet(
             instruction=segmented_trace["instruction"],
-            trace_data=segmented_trace["events"],
+            trace_data=segmented_trace["trace_data"],
             processor=processor,
-            reward=segmented_trace["reward"],
+            reward=reward,
             overall_score=overall_score,
             rollout_id=rollout_id,
         )
-        all_tokenized_data.append(converted_trace)
+        if converted_trace:
+            all_tokenized_data.append(converted_trace)
 
     return all_tokenized_data
 

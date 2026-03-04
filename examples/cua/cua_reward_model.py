@@ -16,6 +16,7 @@ from constants import (
     SEGMENT_START_STEP_LENGTH_DESCRIPTION,
     GROUPED_REWARD_DESCRIPTION,
     CUA_EVALUATION_PROMPT,
+    CUA_PROMPT,
 )
 
 # 尝试导入OpenAI库
@@ -53,6 +54,7 @@ class GroupRewardItem(BaseModel):
 
 class OverallRewardItem(BaseModel):
     reward: float
+    reason: str
 
 
 class SegmentResultWrapper(BaseModel):
@@ -80,7 +82,7 @@ def _iter_events(trace: Any) -> List[Dict[str, Any]]:
 # ===========================
 # 4. reward 类
 # ===========================
-class GroupActionsRewardModel:
+class CUARewardModel:
     def __init__(
         self,
         base_url: str = "",
@@ -259,6 +261,16 @@ class GroupActionsRewardModel:
 
         return content
 
+    def _is_tool_call(self, message: Dict[str, Any]) -> bool:
+        """
+        判断当前 message 是否为 assistant 的 tool_call。
+        """
+        # OpenAI 格式通常为 tool_calls 字段
+        if "tool_calls" in message and message["tool_calls"]:
+            return True
+
+        return False
+
     async def segment_trace(self, trace: list, user_instruction: str) -> Dict[str, Any]:
         max_retries = 3
         fixed_temperature = 0.0
@@ -399,7 +411,7 @@ class GroupActionsRewardModel:
         )
         return resp.choices[0].message.parsed.reward  # Return the parsed reward value
 
-    async def call_overall_reward_model(self, trace: List, user_instruction: str) -> float:
+    async def call_overall_reward_model(self, trace: List, user_instruction: str) -> tuple[float, str]:
         fixed_temperature = 0.0
         base_content = self._build_reward_content(trace, user_instruction, self.overall_reward_prompt)
         messages = [{"role": "user", "content": base_content}]
@@ -412,7 +424,10 @@ class GroupActionsRewardModel:
             ),
             timeout=120,
         )
-        return resp.choices[0].message.parsed.reward  # Return the parsed reward value
+        return (
+            resp.choices[0].message.parsed.reward,
+            resp.choices[0].message.parsed.reason,
+        )  # Return the parsed reward value and reason
 
     async def score_single_subtrace(self, subtrace: dict) -> Dict[str, Any]:
         trace_data = subtrace["trace_data"]
@@ -479,22 +494,85 @@ class GroupActionsRewardModel:
         print(f"[Trace FAILED] whole-trace scoring failed after {max_retries} attempts")
         return results
 
-    async def get_group_rewards(self, trace: list, user_instruction: str) -> List[float]:
+    def build_context_trace(
+        self, subtrace_list: List[Dict[str, Any]], reward_list: List[Optional[float]], global_instruction: str
+    ) -> List[Dict[str, Any]]:
+        """
+        从 subtrace_list 构造 action-level triplets。
+
+        每个 triplet:
+            {
+                "instruction": str,
+                "trace_data": List[message],
+                "reward": float | None
+            }
+
+        规则：
+        - 每个 assistant.tool_call 为截断点（包含该条）
+        - 不包含 tool response
+        - reward 为 subtrace-level reward
+        """
+
+        if len(subtrace_list) != len(reward_list):
+            raise ValueError("subtrace_list 与 reward_list 长度不一致")
+
+        context_traces: List[Dict[str, Any]] = []
+
+        for idx, subtrace in enumerate(subtrace_list):
+
+            sub_instruction = subtrace.get("instruction", "")
+            trace_data = subtrace.get("trace_data", [])
+
+            if not isinstance(trace_data, list):
+                raise ValueError(f"subtrace index {idx} 的 trace_data 不是 list")
+
+            reward = reward_list[idx]
+
+            # 合并 instruction
+            merged_instruction = (
+                "GlobalTask:\n" + global_instruction.strip() + "\nCurrentSubtask:\n" + sub_instruction.strip()
+            )
+
+            # 遍历 trace_data
+            for msg_index, message in enumerate(trace_data):
+
+                if self._is_tool_call(message):
+
+                    # 截断至当前 tool_call（包含）
+                    truncated_trace = trace_data[: msg_index + 1]
+
+                    # 构造 triplet
+                    triplet = {"instruction": merged_instruction, "trace_data": truncated_trace, "reward": reward}
+
+                    context_traces.append(triplet)
+        print(f"✅ 成功构建 {len(context_traces)} 条上下文轨迹")
+
+        return context_traces
+
+    async def get_group_rewards(self, trace: list, user_instruction: str) -> List[Dict[str, Any]]:
         segment_result = await self.segment_trace(trace, user_instruction=user_instruction)
         subtrace_list = self.extract_subtraces(trace, segment_result)
         results = await self.score_subtrace_list(subtrace_list=subtrace_list)
-        segment_res_file = "./trace/segment_policy.json"
+        reward_list = [item["reward"] for item in results]
+        context_traces = self.build_context_trace(subtrace_list, reward_list, user_instruction)
+
+        # result_list_file = "./trace/group_reward_results.json"
+        # with open(result_list_file, "w", encoding="utf-8") as f:
+        #     json.dump(results, f, indent=2, ensure_ascii=False)
+
+        # segment_res_file = "./trace/segment_policy.json"
         # with open(segment_res_file, "w", encoding="utf-8") as f:
         #     json.dump(segment_result, f, indent=2, ensure_ascii=False)
 
         # output_file = "./trace/segmented_traces.json"
         # with open(output_file, "w", encoding="utf-8") as f:
         #     json.dump(subtrace_list, f, indent=2, ensure_ascii=False)
-        return [item["reward"] for item in results]
 
-    async def get_overall_reward(self, trace: list, user_instruction: str) -> float:
-        reward = await self.call_overall_reward_model(trace, user_instruction)
-        return reward
+        return context_traces
+
+    async def get_overall_reward(self, trace: list, user_instruction: str) -> tuple[float, str]:
+        (reward, reason) = await self.call_overall_reward_model(trace, user_instruction)
+        return reward, reason
 
 
 # ===========================
@@ -503,17 +581,17 @@ class GroupActionsRewardModel:
 if __name__ == "__main__":
     # --- 配置 --
     # JSON 文件路径
-    JSON_FILE_PATH = "/root/workspace/wangjiaju/zql_workspace/agent-lightning/examples/cua/trace/0206/0206-qwen3-4b-sft-2500/sample_12_plan_WJJ_TEST.json"
+    JSON_FILE_PATH = "/root/workspace/wangjiaju/zql_workspace/agent-lightning/examples/cua/trace/0206/0206-qwen3-4b-sft-2500/sample_14_plan_ZQL_TEST.json"
 
     # 加载 trace 数据
     user_instr, trace_data = load_trace_json(JSON_FILE_PATH)
 
-    # 加载环境变量
+    # 加载环境变量\n
     load_dotenv(find_dotenv())
     api_key = os.getenv("score_api_key")
 
     # 初始化打分器
-    group_scorer = GroupActionsRewardModel(
+    group_scorer = CUARewardModel(
         base_url="https://ark.cn-beijing.volces.com/api/v3", api_key=api_key, model="doubao-seed-1-6-251015"
     )
 
@@ -522,7 +600,7 @@ if __name__ == "__main__":
     async def main():
         # segment_res = await group_scorer.segment_trace(trace_data, user_instr)
         # subtrace_res = group_scorer.extract_subtraces(trace_data, segment_res)
-        rewards = await group_scorer.get_group_rewards(trace_data, user_instr)
+        scored_subtraces = await group_scorer.get_group_rewards(trace_data, user_instr)
         # 5. 保存结果
         # segment_res_file = "./trace/segment_policy.json"
         # with open(segment_res_file, "w", encoding="utf-8") as f:
@@ -532,11 +610,11 @@ if __name__ == "__main__":
         # with open(output_file, "w", encoding="utf-8") as f:
         #     json.dump(subtrace_res, f, indent=2, ensure_ascii=False)
 
-        group_rewards_file = "./trace/group_rewards.json"
-        with open(group_rewards_file, "w", encoding="utf-8") as f:
-            json.dump(rewards, f, indent=2, ensure_ascii=False)
+        scored_subtraces_file = "./trace/scored_subtraces_file.json"
+        with open(scored_subtraces_file, "w", encoding="utf-8") as f:
+            json.dump(scored_subtraces, f, indent=2, ensure_ascii=False)
 
-        print(f"\n✅ 处理完成！结果已保存至 {group_rewards_file}")
+        print(f"\n✅ 处理完成！结果已保存至 {scored_subtraces_file}")
 
     # 执行异步主函数
     asyncio.run(main())
