@@ -48,7 +48,7 @@ class SegmentItem(BaseModel):
 
 
 class GroupRewardItem(BaseModel):
-    reward: float = Field(description=GROUPED_REWARD_DESCRIPTION.strip())
+    reward: float
 
 
 class OverallRewardItem(BaseModel):
@@ -470,10 +470,7 @@ class GroupActionsRewardModel:
             if not failed:
                 return results
 
-            print(
-                f"[Trace Retry] failed_segments={len(failed)} "
-                f"(attempt {attempt + 1}/{max_retries})"
-            )
+            print(f"[Trace Retry] failed_segments={len(failed)} " f"(attempt {attempt + 1}/{max_retries})")
 
             if attempt < max_retries - 1:
                 delay = base_delay * (2**attempt)
@@ -482,10 +479,17 @@ class GroupActionsRewardModel:
         print(f"[Trace FAILED] whole-trace scoring failed after {max_retries} attempts")
         return results
 
-    async def get_group_rewards(self, subtrace_list: list) -> List[float]:
+    async def get_group_rewards(self, trace: list, user_instruction: str) -> List[float]:
+        segment_result = await self.segment_trace(trace, user_instruction=user_instruction)
+        subtrace_list = self.extract_subtraces(trace, segment_result)
+        results = await self.score_subtrace_list(subtrace_list=subtrace_list)
+        segment_res_file = "./trace/segment_policy.json"
+        # with open(segment_res_file, "w", encoding="utf-8") as f:
+        #     json.dump(segment_result, f, indent=2, ensure_ascii=False)
 
-        results = await self.score_subtrace_list(subtrace_list)
-
+        # output_file = "./trace/segmented_traces.json"
+        # with open(output_file, "w", encoding="utf-8") as f:
+        #     json.dump(subtrace_list, f, indent=2, ensure_ascii=False)
         return [item["reward"] for item in results]
 
     async def get_overall_reward(self, trace: list, user_instruction: str) -> float:
@@ -499,7 +503,7 @@ class GroupActionsRewardModel:
 if __name__ == "__main__":
     # --- 配置 --
     # JSON 文件路径
-    JSON_FILE_PATH = "/root/workspace/wangjiaju/zql_workspace/agent-lightning/examples/cua/trace/0209/0209-qwen3-4b-sft-3750/sample_12_plan_WJJ_TEST.json"
+    JSON_FILE_PATH = "/root/workspace/wangjiaju/zql_workspace/agent-lightning/examples/cua/trace/0206/0206-qwen3-4b-sft-2500/sample_12_plan_WJJ_TEST.json"
 
     # 加载 trace 数据
     user_instr, trace_data = load_trace_json(JSON_FILE_PATH)
@@ -509,26 +513,30 @@ if __name__ == "__main__":
     api_key = os.getenv("score_api_key")
 
     # 初始化打分器
-    group_scorer = GroupedActionsRewardModel(
+    group_scorer = GroupActionsRewardModel(
         base_url="https://ark.cn-beijing.volces.com/api/v3", api_key=api_key, model="doubao-seed-1-6-251015"
     )
 
     # 4. 运行异步函数（修复 await 问题）
     # 定义异步主函数
     async def main():
-        segment_res = await group_scorer.segment_trace(trace_data, user_instr)
-        subtrace_res = group_scorer.extract_subtraces(trace_data, segment_res)
-
+        # segment_res = await group_scorer.segment_trace(trace_data, user_instr)
+        # subtrace_res = group_scorer.extract_subtraces(trace_data, segment_res)
+        rewards = await group_scorer.get_group_rewards(trace_data, user_instr)
         # 5. 保存结果
-        segment_res_file = "./trace/segment_policy.json"
-        with open(segment_res_file, "w", encoding="utf-8") as f:
-            json.dump(segment_res, f, indent=2, ensure_ascii=False)
+        # segment_res_file = "./trace/segment_policy.json"
+        # with open(segment_res_file, "w", encoding="utf-8") as f:
+        #     json.dump(segment_res, f, indent=2, ensure_ascii=False)
 
-        output_file = "./trace/segmented_traces.json"
-        with open(output_file, "w", encoding="utf-8") as f:
-            json.dump(subtrace_res, f, indent=2, ensure_ascii=False)
+        # output_file = "./trace/segmented_traces.json"
+        # with open(output_file, "w", encoding="utf-8") as f:
+        #     json.dump(subtrace_res, f, indent=2, ensure_ascii=False)
 
-        print(f"\n✅ 处理完成！结果已保存至 {output_file}")
+        group_rewards_file = "./trace/group_rewards.json"
+        with open(group_rewards_file, "w", encoding="utf-8") as f:
+            json.dump(rewards, f, indent=2, ensure_ascii=False)
+
+        print(f"\n✅ 处理完成！结果已保存至 {group_rewards_file}")
 
     # 执行异步主函数
     asyncio.run(main())
