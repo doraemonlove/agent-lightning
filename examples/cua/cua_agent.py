@@ -14,7 +14,6 @@ from convert_triplets import convert_traces_to_triplets, score_trace
 from dotenv import load_dotenv
 
 load_dotenv()
-# VERL_API_BASE=http://localhost:9999/ python
 agentlightning.configure_logger()
 
 logger = agentlightning.configure_logger(name=__name__)
@@ -61,7 +60,7 @@ async def run_planner_task(
     }
     result = []
     try:
-        print(f"📝 开始执行任务：{user_prompt}（沙箱ID: {sandbox_id}）,rollout_id: {rollout_id}")
+        logger.info(f"📝 开始执行任务：{user_prompt}（沙箱ID: {sandbox_id}）,rollout_id: {rollout_id}")
         with requests.post(url, headers=headers, data=json.dumps(data), stream=True, timeout=(10, 600)) as response:
             response.raise_for_status()
             for line in response.iter_lines(decode_unicode=True):
@@ -70,7 +69,7 @@ async def run_planner_task(
                         msg = json.loads(line[len("data: ") :])
                         result.append(msg)
                     except json.JSONDecodeError:
-                        print(f"⚠️ 解析任务消息失败：{line}")
+                        logger.warning(f"⚠️ 解析任务消息失败：{line}")
     except Exception as e:
         traceback.print_exc()
         raise RuntimeError(f"Planner任务执行失败：{str(e)}") from e
@@ -125,7 +124,6 @@ class LitCUAAgent(agentlightning.LitAgent):
             llm: agentlightning.LLM = cast(agentlightning.LLM, resources["main_llm"])
 
             model_name = "/models/Qwen3-VL-8B-Instruct"
-            # test_llm_endpoint(llm.endpoint, model_name)
             result = await run_planner_task(
                 sandbox_id=sandbox_uri,
                 user_prompt=sample["instruction"],
@@ -151,7 +149,7 @@ class LitCUAAgent(agentlightning.LitAgent):
                 user_instruction=sample["instruction"],
             )
             overall_score = overall_score_response.get("score", 0.0)
-            logger.info(f"整体评分成功: {overall_score}")
+            logger.info(f"整体任务评分成功: {overall_score}")
 
             # 分割并且转为triplet格式
             result = await convert_traces_to_triplets(

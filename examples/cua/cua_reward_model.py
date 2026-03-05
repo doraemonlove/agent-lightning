@@ -4,7 +4,9 @@ import base64
 import mimetypes
 import traceback
 import asyncio
+import agentlightning
 from typing import Any, Dict, List, Union, Optional
+from typing_extensions import Annotated
 from pydantic import BaseModel, Field
 from convert_triplets import load_trace_json
 from dotenv import load_dotenv, find_dotenv
@@ -18,6 +20,10 @@ from constants import (
     CUA_EVALUATION_PROMPT,
     CUA_PROMPT,
 )
+
+agentlightning.configure_logger()
+
+logger = agentlightning.configure_logger(name=__name__)
 
 # 尝试导入OpenAI库
 try:
@@ -53,7 +59,7 @@ class GroupRewardItem(BaseModel):
 
 
 class OverallRewardItem(BaseModel):
-    reward: float
+    reward: Annotated[float, Field(ge=0, le=1.0)]
     reason: str
 
 
@@ -282,7 +288,7 @@ class CUARewardModel:
 
         # 异常兜底：如果 trace 里面没有任何有效 step
         if max_steps == 0:
-            print("⚠️ 轨迹中未检测到任何有效的 Step。")
+            logger.info("⚠️ 轨迹中未检测到任何有效的 Step。")
             return {
                 "segments": [],
                 "step_map": {},
@@ -294,7 +300,7 @@ class CUARewardModel:
 
                 # 2. 如果有反馈，携带上下文重试
                 if previous_feedback:
-                    print(f"🔧 [Attempt {attempt + 1}] 追加错题本给模型进行修正...")
+                    logger.info(f"🔧 [Attempt {attempt + 1}] 切割有误,正在重试...")
                     messages.append(
                         {
                             "role": "user",
@@ -302,7 +308,7 @@ class CUARewardModel:
                         }
                     )
 
-                print(f"🚀 [Attempt {attempt + 1}/{max_retries}] 请求大模型进行切分...")
+                logger.info(f"🚀 [Attempt {attempt + 1}/{max_retries}] 请求大模型进行切分...")
                 resp = await self.client.beta.chat.completions.parse(
                     model=self.model,
                     temperature=fixed_temperature,
@@ -343,16 +349,16 @@ class CUARewardModel:
 
                 # 4. 决策结果
                 if not error_reasons:
-                    print(f"✅ 成功获取有效且连续的分段: {len(segments)} 段")
+                    logger.info(f"✅ 成功获取有效且连续的分段: {len(segments)} 段")
                     # 这里返回的时候，把片段和映射表一起返回，方便后续组装！
                     return {"segments": [s.model_dump() for s in segments], "step_map": step_map}
                 else:
                     previous_feedback = "\n".join(error_reasons)
-                    print(f"⚠️ 业务校验失败:\n{previous_feedback}")
+                    logger.warning(f"⚠️ 业务校验失败:\n{previous_feedback}")
 
             except Exception as e:
                 error_msg = str(e)
-                print(f"❌ 解析/系统错误: {error_msg}")
+                logger.error(f"❌ 解析/系统错误: {error_msg}")
                 # 如果是 Pydantic 抓到的格式错误 (如长度不足 3)，反馈给 LLM
                 if "validation" in error_msg.lower():
                     previous_feedback = (
@@ -363,7 +369,7 @@ class CUARewardModel:
                     traceback.print_exc()
                     previous_feedback = None
 
-        print("❌ 已达到最大重试次数，操作中止")
+        logger.error("❌ 已达到最大重试次数，操作中止")
         return {
             "segments": [],
             "step_map": {},
@@ -400,6 +406,7 @@ class CUARewardModel:
         fixed_temperature = 0.0
         base_content = self._build_reward_content(trace, user_instruction, self.group_reward_prompt)
         messages = [{"role": "user", "content": base_content}]
+        logger.info(f"🚀 正在评分....")
         resp = await asyncio.wait_for(
             self.client.beta.chat.completions.parse(
                 model=self.model,
@@ -415,6 +422,7 @@ class CUARewardModel:
         fixed_temperature = 0.0
         base_content = self._build_reward_content(trace, user_instruction, self.overall_reward_prompt)
         messages = [{"role": "user", "content": base_content}]
+        logger.info("🚀 调用整体奖励模型评分")
         resp = await asyncio.wait_for(
             self.client.beta.chat.completions.parse(
                 model=self.model,
@@ -424,6 +432,7 @@ class CUARewardModel:
             ),
             timeout=120,
         )
+        logger.info(f"✅ 整体奖励模型评分成功: {resp.choices[0].message.parsed.reward}")
         return (
             resp.choices[0].message.parsed.reward,
             resp.choices[0].message.parsed.reason,
@@ -438,17 +447,20 @@ class CUARewardModel:
                 self.call_group_reward_model(trace_data, user_instruction),
                 timeout=120,
             )
+            logger.info(f"✅ SubTrace_{segment_id}评分成功: {reward}")
             return {
                 "segment_id": segment_id,
                 "reward": reward,
             }
         except asyncio.TimeoutError as e:
+            logger.error(f"❌ SubTrace_{segment_id}评分超时: {e}")
             return {
                 "segment_id": segment_id,
                 "reward": None,
                 "error": f"timeout: {e}",
             }
         except Exception as e:
+            logger.error(f"SubTrace_{segment_id}评分出错: {e}")
             return {
                 "segment_id": segment_id,
                 "reward": None,
@@ -463,7 +475,7 @@ class CUARewardModel:
         base_delay: float = 1.0,
     ) -> List[Dict[str, Any]]:
         assert all("segment_id" in s for s in subtrace_list)
-
+        logger.info(f"开始对 {len(subtrace_list)} 个子轨迹进行评分")
         for attempt in range(max_retries):
             semaphore = asyncio.Semaphore(max_concurrency)
 
@@ -483,15 +495,17 @@ class CUARewardModel:
 
             failed = [item for item in results if item.get("reward") is None]
             if not failed:
+                logger.info(f"✅ 子轨迹评分成功！")
                 return results
 
-            print(f"[Trace Retry] failed_segments={len(failed)} " f"(attempt {attempt + 1}/{max_retries})")
+            logger.info(f"[Trace Retry] failed_segments={len(failed)} " f"(attempt {attempt + 1}/{max_retries})")
 
             if attempt < max_retries - 1:
                 delay = base_delay * (2**attempt)
                 await asyncio.sleep(delay)
 
-        print(f"[Trace FAILED] whole-trace scoring failed after {max_retries} attempts")
+        logger.error(f"[Trace FAILED] whole-trace scoring failed after {max_retries} attempts")
+        logger.info("子轨迹评分失败")
         return results
 
     def build_context_trace(
@@ -545,7 +559,7 @@ class CUARewardModel:
                     triplet = {"instruction": merged_instruction, "trace_data": truncated_trace, "reward": reward}
 
                     context_traces.append(triplet)
-        print(f"✅ 成功构建 {len(context_traces)} 条上下文轨迹")
+        logger.info(f"✅ 成功构建 {len(context_traces)} 条上下文轨迹")
 
         return context_traces
 
@@ -556,17 +570,17 @@ class CUARewardModel:
         reward_list = [item["reward"] for item in results]
         context_traces = self.build_context_trace(subtrace_list, reward_list, user_instruction)
 
-        # result_list_file = "./trace/group_reward_results.json"
-        # with open(result_list_file, "w", encoding="utf-8") as f:
-        #     json.dump(results, f, indent=2, ensure_ascii=False)
+        result_list_file = "./trace/group_reward_results.json"
+        with open(result_list_file, "w", encoding="utf-8") as f:
+            json.dump(results, f, indent=2, ensure_ascii=False)
 
-        # segment_res_file = "./trace/segment_policy.json"
-        # with open(segment_res_file, "w", encoding="utf-8") as f:
-        #     json.dump(segment_result, f, indent=2, ensure_ascii=False)
+        segment_res_file = "./trace/segment_policy.json"
+        with open(segment_res_file, "w", encoding="utf-8") as f:
+            json.dump(segment_result, f, indent=2, ensure_ascii=False)
 
-        # output_file = "./trace/segmented_traces.json"
-        # with open(output_file, "w", encoding="utf-8") as f:
-        #     json.dump(subtrace_list, f, indent=2, ensure_ascii=False)
+        output_file = "./trace/segmented_traces.json"
+        with open(output_file, "w", encoding="utf-8") as f:
+            json.dump(subtrace_list, f, indent=2, ensure_ascii=False)
 
         return context_traces
 

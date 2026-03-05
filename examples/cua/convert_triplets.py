@@ -33,7 +33,7 @@ def base64_to_pil(image_data):
             image_bytes = base64.b64decode(image_data)
             return Image.open(BytesIO(image_bytes)).convert("RGB")
         except Exception as e:
-            print(f"Image decode error: {e}")
+            logger.info(f"Image decode error: {e}")
             return None
     return None
 
@@ -269,7 +269,7 @@ def convert_trace_to_messages(trace, instruction):
     dataset_sample = {"tools": get_tools_schema(), "messages": []}
 
     if not isinstance(trace, list) or len(trace) == 0:
-        print("Error: trace 必须是非空列表")
+        logger.error("Error: trace 必须是非空列表")
         return {}
 
     # =============================
@@ -277,7 +277,7 @@ def convert_trace_to_messages(trace, instruction):
     # =============================
     init_event = trace[0]
     if "screenshot" not in init_event or not init_event["screenshot"]:
-        print("Error: Missing initial screenshot")
+        logger.error("Error: Missing initial screenshot")
         return {}
 
     init_screenshot = init_event["screenshot"]
@@ -287,7 +287,7 @@ def convert_trace_to_messages(trace, instruction):
         pil_img = base64_to_pil(init_screenshot)
         width, height = pil_img.size
     except Exception as e:
-        print(f"Error processing initial image: {e}")
+        logger.info(f"Error processing initial image: {e}")
         return {}
 
     # 构造 System Prompt
@@ -409,8 +409,8 @@ def convert_trace_to_messages(trace, instruction):
     # 说明整个 trace 没有有效的 assistant 动作，这条数据通常没有训练价值。
     # 至少应该保留 [System, User, Assistant] 三条
     if len(msgs) < 3:
-        print("Warning: Trace dropped because no valid assistant action found at the end.")
-        print(f"msgs: {msgs}")
+        logger.warning("Warning: Trace dropped because no valid assistant action found at the end.")
+        logger.info(f"msgs: {msgs}")
         return {}
 
     return dataset_sample
@@ -480,7 +480,7 @@ def convert_messages_to_triplet(
     # 安全检查：Full 应该比 Prompt 长
     if len(full_ids) <= len(prompt_ids):
         # 这种情况通常意味着 response 为空，或者 tokenizer 处理异常
-        print(f"⚠️ Warning: Full length ({len(full_ids)}) <= Prompt length ({len(prompt_ids)}). Skipping.")
+        logger.warning(f"⚠️ Warning: Full length ({len(full_ids)}) <= Prompt length ({len(prompt_ids)}). Skipping.")
         # 根据你的训练框架需求，这里可以选择抛出异常或返回 None
         raise Exception("Response is empty or prompt matches full length.")
 
@@ -489,7 +489,7 @@ def convert_messages_to_triplet(
     # 如果发现不匹配，通常是 add_generation_prompt 添加的 \n 和 Full 中的 \n 合并问题
     # 这里不做硬性 assert，防止因为极个别 token 归一化导致训练中断，但建议日志关注
     # if full_ids[:len(prompt_ids)] != prompt_ids:
-    #     print("⚠️ Warning: Token mismatch at boundary. Slicing anyway.")
+    #     logger.warning("⚠️ Warning: Token mismatch at boundary. Slicing anyway.")
 
     response_ids = full_ids[len(prompt_ids) :]
 
@@ -562,10 +562,10 @@ async def score_trace(url, trace: list[dict] = None, user_instruction: str = Non
         # 打印大小日志
         payload_str = json.dumps(payload)
         payload_mb = len(payload_str) / (1024 * 1024)
-        print(f"正在发送评分请求，数据大小: {payload_mb:.2f} MB")
+        logger.info(f"正在发送评分请求，数据大小: {payload_mb:.2f} MB")
 
         if payload_mb > 50:  # 假设阈值是 50MB
-            print("数据包过大，可能会导致连接中断！建议检查 trace 是否包含过多 Base64 图片。")
+            logger.warning("数据包过大，可能会导致连接中断！建议检查 trace 是否包含过多 Base64 图片。")
 
         # 2. 配置重试策略
         session = requests.Session()
@@ -579,14 +579,13 @@ async def score_trace(url, trace: list[dict] = None, user_instruction: str = Non
 
         response.raise_for_status()
         result = response.json()
-        print(f"轨迹成功")
         return result
 
     except requests.exceptions.ConnectionError as e:
-        print(f"连接被重置/断开。原因可能是数据包过大或服务端崩溃。Error: {e}")
+        logger.error(f"连接被重置/断开。原因可能是数据包过大或服务端崩溃。Error: {e}")
         return {}
     except Exception as e:
-        print("评分轨迹失败: %s", e)
+        logger.error(f"评分轨迹失败: {e}")
         return {}
 
 
@@ -618,8 +617,6 @@ async def convert_traces_to_triplets(
     # # 保存grouped_traces以便调试
     # with open("result.json", "w", encoding="utf-8") as f:
     #     json.dump(result, f, ensure_ascii=False, indent=4)
-
-    logger.info(f"context trace type:{type(context_traces)}, length:{len(context_traces)}")
 
     processor = AutoProcessor.from_pretrained(model_path, min_pixels=200704, max_pixels=1350000)
 
@@ -686,28 +683,32 @@ def save_triplets_to_json(triplets: List[Any], filename: str):
         # indent=2 让文件可读性更好，但体积会变大
         json.dump(triplets, f, cls=TripletEncoder, indent=2, ensure_ascii=False)
 
-    print(f"Saved to {filename}")
+    logger.info(f"Saved to {filename}")
 
 
 async def main():
     # ==============================
     # 路径配置
     # ==============================
-    input_trace_path = (
-        "/root/code/wangjiaju/llamafactory-0.9.4/data/cua/cua_data_json/claude_0121_807/sample_1_ver_0.json"
-    )
+    input_trace_path = "/root/workspace/wangjiaju/zql_workspace/agent-lightning/examples/cua/trace/0206/0206-qwen3-4b-sft-2500/sample_14_plan_ZQL_TEST.json"
 
     # ⚠️ 必须是真实存在的 Qwen-VL / Qwen2.5-VL 模型路径
-    model_path = "/models/Qwen3-VL-8B-Instruct"
+    model_path = "/root/workspace/models/Qwen3-VL-8B-Instruct"
 
     # ==============================
     # Step 1: 读取 trace
     # ==============================
     instruction, trace_data = load_trace_json(input_trace_path)
 
-    print("📌 Instruction:")
-    print(instruction)
-    print(f"📌 Trace length: {len(trace_data)}")
+    logger.info("📌 Instruction:")
+    logger.info(instruction)
+    logger.info(f"📌 Trace length: {len(trace_data)}")
+
+    overall_score_response = await score_trace(
+        url="http://localhost:8003/overall_score",
+        trace=trace_data,
+        user_instruction=instruction,
+    )
 
     # ==============================
     # Step 2: trace → triplets
@@ -717,16 +718,16 @@ async def main():
         instruction=instruction,
         rollout_id="test_rollout_001",
         traces=trace_data,
-        overall_score=0.0,
+        overall_score=overall_score_response.get("score", 0.0),
         model_path=model_path,
     )
 
-    print(f"📌 Generated {len(all_triplets)} segmented triplet groups")
+    logger.info(f"📌 Generated {len(all_triplets)} segmented triplet groups")
 
     # ==============================
     # Step 3: 保存结果
     # ==============================
-    save_triplets_to_json(all_triplets, "/root/code/wangjiaju/agent-lightning/examples/cua/trace/example_triplets.json")
+    save_triplets_to_json(all_triplets, "/root/workspace/zql/agent-lightning/examples/cua/trace/example_triplets.json")
 
 
 if __name__ == "__main__":
