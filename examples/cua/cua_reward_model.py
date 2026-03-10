@@ -8,7 +8,6 @@ import agentlightning
 from typing import Any, Dict, List, Union, Optional
 from typing_extensions import Annotated
 from pydantic import BaseModel, Field
-from convert_triplets import load_trace_json
 from dotenv import load_dotenv, find_dotenv
 from constants import (
     GROUPED_ACTION_REWARD_PROMPT,
@@ -17,8 +16,7 @@ from constants import (
     SEGMENT_START_STEP_DESCRIPTION,
     SEGMENT_START_STEP_LENGTH_DESCRIPTION,
     GROUPED_REWARD_DESCRIPTION,
-    CUA_EVALUATION_PROMPT,
-    CUA_PROMPT,
+    CUA_AUDIT_EVALUATION_PROMPT,
 )
 
 agentlightning.configure_logger()
@@ -96,7 +94,7 @@ class CUARewardModel:
         model: str = "",
         segment_prompt: str = TRACE_SEGMENT_PROMPT,
         grouped_reward_prompt: str = GROUPED_ACTION_REWARD_PROMPT,
-        overall_reward_prompt: str = CUA_EVALUATION_PROMPT,  # 可以根据需要区分不同的 prompt
+        overall_reward_prompt: str = CUA_AUDIT_EVALUATION_PROMPT,  # 可以根据需要区分不同的 prompt
     ) -> None:
         self.client = AsyncOpenAI(base_url=base_url, api_key=api_key)
         self.model = model

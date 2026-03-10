@@ -4,19 +4,20 @@ import time
 import requests
 import json
 import logging
-import random
 from typing import Any
 import pandas as pd
 import os
 import csv
 import sys
 import threading
-from concurrent.futures import ThreadPoolExecutor, as_completed
-from dotenv import load_dotenv
+import asyncio
+from reward_server import score_trace
+from dotenv import load_dotenv, find_dotenv
+from constants import CUA_PROMPT
 
-load_dotenv()
+load_dotenv(find_dotenv())
 # ================= 配置与常量 =================
-KEY_AUTH = os.getenv("sandbox_key_auth")
+SANDBOX_KEY_AUTH = os.getenv("sandbox_key_auth")
 
 logging.basicConfig(
     level=logging.INFO,
@@ -29,7 +30,6 @@ logger = logging.getLogger(__name__)
 CSV_LOCK = threading.Lock()
 
 
-# ================= Sandbox Manager (直接复用你的代码) =================
 class SandboxBusyError(RuntimeError):
     pass
 
@@ -45,7 +45,7 @@ class SandboxManager:
 
     def _bootstrap_free_pool_from_remote(self):
         try:
-            running_uris = ["i-yef0q5bv9c5i3z6mkj5a"]
+            running_uris = ["i-yea0n5udc0bw80duzulj"]
             running_uris = list(set(running_uris))  # 简单的去重
             logger.info(f"✅ 初始化沙箱池，共 {len(running_uris)} 个沙箱")
 
@@ -85,16 +85,16 @@ class SandboxManager:
             return len(self._free) + len(self._in_use)
 
 
-# ================= Evaluation Logic (改为同步) =================
-class cua_evaluation:
+class CuaEvalutor:
 
     def __init__(self, results_file: str = "./eval_results.csv"):
         self.results_file = results_file
-        self.score_endpoint = "http://localhost:8003/score"
+        self.score_endpoint = "http://localhost:8003/overall_score"
 
     def run_planner_task(
         self,
         sandbox_id: str,
+        system_prompt: str,
         user_prompt: str,
         model_name: str,
         model_endpoint: str,
@@ -108,14 +108,15 @@ class cua_evaluation:
         url = f"{agent_planner_url}/run/task"
         headers = {"Content-Type": "application/json", "Authorization": key_auth}
         data = {
+            "system_prompt": system_prompt,
             "user_prompt": user_prompt,
             "sandbox_id": sandbox_id,
             "model_name": model_name,
             "model_endpoint": model_endpoint,
             "model_provider": model_provider,
-            "max_actions": 30,
+            "max_actions": 60,
             "max_images": 3,
-            "thinking_type": "enabled",
+            "thinking_type": "disabled",
             "is_training": True,
             "model_api_key": model_api_key,
             "turn_on_review": False,
@@ -141,24 +142,13 @@ class cua_evaluation:
 
         return result
 
-    def score_trace(self, trace, instruction):
-        data = {"trace": trace, "user_instruction": instruction}
-        try:
-            with requests.post(self.score_endpoint, data=json.dumps(data), timeout=(10, 600)) as response:
-                response.raise_for_status()
-                score_result = response.json()
-                logger.info(f"评分成功: {score_result.get('score')}")
-                return score_result
-        except Exception as e:
-            logger.error(f"评分失败: {e}")
-            raise
-
-    def execute_eval_rollout(
+    async def execute_eval_rollout(
         self,
         sample: dict,
         sandbox_uri: str,
         unique_task_id: str,  # 用来区分同一各样本的不同变体
         model_name: str,
+        system_prompt: str,
         trace_save_dir: str,
         model_endpoint: str = "",
         model_api_key: str = "",
@@ -175,6 +165,7 @@ class cua_evaluation:
             result = self.run_planner_task(
                 sandbox_id=sandbox_uri,
                 user_prompt=instruction,
+                system_prompt=system_prompt,
                 model_name=model_name,
                 model_endpoint=model_endpoint,
                 model_api_key=model_api_key,
@@ -195,7 +186,7 @@ class cua_evaluation:
 
             # 评分
             end_time_rollout = time.time()
-            score_result = self.score_trace(trace=result, instruction=instruction)
+            score_result = await score_trace(url=self.score_endpoint, trace=result, user_instruction=instruction)
             reward = score_result["score"]
             reason = score_result["reason"]
 
@@ -224,7 +215,7 @@ class cua_evaluation:
             logger.exception(f"[{unique_task_id}] Rollout Error: {e}")
             return None
 
-    def execute_eval_offline(
+    async def execute_eval_offline(
         self,
         instruction: str,
         eval_dir: str,
@@ -238,7 +229,7 @@ class cua_evaluation:
                 with open(file_path, "r") as f:
                     result = json.load(f)
 
-                score_result = self.score_trace(trace=result, instruction=instruction)
+                score_result = await score_trace(url=self.score_endpoint, trace=result, user_instruction=instruction)
                 reward = score_result["score"]
                 reason = score_result["reason"]
 
@@ -266,8 +257,12 @@ class cua_evaluation:
 
 
 # ================= Worker Function =================
-def worker_process_sample_variant(
-    sample_variant: dict, unique_task_id: str, sandbox_manager: SandboxManager, evaluator: cua_evaluation, config: dict
+async def worker_process_sample(
+    sample: dict,
+    unique_task_id: str,
+    sandbox_manager: SandboxManager,
+    evaluator: CuaEvalutor,
+    config: dict,
 ):
     """
     单个线程执行的函数：
@@ -281,10 +276,11 @@ def worker_process_sample_variant(
         sandbox_uri = sandbox_manager.allocate(unique_task_id)
 
         # 2. 执行任务
-        evaluator.execute_eval_rollout(
-            sample=sample_variant,
+        await evaluator.execute_eval_rollout(
+            sample=sample,
             sandbox_uri=sandbox_uri,
             unique_task_id=unique_task_id,
+            system_prompt=config["system_prompt"],
             model_name=config["model_name"],
             model_api_key=config["model_api_key"],
             model_endpoint=config["model_endpoint"],
@@ -310,22 +306,23 @@ def iterate_parquet_samples(parquet_path: str, start_row: int = 0):
 
 def eval_offline():
     instruction = "任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。随后重新打开浏览器,进入资产审核网站，设置筛选条件，盘点计划WJJ_TEST，盘点审核结果为未盘点,然后盘点2条记录。"
-    evaluator = cua_evaluation("Qwen3-VL-8B-Instruct-offline-eval.csv")
+    evaluator = CuaEvalutor("Qwen3-VL-8B-Instruct-offline-eval.csv")
     evaluator.execute_eval_offline(instruction, "./trace/Qwen3-VL-8B-Instruct")
 
 
 def main():
     # 1. 配置
     config = {
-        "eval_path": "data/train.parquet",
-        "result_csv": "./trace/0209/0209-qwen3-8b-raw-2/0209-qwen3-8b-raw-2.csv",
-        "model_name": "models/Qwen3-VL-8B-claude",
-        "model_endpoint": "http://0.0.0.0:8441/v1",
-        "model_api_key": "cua",
-        "model_provider": "openai",
-        "trace_save_dir": "./trace/0209/0209-qwen3-8b-raw-2/",
+        "eval_path": "data/cross_app_eval.parquet",
+        "result_csv": "./trace/0309/0309-claude-sonnet-4-5-chrome-test/0309-claude-sonnet-4-5.csv",
+        "model_name": "global.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        "model_endpoint": "",
+        "model_api_key": "",
+        "model_provider": "bedrock",
+        "system_prompt": CUA_PROMPT,
+        "trace_save_dir": "./trace/0309/0309-claude-sonnet-4-5-chrome-test/",
         "agent_planner_url": "http://0.0.0.0:8331/planner",
-        "key_auth": KEY_AUTH,
+        "key_auth": SANDBOX_KEY_AUTH,
     }
 
     if not os.path.exists(config["eval_path"]):
@@ -334,63 +331,34 @@ def main():
 
     # 2. 初始化组件
     sandbox_manager = SandboxManager(lease_ttl_s=1200)
-    evaluator = cua_evaluation(config["result_csv"])
+    evaluator = CuaEvalutor(config["result_csv"])
 
-    # 这里的并发数通常建议设为沙箱的总数
-    max_workers = 1
-    logger.info(f"🚀 启动线程池，最大并发数: {max_workers}")
+    logger.info("🚀 启动同步评估流程")
 
-    # 3. 准备均衡分配的随机池 (核心逻辑)
-    # 预先获取所有样本
+    # 3. 直接读取并遍历所有样本
     all_samples = list(iterate_parquet_samples(config["eval_path"]))
-    num_samples = len(all_samples)
 
-    # 定义你的变体
-    variants = ["ZQL_TEST", "ZQL_TEST_05", "CUA_TEST", "WJJ_TEST"]
-    num_variants = len(variants)
+    # 4. 同步执行任务
+    completed_tasks = 0
+    for idx, original_sample in all_samples:
+        # 深拷贝样本以防修改冲突
+        sample_copy = original_sample.copy()
 
-    # 构造均衡的分配池：例如 n=100, 3个变体，则每个变体约 33-34 次
-    repeat_times = (num_samples // num_variants) + 1
-    assignment_pool = (variants * repeat_times)[:num_samples]
+        # 生成唯一任务 ID
+        unique_task_id = f"sample_{idx}"
 
-    # 随机洗牌，打破固定顺序但保持总量均衡
-    random.seed(42)  # 设置固定种子使实验可复现
-    random.shuffle(assignment_pool)
-
-    # 4. 提交任务到线程池
-    tasks = []
-    with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        for i, (idx, original_sample) in enumerate(all_samples):
-
-            # 从随机池中取出一个预分配好的变体
-            plan_name = assignment_pool[i]
-
-            # 深拷贝样本以防修改冲突
-            sample_copy = original_sample.copy()
-
-            try:
-                # 注入当前分配到的变体名称
-                # 假设你的 instruction 中有 {plan_name} 占位符
-                sample_copy["instruction"] = sample_copy["instruction"].format(plan_name=plan_name)
-            except (KeyError, IndexError, ValueError):
-                # 如果 instruction 中没有占位符，format 会抛出异常
-                pass
-
-            # 生成唯一的任务 ID，包含 plan_name 方便在 CSV 中区分结果
-            unique_task_id = f"sample_{idx}_plan_{plan_name}"
-
-            # 提交任务
-            future = executor.submit(
-                worker_process_sample_variant,
-                sample_variant=sample_copy,
+        asyncio.run(
+            worker_process_sample(
+                sample=sample_copy,
                 unique_task_id=unique_task_id,
                 sandbox_manager=sandbox_manager,
                 evaluator=evaluator,
                 config=config,
             )
-            tasks.append(future)
+        )
+        completed_tasks += 1
 
-        logger.info(f"已提交 {len(tasks)} 个随机均衡分配的任务，等待执行...")
+    logger.info(f"已同步执行 {completed_tasks} 个随机均衡分配的任务")
 
     logger.info("所有评估任务完成，正在计算最终得分...")
 

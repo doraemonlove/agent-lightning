@@ -10,12 +10,14 @@ import os
 import csv
 import sys
 import threading
+import asyncio
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from dotenv import load_dotenv
+from reward_server import score_trace
+from dotenv import load_dotenv, find_dotenv
+from constants import CUA_PROMPT
 
-load_dotenv()
-# ================= 配置与常量 =================
-WJJ_KEY_AUTH = os.getenv("sandbox_key_auth")
+load_dotenv(find_dotenv())
+SANDBOX_KEY_AUTH = os.getenv("sandbox_key_auth")
 
 logging.basicConfig(
     level=logging.INFO,
@@ -28,7 +30,6 @@ logger = logging.getLogger(__name__)
 CSV_LOCK = threading.Lock()
 
 
-# ================= Sandbox Manager (直接复用你的代码) =================
 class SandboxBusyError(RuntimeError):
     pass
 
@@ -45,15 +46,11 @@ class SandboxManager:
     def _bootstrap_free_pool_from_remote(self):
         try:
             # 你的沙箱列表
-            # running_uris = [
-            #     "i-yebyrouj28qc6ipf3ago", "i-yebyrom3nkqc6infvo17", "i-yebyro9gjkbw80d63dwd", "i-yebyro2fpcwh2ypfknls", "i-yebyrnslq8cva4gqydwl", "i-yebyrnirr4bw80foocvh", "i-yebyrnbqwwqc6imkn3rl", "i-yebyrmnv9c5i3z5bpcpu", "i-yebwczn8xsqc6io24lrp", "i-yebwczdeyowh2yrawo46",
-            #     "i-yecbu0tmo0wh2yq4ohpb", "i-yecbu0ie4gxjd1w2z7op", "i-yecbu075kwxjd1wcviws", "i-yecbtzxblscva4i9g47w", "i-yecbtzm328bw80c958n5", "i-yecbtzdnnkcva4eylo25", "i-yecbtz588w5i3z3hburf", "i-yecbtyve9swh2yqucaid", "i-yecbtymyv4xjd1u5d2np", "i-yecbtyabr45i3z3f1gku",
-            #     "i-yecbw4ioe8qc6imlr7tg", "i-yecbw44mpsqc6ilg4f1j", "i-yecbw3usqowh2yoc11gv", "i-yecbw3kyrkqc6iok3scn", "i-yecbw36x34cva4gg41nk", "i-yecbw2x340qc6inu45sg", "i-yecbw2onpc5i3z6wl8gq", "i-yecbw2etq85i3z3mtwyx", "i-yecbw226m85i3z80f1zt", "i-yecbw1qy2oqc6io5pqxl",
-            #     "i-yecbxszwn4wh2yq1avlb", "i-yecewfij28xjd1u1ok94"
-            # ]
             running_uris = [
-                # "i-yecewfij28xjd1u1ok94"
-                "i-yee0gfw1s0wh2ysa318r"
+                "i-yeehw27z7k5i3z79r8kr",
+                "i-yeae43bhfkxjd1taob37",
+                "i-yeae1qx728wh2ypok55k",
+                "i-yea1qch6o0xjd1tfette",
             ]
             running_uris = list(set(running_uris))  # 简单的去重
             logger.info(f"✅ 初始化沙箱池，共 {len(running_uris)} 个沙箱")
@@ -94,16 +91,16 @@ class SandboxManager:
             return len(self._free) + len(self._in_use)
 
 
-# ================= Evaluation Logic (改为同步) =================
-class cua_evaluation:
+class CuaEvaluator:
 
     def __init__(self, results_file: str = "./eval_results.csv"):
         self.results_file = results_file
-        self.score_endpoint = "http://localhost:8003/score"
+        self.score_endpoint = "http://localhost:8003/overall_score"
 
     def run_planner_task(
         self,
         sandbox_id: str,
+        system_prompt: str,
         user_prompt: str,
         model_name: str,
         model_endpoint: str,
@@ -117,22 +114,23 @@ class cua_evaluation:
         url = f"{agent_planner_url}/run/task"
         headers = {"Content-Type": "application/json", "Authorization": key_auth}
         data = {
+            "system_prompt": system_prompt,
             "user_prompt": user_prompt,
             "sandbox_id": sandbox_id,
             "model_name": model_name,
             "model_endpoint": model_endpoint,
             "model_provider": model_provider,
+            "model_api_key": model_api_key,
             "max_actions": 30,
             "max_images": 3,
-            "thinking_type": "enabled",
+            "thinking_type": "disabled",
             "is_training": True,
-            "model_api_key": model_api_key,
             "turn_on_review": False,
             "rollout_id": rollout_id,
         }
         result = []
         try:
-            # logger.info("开始调用 Planner: url=%s, sandbox=%s", url, sandbox_id)
+            logger.info(f"开始调用 Planner: url={url}, sandbox={sandbox_id}")
             with requests.post(url, headers=headers, data=json.dumps(data), stream=True, timeout=600) as response:
                 response.raise_for_status()
                 for line in response.iter_lines(decode_unicode=True):
@@ -150,21 +148,10 @@ class cua_evaluation:
 
         return result
 
-    def score_trace(self, trace, instruction):
-        data = {"trace": trace, "user_instruction": instruction}
-        try:
-            with requests.post(self.score_endpoint, data=json.dumps(data), timeout=(10, 600)) as response:
-                response.raise_for_status()
-                score_result = response.json()
-                logger.info(f"评分成功: {score_result.get('score')}")
-                return score_result
-        except Exception as e:
-            logger.error(f"评分失败: {e}")
-            raise
-
-    def execute_eval_rollout(
+    async def execute_eval_rollout(
         self,
         sample: dict,
+        system_prompt: str,
         sandbox_uri: str,
         unique_task_id: str,  # 用来区分同一各样本的不同变体
         model_name: str,
@@ -183,6 +170,7 @@ class cua_evaluation:
             logger.info(f"[{unique_task_id}] 开始 Rollout")
             result = self.run_planner_task(
                 sandbox_id=sandbox_uri,
+                system_prompt=system_prompt,
                 user_prompt=instruction,
                 model_name=model_name,
                 model_endpoint=model_endpoint,
@@ -204,7 +192,7 @@ class cua_evaluation:
 
             # 评分
             end_time_rollout = time.time()
-            score_result = self.score_trace(trace=result, instruction=instruction)
+            score_result = await score_trace(url=self.score_endpoint, trace=result, user_instruction=instruction)
             reward = score_result["score"]
             reason = score_result["reason"]
 
@@ -233,8 +221,9 @@ class cua_evaluation:
             logger.exception(f"[{unique_task_id}] Rollout Error: {e}")
             return None
 
-    def execute_eval_offline(
+    async def execute_eval_offline(
         self,
+        system_prompt: str,
         instruction: str,
         eval_dir: str,
     ) -> tuple[float, float] | None:
@@ -247,7 +236,7 @@ class cua_evaluation:
                 with open(file_path, "r") as f:
                     result = json.load(f)
 
-                score_result = self.score_trace(trace=result, instruction=instruction)
+                score_result = await score_trace(url=self.score_endpoint, trace=result, user_instruction=instruction)
                 reward = score_result["score"]
                 reason = score_result["reason"]
 
@@ -276,7 +265,7 @@ class cua_evaluation:
 
 # ================= Worker Function =================
 def worker_process_sample_variant(
-    sample_variant: dict, unique_task_id: str, sandbox_manager: SandboxManager, evaluator: cua_evaluation, config: dict
+    sample_variant: dict, unique_task_id: str, sandbox_manager: SandboxManager, evaluator: CuaEvaluator, config: dict
 ):
     """
     单个线程执行的函数：
@@ -289,8 +278,9 @@ def worker_process_sample_variant(
         # 1. 申请资源 (阻塞等待)
         sandbox_uri = sandbox_manager.allocate(unique_task_id)
 
-        # 2. 执行任务
-        evaluator.execute_eval_rollout(
+        # 2. 执行任务（使用 asyncio.run 运行异步方法）
+        asyncio.run(evaluator.execute_eval_rollout(
+            system_prompt=config["system_prompt"],
             sample=sample_variant,
             sandbox_uri=sandbox_uri,
             unique_task_id=unique_task_id,
@@ -301,7 +291,7 @@ def worker_process_sample_variant(
             model_provider=config["model_provider"],
             agent_planner_url=config["agent_planner_url"],
             key_auth=config["key_auth"],
-        )
+        ))
     except Exception as e:
         logger.error(f"Worker execution failed for {unique_task_id}: {e}")
     finally:
@@ -319,7 +309,7 @@ def iterate_parquet_samples(parquet_path: str, start_row: int = 0):
 
 def eval_offline():
     instruction = "任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。随后重新打开浏览器,进入资产审核网站，设置筛选条件，盘点计划WJJ_TEST，盘点审核结果为未盘点,然后盘点2条记录。"
-    evaluator = cua_evaluation("Qwen3-VL-8B-Instruct-offline-eval.csv")
+    evaluator = CuaEvaluator("Qwen3-VL-8B-Instruct-offline-eval.csv")
     evaluator.execute_eval_offline(instruction, "./trace/Qwen3-VL-8B-Instruct")
 
 
@@ -328,13 +318,14 @@ def main():
     config = {
         "eval_path": "data/train.parquet",
         "result_csv": "trace/0121/Qwen3-VL-8B-Instruct-eval-normal.csv",
+        "system_prompt": CUA_PROMPT,
         "model_name": "models/Qwen3-VL-8B-Instruct",
         "model_endpoint": "http://localhost:8004/v1",
         "model_api_key": "wangjiaju",
         "model_provider": "openai",
         "trace_save_dir": "./trace/0121/normal",
         "agent_planner_url": "http://0.0.0.0:8332/planner",
-        "key_auth": WJJ_KEY_AUTH,
+        "key_auth": SANDBOX_KEY_AUTH,
     }
 
     # 1. 初始化组件
@@ -344,7 +335,7 @@ def main():
 
     # 初始化管理器，设置TTL防止僵尸占用 (例如 20分钟)
     sandbox_manager = SandboxManager(lease_ttl_s=1200)
-    evaluator = cua_evaluation(config["result_csv"])
+    evaluator = CuaEvaluator(config["result_csv"])
 
     # 2. 准备任务队列
     # 获取沙箱数量来决定并发度，可以稍微多一点以便在评分/处理数据时让出CPU

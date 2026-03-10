@@ -10,8 +10,13 @@ import requests
 import traceback
 import json
 
-from convert_triplets import convert_traces_to_triplets, score_trace
+from convert_triplets import convert_traces_to_triplets
+from reward_server import score_trace
 from dotenv import load_dotenv
+
+from constants import CUA_PROMPT
+
+TASK_PROMPT = CUA_PROMPT
 
 load_dotenv()
 agentlightning.configure_logger()
@@ -24,6 +29,7 @@ os.makedirs(TRACE_DIR, exist_ok=True)
 
 async def run_planner_task(
     sandbox_id: str,
+    system_prompt: str,
     user_prompt: str,
     model_name: str,
     model_endpoint: str,
@@ -46,6 +52,7 @@ async def run_planner_task(
     if KEY_AUTH:
         headers["Authorization"] = KEY_AUTH
     data = {
+        "system_prompt": system_prompt,
         "user_prompt": user_prompt,
         "sandbox_id": sandbox_id,
         "model_name": model_name,
@@ -126,6 +133,7 @@ class LitCUAAgent(agentlightning.LitAgent):
             model_name = "/models/Qwen3-VL-8B-Instruct"
             result = await run_planner_task(
                 sandbox_id=sandbox_uri,
+                system_prompt=TASK_PROMPT,
                 user_prompt=sample["instruction"],
                 model_name=model_name,
                 model_endpoint=llm.endpoint,

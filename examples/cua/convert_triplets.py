@@ -14,6 +14,7 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 import agentlightning
 from qwen_vl_utils import process_vision_info
+from reward_server import score_trace
 
 agentlightning.configure_logger()
 
@@ -548,45 +549,6 @@ def convert_single_trace_to_triplet(
     )
 
     return triplet
-
-
-async def score_trace(url, trace: list[dict] = None, user_instruction: str = None):
-    try:
-        # 1. 检查数据量，防止发送过大炸弹
-        # 如果 trace 中包含 image，建议在此处做截断或只发 url
-        payload = {
-            "trace": trace,
-            "user_instruction": user_instruction,
-        }
-
-        # 打印大小日志
-        payload_str = json.dumps(payload)
-        payload_mb = len(payload_str) / (1024 * 1024)
-        logger.info(f"正在发送评分请求，数据大小: {payload_mb:.2f} MB")
-
-        if payload_mb > 50:  # 假设阈值是 50MB
-            logger.warning("数据包过大，可能会导致连接中断！建议检查 trace 是否包含过多 Base64 图片。")
-
-        # 2. 配置重试策略
-        session = requests.Session()
-        retries = Retry(total=3, backoff_factor=1, status_forcelist=[500, 502, 503, 504])
-        session.mount("http://", HTTPAdapter(max_retries=retries))
-        session.mount("https://", HTTPAdapter(max_retries=retries))
-
-        # 3. 发送请求 (使用 json=payload 自动处理 header)
-        # 这里的 timeout=(连接超时, 读取超时)
-        response = session.post(url, json=payload, timeout=(10, 1200))
-
-        response.raise_for_status()
-        result = response.json()
-        return result
-
-    except requests.exceptions.ConnectionError as e:
-        logger.error(f"连接被重置/断开。原因可能是数据包过大或服务端崩溃。Error: {e}")
-        return {}
-    except Exception as e:
-        logger.error(f"评分轨迹失败: {e}")
-        return {}
 
 
 async def convert_traces_to_triplets(
