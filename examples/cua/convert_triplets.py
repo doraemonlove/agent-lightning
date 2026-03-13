@@ -267,7 +267,7 @@ def convert_trace_to_messages(trace, instruction):
     ]
     """
 
-    dataset_sample = {"tools": get_tools_schema(), "messages": []}
+    dataset_sample = {"tools": get_tools_schema(), "messages": [],"images": []}
 
     if not isinstance(trace, list) or len(trace) == 0:
         logger.error("Error: trace 必须是非空列表")
@@ -290,6 +290,8 @@ def convert_trace_to_messages(trace, instruction):
     except Exception as e:
         logger.info(f"Error processing initial image: {e}")
         return {}
+
+    dataset_sample["images"].append(init_screenshot)
 
     # 构造 System Prompt
     system_content = CUA_PROMPT
@@ -344,6 +346,7 @@ def convert_trace_to_messages(trace, instruction):
         # --- Case B: 环境反馈 (Tool/User) ---
         elif "tool_outputs" in event:
             tool_outputs = event["tool_outputs"]
+            screenshot_data = None
 
             # 1. 预判下一条是否是截图
             next_idx = i + 1
@@ -355,6 +358,7 @@ def convert_trace_to_messages(trace, instruction):
             if has_next_screenshot:
                 # 获取截图数据
                 screenshot_data = trace[next_idx]["screenshot"]
+                dataset_sample["images"].append(screenshot_data)
 
                 # 标记下一条索引为跳过 (这次是已消费)
                 skip_indices.add(next_idx)
@@ -440,6 +444,8 @@ def convert_messages_to_triplet(
     full_msgs = messages
     prompt_msgs = messages[:-1]
 
+    original_image_list = dataset_sample.get("images", [])
+
     try:
         #  A. 处理 Prompt 部分
         # Key: add_generation_prompt=True 会自动添加 assistant\n
@@ -519,7 +525,7 @@ def convert_messages_to_triplet(
     }
 
     triplet = Triplet(
-        prompt={"token_ids": prompt_ids},
+        prompt={"token_ids": prompt_ids,"image_urls": original_image_list},
         response={"token_ids": response_ids},
         reward=reward,
         metadata=meta_data,

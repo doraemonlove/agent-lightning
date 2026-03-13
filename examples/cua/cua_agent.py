@@ -14,9 +14,9 @@ from convert_triplets import convert_traces_to_triplets
 from reward_server import score_trace
 from dotenv import load_dotenv
 
-from constants import CUA_PROMPT
+from constants import CUA_PROMPT, AUDIT_TASK_PROMPT
 
-TASK_PROMPT = CUA_PROMPT
+TASK_PROMPT = CUA_PROMPT + AUDIT_TASK_PROMPT
 
 load_dotenv()
 agentlightning.configure_logger()
@@ -58,7 +58,7 @@ async def run_planner_task(
         "model_name": model_name,
         "model_endpoint": model_endpoint,
         "model_api_key": api_key,
-        "max_actions": 25,
+        "max_actions": 30,
         "max_images": 3,
         "thinking_type": "enabled",
         "is_training": True,
@@ -137,8 +137,8 @@ class LitCUAAgent(agentlightning.LitAgent):
                 user_prompt=sample["instruction"],
                 model_name=model_name,
                 model_endpoint=llm.endpoint,
-                api_key="wangjiaju",  # 确保已在环境里设置 VERL_API_KEY
-                out_path=f"./trace/0206/rl/{rollout_id}_model_output.json",
+                api_key="cua",  # 确保已在环境里设置 VERL_API_KEY
+                out_path=f"./trace/0313/hybrid_reward/{rollout_id}_model_output.json",
                 rollout_id=rollout_id,
             )
 

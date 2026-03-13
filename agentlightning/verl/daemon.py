@@ -25,6 +25,12 @@ from agentlightning.llm_proxy import LLMProxy, ModelConfig
 from agentlightning.store.base import LightningStore
 from agentlightning.types import EnqueueRolloutRequest, Rollout, RolloutConfig, Task
 
+import agentlightning
+
+agentlightning.configure_logger()
+
+logger = agentlightning.configure_logger(name=__name__)
+
 __all__ = [
     "AgentModeDaemon",
     "get_left_padded_ids_and_attention_mask",
@@ -460,7 +466,9 @@ class AgentModeDaemon:
             current_time = time.time()
             num_requests += 1
             if current_time - last_request_time > 60 or num_requests == 1 or num_requests % 100 == 0:
-                print(f"Proxying {request.method} request to {target_server}. Request data: {request.get_data()}")
+                logger.info(
+                    f"Proxying {request.method} request to {target_server}. Request data: {request.get_data()[:50]}"
+                )
             last_request_time = current_time
 
             try:
@@ -521,7 +529,7 @@ class AgentModeDaemon:
 
         self._proxy_thread = threading.Thread(target=run_app, daemon=True)
         self._proxy_thread.start()
-        print(f"Proxy server running on port {self.proxy_port}")
+        logger.info(f"Proxy server running on port {self.proxy_port}")
 
     async def _update_proxy_server_v1(self):
         model_name = self.train_information.get("model")
@@ -557,12 +565,12 @@ class AgentModeDaemon:
             self._server_thread.start()
 
             # Wait for the server's internal startup event to be set.
-            print("Waiting for AgentLightningServer to start...")
+            logger.info("Waiting for AgentLightningServer to start...")
             is_ready = self.server.startup_event.wait(timeout=20.0)  # Wait up to 20s
             if not is_ready:
                 raise RuntimeError("AgentLightningServer failed to start within the timeout period.")
 
-            print(f"AgentLightningServer control plane running on port {self.server_port}")
+            logger.info(f"AgentLightningServer control plane running on port {self.server_port}")
 
             self._start_proxy_server_v0()
         else:
@@ -636,7 +644,7 @@ class AgentModeDaemon:
             # Data ID is different from Rollout ID, as one data can have multiple rollouts.
             for _ in range(rollouts_per_sample):
                 task_metadata = {"data_id": data_id, "is_train": is_train}
-                print(f"mode: {self.mode}")
+                logger.info(f"mode: {self.mode}")
                 if self.mode == "v0":
                     # Queue immediately
                     rollout_id = await self.server.queue_task(
@@ -699,25 +707,25 @@ class AgentModeDaemon:
                 "可能的原因：_async_set_up 中存在阻塞/耗时的同步操作（例如 sandbox.allocate、模型加载或文件 I/O）。\n"
                 "建议：将这些阻塞调用改为 asyncio.to_thread / run_in_executor，或扩大超时时间以便排查。"
             )
-            print(msg)
+            logger.error(msg)
             raise
         except Exception as e:
-            print(f"Failed to set up data on server: {e}")
+            logger.error(f"Failed to set up data on server: {e}")
             raise
 
     def _validate_data(self, rollout: RolloutLegacy):
         if rollout.final_reward is None:
-            print(
+            logger.warning(
                 f"Warning: Reward is None for rollout {rollout.rollout_id}, will be auto-set to {self.reward_fillna_value}."
             )
         if rollout.triplets is None:
-            print(f"Warning: Triplet is None for rollout {rollout.rollout_id}.")
+            logger.warning(f"Warning: Triplet is None for rollout {rollout.rollout_id}.")
         elif len(rollout.triplets) == 0:
-            print(f"Warning: Length of triplets is 0 for rollout {rollout.rollout_id}.")
+            logger.warning(f"Warning: Length of triplets is 0 for rollout {rollout.rollout_id}.")
         elif any(not r.response.get("token_ids", []) for r in rollout.triplets):
-            print(f"Warning: Rollout {rollout.rollout_id} contains empty response: {rollout.triplets}")
+            logger.warning(f"Warning: Rollout {rollout.rollout_id} contains empty response: {rollout.triplets}")
         elif any(not r.prompt.get("token_ids", []) for r in rollout.triplets):
-            print(f"Warning: Rollout {rollout.rollout_id} contains empty prompt: {rollout.triplets}")
+            logger.warning(f"Warning: Rollout {rollout.rollout_id} contains empty prompt: {rollout.triplets}")
 
     async def _validate_data_v1(self, rollout: Rollout) -> RolloutLegacy:
         """Convert Rollout to RolloutLegacy and validate.
@@ -786,19 +794,19 @@ class AgentModeDaemon:
                 else:
                     self._validate_data(rollout)
                 if rollout.rollout_id not in self._task_id_to_original_sample:
-                    print(f"Warning: Received unknown rollout ID {rollout.rollout_id}, skipping.")
+                    logger.warning(f"Received unknown rollout ID {rollout.rollout_id}, skipping.")
                 else:
                     self._completed_rollouts_v0[rollout.rollout_id] = rollout
             if verbose:
-                print(f"Completed {len(self._completed_rollouts_v0)}/{self._total_tasks_queued} tasks...")
+                logger.info(f"Completed {len(self._completed_rollouts_v0)}/{self._total_tasks_queued} tasks...")
             await asyncio.sleep(5)
 
-        print("All tasks finished.")
+        logger.info("All tasks finished.")
 
     def run_until_all_finished(self, verbose: bool = True):
         """Synchronously waits for all queued tasks to be completed and reported."""
         if self._total_tasks_queued == 0:
-            print("Warning: No tasks were queued.")
+            logger.warning("No tasks were queued.")
             return
 
         if self.mode == "v0":
@@ -814,7 +822,7 @@ class AgentModeDaemon:
         try:
             future.result()  # Wait indefinitely for all tasks to complete
         except Exception as e:
-            print(f"Error while waiting for tasks to finish: {e}")
+            logger.error(f"Error while waiting for tasks to finish: {e}")
             raise
 
     def get_test_metrics(self):
@@ -828,10 +836,17 @@ class AgentModeDaemon:
         )  # FIXME: Evaluate whether grouping stats by source is actually needed.
 
         for rollout_id, rollout in self._completed_rollouts_v0.items():
+            # 获取meta_data 中的overall_score和rollout_id
+            if rollout.triplets and len(rollout.triplets) > 0:
+                first_triplet_meta = rollout.triplets[0].metadata
+                if first_triplet_meta and "overall_score" in first_triplet_meta:
+                    overall_score = float(first_triplet_meta["overall_score"])
+                    logger.debug(f"Recovered overall_score {overall_score} from triplet metadata for {rollout_id}")
+            final_reward = overall_score or 0.0
             final_reward_raw: Optional[float] = rollout.final_reward
-            final_reward = self._fillna_reward(rollout)
+            # final_reward = self._fillna_reward(rollout)
             if not rollout.triplets:
-                print(f"Warning: No triplets found for test rollout {rollout.rollout_id}.")
+                logger.warning(f"No triplets found for test rollout {rollout.rollout_id}.")
                 sample_stat_list.append({"reward": final_reward, "has_reward": final_reward_raw is not None})
                 continue
             response_length_list = [len(triplet.response.get("token_ids", [])) for triplet in rollout.triplets]
@@ -943,7 +958,7 @@ class AgentModeDaemon:
                 first_triplet_meta = rollout.triplets[0].metadata
                 if first_triplet_meta and "overall_score" in first_triplet_meta:
                     overall_score = float(first_triplet_meta["overall_score"])
-                    print(f"DEBUG: Recovered overall_score {overall_score} from triplet metadata for {rollout_id}")
+                    logger.debug(f"Recovered overall_score {overall_score} from triplet metadata for {rollout_id}")
 
             # 【收集指标】Overall Score
             metric_overall_rewards.append(overall_score)
@@ -1000,10 +1015,10 @@ class AgentModeDaemon:
 
             for turn_index, trace in enumerate(sample_info["trace_list"]):
 
-                # 定义新的reward
+                # NOTE:定义新的reward
                 # reward_list.append(trace["reward"])
                 seg_reward = trace["reward"]
-                hybrid_reward = seg_reward + current_overall_score - 1.0
+                hybrid_reward = current_overall_score + 0.3 * current_overall_score * seg_reward
                 reward_list.append(hybrid_reward)
 
                 # 【收集指标】用于折线图
