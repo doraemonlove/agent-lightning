@@ -138,7 +138,7 @@ class LitCUAAgent(agentlightning.LitAgent):
                 model_name=model_name,
                 model_endpoint=llm.endpoint,
                 api_key="cua",  # 确保已在环境里设置 VERL_API_KEY
-                out_path=f"./trace/0313/hybrid_reward/{rollout_id}_model_output.json",
+                out_path=f"./trace/0315/hybrid_reward_v2/{rollout_id}_model_output.json",
                 rollout_id=rollout_id,
             )
 

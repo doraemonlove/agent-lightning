@@ -30,8 +30,12 @@ from .types import (
     TaskIfAny,
 )
 from .sandbox import SandboxManager, SandboxBusyError
+import agentlightning
 
-logger = logging.getLogger(__name__)
+agentlightning.configure_logger()
+
+logger = agentlightning.configure_logger(name=__name__)
+
 
 class ServerDataStore:
     """Async-safe container for in-memory server state.
@@ -89,7 +93,7 @@ class ServerDataStore:
             metadata=metadata or {},
         )
         await self._task_queue.put(task)
-        print(f"Task queued: {rollout_id} (mode: {mode}, resources_id: {resources_id}, metadata: {metadata})")
+        logger.info(f"Task queued: {rollout_id} (mode: {mode}, resources_id: {resources_id}, metadata: {metadata})")
         return rollout_id
 
     async def get_next_task(self) -> Optional[Task]:
@@ -232,7 +236,7 @@ class AgentLightningServer:
         self.endpoint = f"http://{host}:{port}"
         self._task_timeout_seconds = task_timeout_seconds
 
-        self.sandbox_mgr = SandboxManager(sandbox_max_num=10)
+        self.sandbox_mgr = SandboxManager()
         # Defer initialization and use event for cross-thread communication
         self._store: Optional[ServerDataStore] = None
         self.loop: Optional[asyncio.AbstractEventLoop] = None
@@ -305,12 +309,37 @@ class AgentLightningServer:
 
             task = await self._store.get_next_task()
             if task:
+                # Allocate sandbox only when a worker actually claims the task.
+                # This fits the mode where sandbox URIs come from a pre-filled running_uris pool.
+                if not (task.metadata or {}).get("sandbox_uri"):
+                    task_id = (task.metadata or {}).get("task_id") or task.rollout_id
+                    try:
+                        alloc_timeout = 300.0
+                        sandbox_uri = await asyncio.wait_for(
+                            asyncio.to_thread(self.sandbox_mgr.allocate, task_id),
+                            timeout=alloc_timeout,
+                        )
+                    except asyncio.TimeoutError:
+                        await self._store.requeue_task(task)
+                        logger.warning(
+                            f"⚠️ Sandbox allocate timed out after {alloc_timeout:.1f}s for task {task.rollout_id}; requeued."
+                        )
+                        return TaskIfAny(is_available=False)
+                    except Exception as e:
+                        await self._store.requeue_task(task)
+                        logger.warning(f"⚠️ Sandbox allocate failed for task {task.rollout_id}: {e}; requeued.")
+                        return TaskIfAny(is_available=False)
+
+                    if task.metadata is None:
+                        task.metadata = {}
+                    task.metadata["sandbox_uri"] = sandbox_uri
+
                 logger.debug(f"Serving task {task.rollout_id} to a client.")
                 return TaskIfAny(is_available=True, task=task)
             else:
                 logger.debug("No task available for client.")
                 return TaskIfAny(is_available=False)
-        
+
         @self._app.get("/resources/latest", response_model=ResourcesUpdate)
         async def fetch_latest_resources() -> ResourcesUpdate:  # type: ignore
             """Return the most recent resource bundle published to the server."""
@@ -384,21 +413,7 @@ class AgentLightningServer:
         if not self._store:
             raise RuntimeError("Store not initialized. The server may not be running.")
         metadata = dict(metadata or {})
-        task_id = metadata.get("task_id") or f"task-{uuid.uuid4().hex[:8]}"
-
-        try:
-            # 将阻塞的 sandbox 分配移到线程池，避免阻塞事件循环
-            alloc_timeout = 300.0
-            sandbox_uri = await asyncio.wait_for(
-                asyncio.to_thread(self.sandbox_mgr.allocate, task_id),
-                timeout=alloc_timeout,
-            )
-        except asyncio.TimeoutError:
-            raise RuntimeError(f"Sandbox allocate timed out after {alloc_timeout}s")
-        except Exception as e:
-            raise RuntimeError(f"Sandbox allocate failed: {e}")
-
-        metadata["sandbox_uri"] = sandbox_uri
+        metadata.setdefault("task_id", f"task-{uuid.uuid4().hex[:8]}")
         return await self._store.add_task(sample, mode=mode, resources_id=resources_id, metadata=metadata)
 
     async def update_resources(self, resources: NamedResources) -> str:

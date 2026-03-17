@@ -837,12 +837,13 @@ class AgentModeDaemon:
 
         for rollout_id, rollout in self._completed_rollouts_v0.items():
             # 获取meta_data 中的overall_score和rollout_id
-            if rollout.triplets and len(rollout.triplets) > 0:
-                first_triplet_meta = rollout.triplets[0].metadata
-                if first_triplet_meta and "overall_score" in first_triplet_meta:
-                    overall_score = float(first_triplet_meta["overall_score"])
-                    logger.debug(f"Recovered overall_score {overall_score} from triplet metadata for {rollout_id}")
-            final_reward = overall_score or 0.0
+            overall_score = None
+            if rollout.triplets:
+                # 使用 .get() 方法，一步到位
+                overall_score = rollout.triplets[0].metadata.get("overall_score")
+
+            # 统一处理 None 或 0 的情况
+            final_reward = float(overall_score) if overall_score is not None else 0.0
             final_reward_raw: Optional[float] = rollout.final_reward
             # final_reward = self._fillna_reward(rollout)
             if not rollout.triplets:
@@ -1016,9 +1017,10 @@ class AgentModeDaemon:
             for turn_index, trace in enumerate(sample_info["trace_list"]):
 
                 # NOTE:定义新的reward
+                lamada = 0.9
                 # reward_list.append(trace["reward"])
                 seg_reward = trace["reward"]
-                hybrid_reward = current_overall_score + 0.3 * current_overall_score * seg_reward
+                hybrid_reward = lamada * current_overall_score + (1 - lamada) * seg_reward
                 reward_list.append(hybrid_reward)
 
                 # 【收集指标】用于折线图

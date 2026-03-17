@@ -5,7 +5,7 @@ export N_GPUS=8
 export BASE_MODEL=/models/Qwen3-VL-8B-Instruct
 export DATA_DIR=/root/code/zql/agent-lightning/examples/cua/data
 export ROLLOUT_TP_SIZE=1
-export EXPERIMENT_NAME=cua_0313_hybrid_reward
+export EXPERIMENT_NAME=cua_0315_hybrid_reward_v2
 export PROJECT_NAME=AgentLightning
 export CHECKPOINT_DIR=${CHECKPOINT_DIR:-/root/code/zql/checkpoints/${PROJECT_NAME}/${EXPERIMENT_NAME}}
 export WANDB_BASE_URL="http://localhost:8080"
@@ -47,7 +47,7 @@ python -m agentlightning.verl \
     algorithm.use_kl_in_reward=False \
     data.train_files=${DATA_DIR}/train_100.parquet \
     data.val_files=${DATA_DIR}/eval_20.parquet \
-    data.train_batch_size=4 \
+    data.train_batch_size=8 \
     data.val_batch_size=null \
     data.max_prompt_length=32768 \
     data.max_response_length=1024  \
@@ -70,7 +70,7 @@ python -m agentlightning.verl \
     actor_rollout_ref.actor.ppo_mini_batch_size=8 \
     actor_rollout_ref.actor.ppo_micro_batch_size_per_gpu=1 \
     actor_rollout_ref.actor.use_kl_loss=True \
-    actor_rollout_ref.actor.kl_loss_coef=0.03 \
+    actor_rollout_ref.actor.kl_loss_coef=0.05 \
     actor_rollout_ref.actor.entropy_coeff=0.001 \
     actor_rollout_ref.actor.clip_ratio_low=0.2 \
     actor_rollout_ref.actor.clip_ratio_high=0.2 \
@@ -86,7 +86,7 @@ python -m agentlightning.verl \
     trainer.project_name=${PROJECT_NAME} \
     trainer.experiment_name=${EXPERIMENT_NAME} \
     trainer.nnodes=1 \
-    trainer.save_freq=1 \
+    trainer.save_freq=4 \
     trainer.test_freq=1 \
     trainer.resume_mode="disable" \
     trainer.total_epochs=2 \

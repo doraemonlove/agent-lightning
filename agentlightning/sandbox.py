@@ -7,6 +7,11 @@ from typing import Optional, Dict
 import traceback
 from dotenv import load_dotenv
 import os
+import agentlightning
+
+agentlightning.configure_logger()
+
+logger = agentlightning.configure_logger(name=__name__)
 
 load_dotenv()
 
@@ -37,7 +42,7 @@ class SandboxStatus(str, Enum):
 
 # 需要添加创建linux sandbox的功能
 class SandboxManager:
-    def __init__(self, sandbox_max_num: int = 10, lease_ttl_s: Optional[int] = None):
+    def __init__(self, lease_ttl_s: Optional[int] = None):
         self._lock = threading.RLock()
         # 条件变量用于在“无空闲且已达上限”时等待
         self._cv = threading.Condition(self._lock)
@@ -46,7 +51,6 @@ class SandboxManager:
         self._free: Set[str] = set()  # uri set
         self._in_use: Dict[str, dict] = {}  # uri -> {"task_id": str, "ts": float}
         self._ttl = lease_ttl_s
-        self.max_num = sandbox_max_num
 
         # 启动时从远端加载当前运行中的沙箱到空闲池
         self._bootstrap_free_pool_from_remote()
@@ -63,28 +67,8 @@ class SandboxManager:
         try:
             resp = self.list_sandbox()
             sandboxes = resp.get("Result", []) or []
-            running_uris = [sb.get("SandboxId") for sb in sandboxes if sb.get("Status") == "RUNNING"]
+            # running_uris = [sb.get("SandboxId") for sb in sandboxes if sb.get("Status") == "RUNNING"]
             running_uris = [
-                "i-yehjuvgn405i3z4nh6za",
-                "i-yehjuun56o4c5qvpp1wi",
-                "i-yehjuu93i85i3z3ml2lg",
-                "i-yehjusc9og4c5qvuqnkh",
-                "i-yehjus2fpcxjd1we223i",
-                "i-yehjurvev4wh2yr87tyg",
-                "i-yehjuroe0w5i3z5cz5r4",
-                "i-yehjurfym8xjd1wheyre",
-                "i-yehjur8xs05i3z52fyoy",
-                "i-yehjuqxp8gbw80bs19mf",
-                "i-yehjwt3ytcbw80brtgxd",
-                "i-yehjwsvjeowh2yor1p0l",
-                "i-yehjwsoikgbw80c33woh",
-                "i-yehjwsg35s4c5qw44x1x",
-                "i-yehjws92bkxjd1w5pp5q",
-                "i-yehjws3g1sxjd1tmtfi2",
-                "i-yehjwrtm2obw80cwpdkn",
-                "i-yehjwrml8gwh2yqb2may",
-                "i-yehjwre5tsbw80ds7xzp",
-                "i-yehjwr74zk4c5qufkoib",
                 "i-yehjzhvj7kxjd1v7mm4f",
                 "i-yehjzheoe8xjd1vfgvs2",
                 "i-yehjzh68zk4c5qw6rg8j",
@@ -93,12 +77,10 @@ class SandboxManager:
                 "i-yehjzgjrwgwh2ysgydu3",
                 "i-yehjzg9xxcwh2ypweixw",
                 "i-yehjzg2x34wh2ypshlh8",
-                "i-yehjzfvw8w5i3z5dyf7t",
-                "i-yehjzfoveo4c5qwfezvv",
                 "i-yehk3xce80cva4f87dzv",
                 "i-yehk3tzldscva4f5ynrl",
             ]
-            print("✅当前沙箱列表", running_uris)
+            logger.info(f"✅当前沙箱列表: {running_uris}")
             if not running_uris:
                 return
             with self._lock:
@@ -109,52 +91,20 @@ class SandboxManager:
                     self._cv.notify_all()
         except Exception as e:
             # 初始化失败不致命，仅告警
-            print(f"⚠️ 初始化空闲池失败: {e}")
+            logger.warn(f"⚠️ 初始化空闲池失败: {e}")
 
     def allocate(self, task_id: str) -> str:
-        """分配一个空闲沙箱；
-        - 若无空闲且总数(<free + in_use + creating>)小于上限(self.max_num)，则创建新沙箱
-        - 若已达上限，则等待直到有空闲
-        """
+        """分配一个空闲沙箱；当前模式仅使用预置 running_uris 池。"""
         while True:
             # 优先尝试直接分配空闲
             with self._lock:
                 if self._free:
                     uri = self._free.pop()
-                    print(f"task_id: {task_id}, uri: {uri}")
+                    logger.info(f"task_id: {task_id}, uri: {uri}")
                     self._in_use[uri] = {"task_id": task_id, "ts": time.time()}
                     return uri
-                print(f"task_id: {task_id}, no available sandbox")
-                # total_current = len(self._free) + len(self._in_use) + self._creating
-                # if total_current < self.max_num:
-                #     # 预占创建名额，避免并发超配
-                #     self._creating += 1
-                # else:
-                #     # 达到上限，等待释放或删除产生的容量
-                #     self._cv.wait()
-                #     continue  # 被唤醒后重试
+                logger.info(f"task_id: {task_id}, no available sandbox")
                 self._cv.wait()
-            # # 在锁外执行网络创建，避免阻塞其它操作
-            # uri_new: Optional[str] = None
-            # try:
-            #     uri_new = self.create_sandbox(SANDBOX_OS_TYPE)
-            # except Exception:
-            #     # 创建失败，释放创建名额并唤醒等待者（容量变化）
-            #     with self._lock:
-            #         self._creating -= 1
-            #         self._cv.notify_all()
-            #     raise
-            # else:
-            #     # 创建成功，释放创建名额，并尽量立即分配该新沙箱
-            #     with self._lock:
-            #         self._creating -= 1
-            #         # create_sandbox 会调用 _register_sandbox 将其加入 _free
-            #         if uri_new in self._free:
-            #             self._free.remove(uri_new)
-            #             self._in_use[uri_new] = {"task_id": task_id, "ts": time.time()}
-            #             return uri_new
-            #         # 若被其他线程先占用，则唤醒等待者并回到循环重试
-            #         self._cv.notify_all()
 
     def release(self, uri: str):
         """释放沙箱回到空闲池"""
@@ -163,7 +113,7 @@ class SandboxManager:
                 return
             self._in_use.pop(uri, None)
             self._free.add(uri)
-            print(f"after release, self._free.length: {len(self._free)}")
+            logger.info(f"after release, self._free.length: {len(self._free)}")
             # 释放产生空闲，唤醒等待线程
             self._cv.notify()
 
@@ -212,7 +162,7 @@ class SandboxManager:
         headers = {"Content-Type": "application/json", "Authorization": KEY_AUTH}
         params = {"Action": "CreateSandbox", "Version": "2020-04-01", "OsType": os_type}
 
-        print(f"✅ 正在创建 {os_type} 沙箱...")
+        logger.info(f"✅ 正在创建 {os_type} 沙箱...")
         try:
             response = requests.get(SANDBOX_MANAGER_URL, headers=headers, params=params, timeout=30)
             response.raise_for_status()
@@ -240,7 +190,7 @@ class SandboxManager:
                 time.sleep(interval)
                 interval = min(5.0, interval * 1.5)  # 线性增长到 5s
 
-            print(f"✅ 沙箱创建并就绪，ID: {uri}")
+            logger.info(f"✅ 沙箱创建并就绪，ID: {uri}")
             # 注册沙箱到本地管理（仅在 RUNNING 后加入空闲池）
             self._register_sandbox(uri)
             return uri
@@ -256,11 +206,11 @@ class SandboxManager:
         headers = {"Content-Type": "application/json", "Authorization": KEY_AUTH}
         params = {"Action": "DescribeSandboxes", "Version": "2020-04-01"}
 
-        # print(f"✅ 获取沙箱列表中...")
+        # logger.info(f"✅ 获取沙箱列表中...")
         response = requests.get(SANDBOX_MANAGER_URL, headers=headers, params=params, timeout=30)
         response.raise_for_status()
         result = response.json()
-        # print(f"✅ 沙箱列表获取成功")
+        # logger.info(f"✅ 沙箱列表获取成功")
         return result
 
     def delete_sandbox(self, uri: str):
@@ -272,10 +222,10 @@ class SandboxManager:
         headers = {"Content-Type": "application/json", "Authorization": KEY_AUTH}
         params = {"Action": "DeleteSandbox", "Version": "2020-04-01", "SandboxId": uri}
 
-        print(f"🗑️ 正在删除沙箱 {uri} ...")
+        logger.info(f"🗑️ 正在删除沙箱 {uri} ...")
         response = requests.get(SANDBOX_MANAGER_URL, headers=headers, params=params, timeout=10)
         response.raise_for_status()
-        print(f"🗑️ 沙箱删除成功: {uri}")
+        logger.info(f"🗑️ 沙箱删除成功: {uri}")
 
         # 删除后从本地管理中清除
         with self._lock:
