@@ -578,7 +578,13 @@ class AgentModeDaemon:
             # Start proxy server in _async_set_up
             pass
 
-    async def _async_set_up(self, data: Dict[str, Any], server_addresses: List[str], is_train: bool = True):
+    async def _async_set_up(
+        self,
+        data: Dict[str, Any],
+        server_addresses: List[str],
+        is_train: bool = True,
+        step_idx: int | None = None,
+    ):
         """Async helper to set up data and resources on the server."""
         self.clear_data_and_server()
         if server_addresses != self.backend_llm_server_addresses:
@@ -638,6 +644,10 @@ class AgentModeDaemon:
             data_id = str(uuid.uuid4())
             original_sample = {key: data[key][i] for key in keys}
             original_sample["data_id"] = data_id
+            original_sample["_agentlightning"] = {
+                "mode": "train" if is_train else "val",
+                "step": step_idx,
+            }
             data_id_to_original_sample[data_id] = original_sample
 
             # For training, each sample is rolled out multiple times
@@ -684,9 +694,15 @@ class AgentModeDaemon:
             )
             self._total_tasks_queued += len(rollouts)
 
-    def set_up_data_and_server(self, data: Dict[str, Any], server_addresses: List[str], is_train: bool = True):
+    def set_up_data_and_server(
+        self,
+        data: Dict[str, Any],
+        server_addresses: List[str],
+        is_train: bool = True,
+        step_idx: int | None = None,
+    ):
         """Synchronous wrapper for setting up data and server resources."""
-        coro = self._async_set_up(data, server_addresses, is_train)
+        coro = self._async_set_up(data, server_addresses, is_train, step_idx)
 
         if self.mode == "v0":
             if not self.server.loop or not self.server.startup_event.is_set():

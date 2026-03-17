@@ -23,8 +23,26 @@ agentlightning.configure_logger()
 
 logger = agentlightning.configure_logger(name=__name__)
 
-TRACE_DIR = "./trace"
+TRACE_DIR = "./trace/0316/hybrid_reward_v3"
 os.makedirs(TRACE_DIR, exist_ok=True)
+
+
+def _build_trace_out_path(sample: dict[str, Any], is_training: bool, rollout_id: str) -> str:
+    """Build trace path as <root>/<train|val>/step<idx>/<rollout_id>_model_output.json."""
+    base_dir = TRACE_DIR
+    mode = "train" if is_training else "val"
+    meta = sample.get("_agentlightning") if isinstance(sample, dict) else None
+
+    step_idx = None
+    if isinstance(meta, dict):
+        step_idx = meta.get("step")
+
+    if isinstance(step_idx, int) and step_idx >= 0:
+        step_folder = f"step{step_idx}"
+    else:
+        step_folder = "step_unknown"
+
+    return os.path.join(base_dir, mode, step_folder, f"{rollout_id}_model_output.json")
 
 
 async def run_planner_task(
@@ -59,7 +77,7 @@ async def run_planner_task(
         "model_endpoint": model_endpoint,
         "model_api_key": api_key,
         "max_actions": 30,
-        "max_images": 3,
+        "max_images": 5,
         "thinking_type": "enabled",
         "is_training": True,
         "turn_on_review": False,
@@ -138,7 +156,7 @@ class LitCUAAgent(agentlightning.LitAgent):
                 model_name=model_name,
                 model_endpoint=llm.endpoint,
                 api_key="cua",  # 确保已在环境里设置 VERL_API_KEY
-                out_path=f"./trace/0315/hybrid_reward_v2/{rollout_id}_model_output.json",
+                out_path=_build_trace_out_path(sample=sample, is_training=is_training, rollout_id=rollout_id),
                 rollout_id=rollout_id,
             )
 

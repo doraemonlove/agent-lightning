@@ -198,6 +198,7 @@ class AgentLightningTrainer(RayPPOTrainer):
             test_batch.non_tensor_batch,
             self.async_rollout_manager.server_addresses,
             is_train=False,
+            step_idx=self.global_steps,
         )
         self.agent_mode_daemon.run_until_all_finished()
         test_metrics = self.agent_mode_daemon.get_test_metrics()
@@ -251,7 +252,10 @@ class AgentLightningTrainer(RayPPOTrainer):
             with _timer("gen", timing_raw):
                 self.async_rollout_manager.wake_up()
                 self.agent_mode_daemon.set_up_data_and_server(
-                    gen_batch.non_tensor_batch, self.async_rollout_manager.server_addresses
+                    gen_batch.non_tensor_batch,
+                    self.async_rollout_manager.server_addresses,
+                    is_train=True,
+                    step_idx=self.global_steps,
                 )
                 self.agent_mode_daemon.run_until_all_finished()
                 batch, agent_metrics = self.agent_mode_daemon.get_train_data_batch(
