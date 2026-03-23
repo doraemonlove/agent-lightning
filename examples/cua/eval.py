@@ -253,7 +253,7 @@ def build_eval_output_paths(trace_dir: str, exp_name: str) -> tuple[str, str]:
     """Build output paths as <trace_dir>/<date>/<exp_name>/... for CSV and trace files."""
     date_dir = time.strftime("%Y%m%d")
     output_root = os.path.join(trace_dir, date_dir, exp_name)
-    result_csv = os.path.join(output_root, f"{exp_name}.csv")
+    result_csv = os.path.join(output_root, f"{date_dir}-{exp_name}.csv")
     return output_root, result_csv
 
 
@@ -266,15 +266,15 @@ def eval_offline():
 def main():
     # 1. 配置
     # 获取环境变量，若不存在则使用默认值
-    model_name = os.getenv("claude_model_name", "claude-3-5-sonnet")
-    model_provider = os.getenv("claude_model_provider", "bedrock")
-    model_endpoint = os.getenv("claude_model_endpoint", "")  # bedrock 不需要
-    model_api_key = os.getenv("claude_model_api_key", "")  # bedrock 不需要
+    model_name = os.getenv("qwen_3_model_name", "/models/Qwen3-VL-8B-Instruct")
+    model_provider = os.getenv("qwen_3_model_provider", "openai")
+    model_endpoint = os.getenv("qwen_3_model_endpoint", "http://0.0.0.0:8441/v1")  # openai 不需要
+    model_api_key = os.getenv("qwen_3_model_api_key", "cua")  # openai 不需要
 
     config = {
         "eval_path": "data/eval.parquet",
         "trace_dir": "./trace",
-        "exp_name": "claude-sonnet-4-5-hybrid-eval-3",
+        "exp_name": "qwen-3-vl-8b-instruct-eval-2",
         "model_name": model_name,
         "model_endpoint": model_endpoint,
         "model_api_key": model_api_key,
@@ -282,8 +282,8 @@ def main():
         "system_prompt": CUA_PROMPT,
         "agent_planner_url": f"http://0.0.0.0:{AGENT_PLANNER_PORT}/planner",
         "key_auth": PLANNER_KEY_AUTH,
-        "use_concurrent": True,
-        "sandbox_list": SANDBOX_LIST_01,
+        "use_concurrent": False,
+        "sandbox_list": SANDBOX_LIST_02,
     }
 
     if not os.path.exists(config["eval_path"]):

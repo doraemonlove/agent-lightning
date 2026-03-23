@@ -1,0 +1,29 @@
+Traceback (most recent call last):
+  File "/root/code/zql/agent-lightning/examples/cua/reward_server.py", line 34, in <module>
+    reward_model = CUARewardModel(
+                   ^^^^^^^^^^^^^^^
+  File "/root/code/zql/agent-lightning/examples/cua/cua_reward_model.py", line 100, in __init__
+    self.client = AsyncOpenAI(base_url=base_url, api_key=api_key)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/miniconda3/envs/qwen3/lib/python3.12/site-packages/openai/_client.py", line 517, in __init__
+    super().__init__(
+  File "/opt/miniconda3/envs/qwen3/lib/python3.12/site-packages/openai/_base_client.py", line 1409, in __init__
+    self._client = http_client or AsyncHttpxClientWrapper(
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/miniconda3/envs/qwen3/lib/python3.12/site-packages/openai/_base_client.py", line 1316, in __init__
+    super().__init__(**kwargs)
+  File "/opt/miniconda3/envs/qwen3/lib/python3.12/site-packages/httpx/_client.py", line 1402, in __init__
+    self._transport = self._init_transport(
+                      ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/miniconda3/envs/qwen3/lib/python3.12/site-packages/httpx/_client.py", line 1445, in _init_transport
+    return AsyncHTTPTransport(
+           ^^^^^^^^^^^^^^^^^^^
+  File "/opt/miniconda3/envs/qwen3/lib/python3.12/site-packages/httpx/_transports/default.py", line 297, in __init__
+    ssl_context = create_ssl_context(verify=verify, cert=cert, trust_env=trust_env)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/miniconda3/envs/qwen3/lib/python3.12/site-packages/httpx/_config.py", line 40, in create_ssl_context
+    ctx = ssl.create_default_context(cafile=certifi.where())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/miniconda3/envs/qwen3/lib/python3.12/ssl.py", line 708, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+KeyboardInterrupt

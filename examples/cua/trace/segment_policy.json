@@ -1,0 +1,146 @@
+{
+  "segments": [
+    {
+      "instruction": "当前位于资产审核网站盘点详情页面，点击第一条记录的盘点审核按钮，查看资产条码图片并比较系统条码与图片条码后点击驳回按钮，使第一条记录的审核状态更新。",
+      "start_step": 1,
+      "step_length": 5
+    },
+    {
+      "instruction": "当前位于资产审核网站盘点详情页面，点击第二条记录的盘点审核按钮，查看资产条码图片并比较系统条码与图片条码后关闭放大的图片，使第二条记录的审核弹窗显示资产信息。",
+      "start_step": 6,
+      "step_length": 4
+    },
+    {
+      "instruction": "当前位于第二条记录的盘点审核弹窗页面，点击通过按钮以完成该资产记录的盘点审核，使第二条记录的审核状态更新。",
+      "start_step": 10,
+      "step_length": 15
+    },
+    {
+      "instruction": "当前位于第二条记录的盘点审核弹窗页面，再次点击通过按钮尝试完成该资产记录的盘点审核，使第二条记录的审核状态更新。",
+      "start_step": 25,
+      "step_length": 6
+    }
+  ],
+  "step_map": {
+    "1": {
+      "state_screenshot_idx": 0,
+      "action_idx": 1
+    },
+    "2": {
+      "state_screenshot_idx": 3,
+      "action_idx": 4
+    },
+    "3": {
+      "state_screenshot_idx": 6,
+      "action_idx": 7
+    },
+    "4": {
+      "state_screenshot_idx": 9,
+      "action_idx": 10
+    },
+    "5": {
+      "state_screenshot_idx": 12,
+      "action_idx": 13
+    },
+    "6": {
+      "state_screenshot_idx": 15,
+      "action_idx": 16
+    },
+    "7": {
+      "state_screenshot_idx": 18,
+      "action_idx": 19
+    },
+    "8": {
+      "state_screenshot_idx": 21,
+      "action_idx": 22
+    },
+    "9": {
+      "state_screenshot_idx": 24,
+      "action_idx": 25
+    },
+    "10": {
+      "state_screenshot_idx": 27,
+      "action_idx": 28
+    },
+    "11": {
+      "state_screenshot_idx": 30,
+      "action_idx": 31
+    },
+    "12": {
+      "state_screenshot_idx": 33,
+      "action_idx": 34
+    },
+    "13": {
+      "state_screenshot_idx": 36,
+      "action_idx": 37
+    },
+    "14": {
+      "state_screenshot_idx": 39,
+      "action_idx": 40
+    },
+    "15": {
+      "state_screenshot_idx": 42,
+      "action_idx": 43
+    },
+    "16": {
+      "state_screenshot_idx": 45,
+      "action_idx": 46
+    },
+    "17": {
+      "state_screenshot_idx": 48,
+      "action_idx": 49
+    },
+    "18": {
+      "state_screenshot_idx": 51,
+      "action_idx": 52
+    },
+    "19": {
+      "state_screenshot_idx": 54,
+      "action_idx": 55
+    },
+    "20": {
+      "state_screenshot_idx": 57,
+      "action_idx": 58
+    },
+    "21": {
+      "state_screenshot_idx": 60,
+      "action_idx": 61
+    },
+    "22": {
+      "state_screenshot_idx": 63,
+      "action_idx": 64
+    },
+    "23": {
+      "state_screenshot_idx": 66,
+      "action_idx": 67
+    },
+    "24": {
+      "state_screenshot_idx": 69,
+      "action_idx": 70
+    },
+    "25": {
+      "state_screenshot_idx": 72,
+      "action_idx": 73
+    },
+    "26": {
+      "state_screenshot_idx": 75,
+      "action_idx": 76
+    },
+    "27": {
+      "state_screenshot_idx": 78,
+      "action_idx": 79
+    },
+    "28": {
+      "state_screenshot_idx": 81,
+      "action_idx": 82
+    },
+    "29": {
+      "state_screenshot_idx": 84,
+      "action_idx": 85
+    },
+    "30": {
+      "state_screenshot_idx": 87,
+      "action_idx": 88
+    }
+  }
+}
