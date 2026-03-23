@@ -16,8 +16,10 @@ from constants import (
     SEGMENT_START_STEP_DESCRIPTION,
     SEGMENT_START_STEP_LENGTH_DESCRIPTION,
     GROUPED_REWARD_DESCRIPTION,
-    CUA_AUDIT_EVALUATION_PROMPT,
 )
+from data.asset_audit.constants import AUDIT_EVALUATION_PROMPT
+from data.browser_search.constants import BROWSER_EVALUATION_PROMPT
+from data.file_organization.constants import FILE_EVALUATION_PROMPT
 
 agentlightning.configure_logger()
 
@@ -94,13 +96,11 @@ class CUARewardModel:
         model: str = "",
         segment_prompt: str = TRACE_SEGMENT_PROMPT,
         grouped_reward_prompt: str = GROUPED_ACTION_REWARD_PROMPT,
-        overall_reward_prompt: str = CUA_AUDIT_EVALUATION_PROMPT,  # 可以根据需要区分不同的 prompt
     ) -> None:
         self.client = AsyncOpenAI(base_url=base_url, api_key=api_key)
         self.model = model
         self.segment_prompt = segment_prompt
         self.group_reward_prompt = grouped_reward_prompt
-        self.overall_reward_prompt = overall_reward_prompt
 
     def _normalize_image_url(self, val: Any) -> List[Dict[str, Any]]:
         urls = []
@@ -416,9 +416,19 @@ class CUARewardModel:
         )
         return resp.choices[0].message.parsed.reward  # Return the parsed reward value
 
-    async def call_overall_reward_model(self, trace: List, user_instruction: str) -> tuple[float, str]:
+    async def call_overall_reward_model(self, trace: List, user_instruction: str, scene: str) -> tuple[float, str]:
         fixed_temperature = 0.0
-        base_content = self._build_reward_content(trace, user_instruction, self.overall_reward_prompt)
+        overall_reward_prompt = ""
+        if scene == "asset_audit":
+            overall_reward_prompt = AUDIT_EVALUATION_PROMPT
+        elif scene == "browser_search":
+            overall_reward_prompt = BROWSER_EVALUATION_PROMPT
+        elif scene == "file_organization":
+            overall_reward_prompt = FILE_EVALUATION_PROMPT
+        else:
+            raise ValueError(f"Unsupported scene: {scene}")
+
+        base_content = self._build_reward_content(trace, user_instruction, overall_reward_prompt)
         messages = [{"role": "user", "content": base_content}]
         logger.info("🚀 调用整体奖励模型评分")
         resp = await asyncio.wait_for(
@@ -568,22 +578,22 @@ class CUARewardModel:
         reward_list = [item["reward"] for item in results]
         context_traces = self.build_context_trace(subtrace_list, reward_list, user_instruction)
 
-        result_list_file = "./trace/group_reward_results.json"
-        with open(result_list_file, "w", encoding="utf-8") as f:
-            json.dump(results, f, indent=2, ensure_ascii=False)
+        # result_list_file = "./trace/group_reward_results.json"
+        # with open(result_list_file, "w", encoding="utf-8") as f:
+        #     json.dump(results, f, indent=2, ensure_ascii=False)
 
-        segment_res_file = "./trace/segment_policy.json"
-        with open(segment_res_file, "w", encoding="utf-8") as f:
-            json.dump(segment_result, f, indent=2, ensure_ascii=False)
+        # segment_res_file = "./trace/segment_policy.json"
+        # with open(segment_res_file, "w", encoding="utf-8") as f:
+        #     json.dump(segment_result, f, indent=2, ensure_ascii=False)
 
-        output_file = "./trace/segmented_traces.json"
-        with open(output_file, "w", encoding="utf-8") as f:
-            json.dump(subtrace_list, f, indent=2, ensure_ascii=False)
+        # output_file = "./trace/segmented_traces.json"
+        # with open(output_file, "w", encoding="utf-8") as f:
+        #     json.dump(subtrace_list, f, indent=2, ensure_ascii=False)
 
         return context_traces
 
-    async def get_overall_reward(self, trace: list, user_instruction: str) -> tuple[float, str]:
-        (reward, reason) = await self.call_overall_reward_model(trace, user_instruction)
+    async def get_overall_reward(self, trace: list, user_instruction: str, scene: str) -> tuple[float, str]:
+        (reward, reason) = await self.call_overall_reward_model(trace, user_instruction, scene)
         return reward, reason
 
 
@@ -600,12 +610,12 @@ if __name__ == "__main__":
 
     # 加载环境变量\n
     load_dotenv(find_dotenv())
-    api_key = os.getenv("score_api_key")
+    api_key = os.getenv("API_KEY")
+    base_url = os.getenv("BASE_URL", "https://ark.cn-beijing.volces.com/api/v3")
+    model_name = os.getenv("REWARD_MODEL", "doubao-seed-1-6-251015")
 
     # 初始化打分器
-    group_scorer = CUARewardModel(
-        base_url="https://ark.cn-beijing.volces.com/api/v3", api_key=api_key, model="doubao-seed-1-6-251015"
-    )
+    group_scorer = CUARewardModel(base_url=base_url, api_key=api_key, model=model_name)
 
     # 4. 运行异步函数（修复 await 问题）
     # 定义异步主函数

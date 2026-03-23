@@ -1,0 +1,1042 @@
+[
+  {
+    "task_id": "file_eval_0002",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 lab 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ndelta.txt、keep_omega.txt。\n如果某个文件不存在，则创建该文件。\n\n将 delta.txt 移动到 lab 文件夹中。\n\n进入 lab 文件夹，将 delta.txt 重命名为 omega_done.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 stale.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "lab",
+      "source_file_1": "delta.txt",
+      "source_file_2": "keep_omega.txt",
+      "target_file_1": "omega_done.txt",
+      "delete_file": "stale.txt",
+      "success_criteria": {
+        "folder_exists": "lab",
+        "moved_and_renamed_file": "lab/omega_done.txt",
+        "retained_file": "keep_omega.txt",
+        "deleted_file_absent": "stale.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_eval_0012",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 workspace 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ngamma.txt、keep_beta.txt。\n如果某个文件不存在，则创建该文件。\n\n将 gamma.txt 移动到 workspace 文件夹中。\n\n进入 workspace 文件夹，将 gamma.txt 重命名为 alpha_done.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 noise.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "workspace",
+      "source_file_1": "gamma.txt",
+      "source_file_2": "keep_beta.txt",
+      "target_file_1": "alpha_done.txt",
+      "delete_file": "noise.txt",
+      "success_criteria": {
+        "folder_exists": "workspace",
+        "moved_and_renamed_file": "workspace/alpha_done.txt",
+        "retained_file": "keep_beta.txt",
+        "deleted_file_absent": "noise.txt"
+      }
+    }
+  },
+  {
+    "task_id": "browser_eval_0009",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"意大利的首都是哪里\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 eval_answers 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 eval_answers 文件夹中是否已经存在 eval_result.txt 文件，如果存在请先删除该文件，然后创建新的 eval_result.txt 文件。\n\n使用 libreoffice 打开 eval_result.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "意大利的首都是哪里",
+      "expected_answer": "罗马",
+      "target_directory": "eval_answers",
+      "file_name": "eval_result.txt",
+      "success_criteria": {
+        "directory_exists": "eval_answers",
+        "file_exists": "eval_answers/eval_result.txt",
+        "document_contains": "罗马"
+      }
+    }
+  },
+  {
+    "task_id": "audit_eval_0013",
+    "scene": "asset_audit",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Wireline\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Wireline",
+      "required_audit_count": 2,
+      "success_criteria": {
+        "website_opened": true,
+        "plan_name": "Wireline",
+        "audit_status": "未盘点",
+        "audited_records": 2
+      }
+    }
+  },
+  {
+    "task_id": "browser_eval_0005",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"澳大利亚的首都是哪里\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 eval_notes 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 eval_notes 文件夹中是否已经存在 eval_info.txt 文件，如果存在请先删除该文件，然后创建新的 eval_info.txt 文件。\n\n使用 libreoffice 打开 eval_info.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "澳大利亚的首都是哪里",
+      "expected_answer": "堪培拉",
+      "target_directory": "eval_notes",
+      "file_name": "eval_info.txt",
+      "success_criteria": {
+        "directory_exists": "eval_notes",
+        "file_exists": "eval_notes/eval_info.txt",
+        "document_contains": "堪培拉"
+      }
+    }
+  },
+  {
+    "task_id": "browser_eval_0017",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"世界上最大的沙漠\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 eval_results 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 eval_results 文件夹中是否已经存在 eval_note.txt 文件，如果存在请先删除该文件，然后创建新的 eval_note.txt 文件。\n\n使用 libreoffice 打开 eval_note.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "世界上最大的沙漠",
+      "expected_answer": "南极沙漠",
+      "target_directory": "eval_results",
+      "file_name": "eval_note.txt",
+      "success_criteria": {
+        "directory_exists": "eval_results",
+        "file_exists": "eval_results/eval_note.txt",
+        "document_contains": "南极沙漠"
+      }
+    }
+  },
+  {
+    "task_id": "browser_eval_0012",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"地球上最大的大陆\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 eval_docs 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 eval_docs 文件夹中是否已经存在 eval_result.txt 文件，如果存在请先删除该文件，然后创建新的 eval_result.txt 文件。\n\n使用 libreoffice 打开 eval_result.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "地球上最大的大陆",
+      "expected_answer": "亚欧大陆",
+      "target_directory": "eval_docs",
+      "file_name": "eval_result.txt",
+      "success_criteria": {
+        "directory_exists": "eval_docs",
+        "file_exists": "eval_docs/eval_result.txt",
+        "document_contains": "亚欧大陆"
+      }
+    }
+  },
+  {
+    "task_id": "file_eval_0003",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 workspace 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ndelta.txt、keep_alpha.txt。\n如果某个文件不存在，则创建该文件。\n\n将 delta.txt 移动到 workspace 文件夹中。\n\n进入 workspace 文件夹，将 delta.txt 重命名为 delta_done.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 stale.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "workspace",
+      "source_file_1": "delta.txt",
+      "source_file_2": "keep_alpha.txt",
+      "target_file_1": "delta_done.txt",
+      "delete_file": "stale.txt",
+      "success_criteria": {
+        "folder_exists": "workspace",
+        "moved_and_renamed_file": "workspace/delta_done.txt",
+        "retained_file": "keep_alpha.txt",
+        "deleted_file_absent": "stale.txt"
+      }
+    }
+  },
+  {
+    "task_id": "browser_eval_0003",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"太阳系最小的行星\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 eval_answers 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 eval_answers 文件夹中是否已经存在 eval_info.txt 文件，如果存在请先删除该文件，然后创建新的 eval_info.txt 文件。\n\n使用 libreoffice 打开 eval_info.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "太阳系最小的行星",
+      "expected_answer": "水星",
+      "target_directory": "eval_answers",
+      "file_name": "eval_info.txt",
+      "success_criteria": {
+        "directory_exists": "eval_answers",
+        "file_exists": "eval_answers/eval_info.txt",
+        "document_contains": "水星"
+      }
+    }
+  },
+  {
+    "task_id": "audit_eval_0019",
+    "scene": "asset_audit",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Lightfix\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Lightfix",
+      "required_audit_count": 2,
+      "success_criteria": {
+        "website_opened": true,
+        "plan_name": "Lightfix",
+        "audit_status": "未盘点",
+        "audited_records": 2
+      }
+    }
+  },
+  {
+    "task_id": "file_eval_0004",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 workspace 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ngamma.txt、keep_beta.txt。\n如果某个文件不存在，则创建该文件。\n\n将 gamma.txt 移动到 workspace 文件夹中。\n\n进入 workspace 文件夹，将 gamma.txt 重命名为 omega_done.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 stale.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "workspace",
+      "source_file_1": "gamma.txt",
+      "source_file_2": "keep_beta.txt",
+      "target_file_1": "omega_done.txt",
+      "delete_file": "stale.txt",
+      "success_criteria": {
+        "folder_exists": "workspace",
+        "moved_and_renamed_file": "workspace/omega_done.txt",
+        "retained_file": "keep_beta.txt",
+        "deleted_file_absent": "stale.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_eval_0016",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 materials 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nalpha.txt、keep_delta.txt。\n如果某个文件不存在，则创建该文件。\n\n将 alpha.txt 移动到 materials 文件夹中。\n\n进入 materials 文件夹，将 alpha.txt 重命名为 beta_done.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 drop_me.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "materials",
+      "source_file_1": "alpha.txt",
+      "source_file_2": "keep_delta.txt",
+      "target_file_1": "beta_done.txt",
+      "delete_file": "drop_me.txt",
+      "success_criteria": {
+        "folder_exists": "materials",
+        "moved_and_renamed_file": "materials/beta_done.txt",
+        "retained_file": "keep_delta.txt",
+        "deleted_file_absent": "drop_me.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_eval_0017",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 lab 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nbeta.txt、keep_omega.txt。\n如果某个文件不存在，则创建该文件。\n\n将 beta.txt 移动到 lab 文件夹中。\n\n进入 lab 文件夹，将 beta.txt 重命名为 delta_done.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 legacy.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "lab",
+      "source_file_1": "beta.txt",
+      "source_file_2": "keep_omega.txt",
+      "target_file_1": "delta_done.txt",
+      "delete_file": "legacy.txt",
+      "success_criteria": {
+        "folder_exists": "lab",
+        "moved_and_renamed_file": "lab/delta_done.txt",
+        "retained_file": "keep_omega.txt",
+        "deleted_file_absent": "legacy.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_eval_0015",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 materials 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ndelta.txt、keep_alpha.txt。\n如果某个文件不存在，则创建该文件。\n\n将 delta.txt 移动到 materials 文件夹中。\n\n进入 materials 文件夹，将 delta.txt 重命名为 omega_done.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 drop_me.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "materials",
+      "source_file_1": "delta.txt",
+      "source_file_2": "keep_alpha.txt",
+      "target_file_1": "omega_done.txt",
+      "delete_file": "drop_me.txt",
+      "success_criteria": {
+        "folder_exists": "materials",
+        "moved_and_renamed_file": "materials/omega_done.txt",
+        "retained_file": "keep_alpha.txt",
+        "deleted_file_absent": "drop_me.txt"
+      }
+    }
+  },
+  {
+    "task_id": "audit_eval_0002",
+    "scene": "asset_audit",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Filepath\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Filepath",
+      "required_audit_count": 2,
+      "success_criteria": {
+        "website_opened": true,
+        "plan_name": "Filepath",
+        "audit_status": "未盘点",
+        "audited_records": 2
+      }
+    }
+  },
+  {
+    "task_id": "file_eval_0011",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 reports 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nomega.txt、keep_beta.txt。\n如果某个文件不存在，则创建该文件。\n\n将 omega.txt 移动到 reports 文件夹中。\n\n进入 reports 文件夹，将 omega.txt 重命名为 gamma_done.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 stale.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "reports",
+      "source_file_1": "omega.txt",
+      "source_file_2": "keep_beta.txt",
+      "target_file_1": "gamma_done.txt",
+      "delete_file": "stale.txt",
+      "success_criteria": {
+        "folder_exists": "reports",
+        "moved_and_renamed_file": "reports/gamma_done.txt",
+        "retained_file": "keep_beta.txt",
+        "deleted_file_absent": "stale.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_eval_0014",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 lab 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ngamma.txt、keep_beta.txt。\n如果某个文件不存在，则创建该文件。\n\n将 gamma.txt 移动到 lab 文件夹中。\n\n进入 lab 文件夹，将 gamma.txt 重命名为 delta_done.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 stale.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "lab",
+      "source_file_1": "gamma.txt",
+      "source_file_2": "keep_beta.txt",
+      "target_file_1": "delta_done.txt",
+      "delete_file": "stale.txt",
+      "success_criteria": {
+        "folder_exists": "lab",
+        "moved_and_renamed_file": "lab/delta_done.txt",
+        "retained_file": "keep_beta.txt",
+        "deleted_file_absent": "stale.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_eval_0007",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 lab 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nalpha.txt、keep_delta.txt。\n如果某个文件不存在，则创建该文件。\n\n将 alpha.txt 移动到 lab 文件夹中。\n\n进入 lab 文件夹，将 alpha.txt 重命名为 gamma_done.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 legacy.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "lab",
+      "source_file_1": "alpha.txt",
+      "source_file_2": "keep_delta.txt",
+      "target_file_1": "gamma_done.txt",
+      "delete_file": "legacy.txt",
+      "success_criteria": {
+        "folder_exists": "lab",
+        "moved_and_renamed_file": "lab/gamma_done.txt",
+        "retained_file": "keep_delta.txt",
+        "deleted_file_absent": "legacy.txt"
+      }
+    }
+  },
+  {
+    "task_id": "browser_eval_0016",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"德国的首都是哪里\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 eval_docs 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 eval_docs 文件夹中是否已经存在 eval_ans.txt 文件，如果存在请先删除该文件，然后创建新的 eval_ans.txt 文件。\n\n使用 libreoffice 打开 eval_ans.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "德国的首都是哪里",
+      "expected_answer": "柏林",
+      "target_directory": "eval_docs",
+      "file_name": "eval_ans.txt",
+      "success_criteria": {
+        "directory_exists": "eval_docs",
+        "file_exists": "eval_docs/eval_ans.txt",
+        "document_contains": "柏林"
+      }
+    }
+  },
+  {
+    "task_id": "audit_eval_0009",
+    "scene": "asset_audit",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Wireline\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Wireline",
+      "required_audit_count": 2,
+      "success_criteria": {
+        "website_opened": true,
+        "plan_name": "Wireline",
+        "audit_status": "未盘点",
+        "audited_records": 2
+      }
+    }
+  },
+  {
+    "task_id": "audit_eval_0020",
+    "scene": "asset_audit",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Stationz\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Stationz",
+      "required_audit_count": 2,
+      "success_criteria": {
+        "website_opened": true,
+        "plan_name": "Stationz",
+        "audit_status": "未盘点",
+        "audited_records": 2
+      }
+    }
+  },
+  {
+    "task_id": "file_eval_0018",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 workspace 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ngamma.txt、keep_gamma.txt。\n如果某个文件不存在，则创建该文件。\n\n将 gamma.txt 移动到 workspace 文件夹中。\n\n进入 workspace 文件夹，将 gamma.txt 重命名为 gamma_done.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 noise.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "workspace",
+      "source_file_1": "gamma.txt",
+      "source_file_2": "keep_gamma.txt",
+      "target_file_1": "gamma_done.txt",
+      "delete_file": "noise.txt",
+      "success_criteria": {
+        "folder_exists": "workspace",
+        "moved_and_renamed_file": "workspace/gamma_done.txt",
+        "retained_file": "keep_gamma.txt",
+        "deleted_file_absent": "noise.txt"
+      }
+    }
+  },
+  {
+    "task_id": "browser_eval_0010",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"光合作用是什么\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 eval_answers 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 eval_answers 文件夹中是否已经存在 eval_note.txt 文件，如果存在请先删除该文件，然后创建新的 eval_note.txt 文件。\n\n使用 libreoffice 打开 eval_note.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "光合作用是什么",
+      "expected_answer": "绿色植物利用光能把二氧化碳和水合成为有机物并释放氧气的过程",
+      "target_directory": "eval_answers",
+      "file_name": "eval_note.txt",
+      "success_criteria": {
+        "directory_exists": "eval_answers",
+        "file_exists": "eval_answers/eval_note.txt",
+        "document_contains": "绿色植物利用光能把二氧化碳和水合成为有机物并释放氧气的过程"
+      }
+    }
+  },
+  {
+    "task_id": "file_eval_0010",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 workspace 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ngamma.txt、keep_gamma.txt。\n如果某个文件不存在，则创建该文件。\n\n将 gamma.txt 移动到 workspace 文件夹中。\n\n进入 workspace 文件夹，将 gamma.txt 重命名为 delta_done.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 noise.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "workspace",
+      "source_file_1": "gamma.txt",
+      "source_file_2": "keep_gamma.txt",
+      "target_file_1": "delta_done.txt",
+      "delete_file": "noise.txt",
+      "success_criteria": {
+        "folder_exists": "workspace",
+        "moved_and_renamed_file": "workspace/delta_done.txt",
+        "retained_file": "keep_gamma.txt",
+        "deleted_file_absent": "noise.txt"
+      }
+    }
+  },
+  {
+    "task_id": "audit_eval_0017",
+    "scene": "asset_audit",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Wireline\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Wireline",
+      "required_audit_count": 2,
+      "success_criteria": {
+        "website_opened": true,
+        "plan_name": "Wireline",
+        "audit_status": "未盘点",
+        "audited_records": 2
+      }
+    }
+  },
+  {
+    "task_id": "browser_eval_0019",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"世界上最大的沙漠\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 eval_results 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 eval_results 文件夹中是否已经存在 eval_ans.txt 文件，如果存在请先删除该文件，然后创建新的 eval_ans.txt 文件。\n\n使用 libreoffice 打开 eval_ans.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "世界上最大的沙漠",
+      "expected_answer": "南极沙漠",
+      "target_directory": "eval_results",
+      "file_name": "eval_ans.txt",
+      "success_criteria": {
+        "directory_exists": "eval_results",
+        "file_exists": "eval_results/eval_ans.txt",
+        "document_contains": "南极沙漠"
+      }
+    }
+  },
+  {
+    "task_id": "file_eval_0006",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 deliverables 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nbeta.txt、keep_alpha.txt。\n如果某个文件不存在，则创建该文件。\n\n将 beta.txt 移动到 deliverables 文件夹中。\n\n进入 deliverables 文件夹，将 beta.txt 重命名为 beta_done.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 drop_me.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "deliverables",
+      "source_file_1": "beta.txt",
+      "source_file_2": "keep_alpha.txt",
+      "target_file_1": "beta_done.txt",
+      "delete_file": "drop_me.txt",
+      "success_criteria": {
+        "folder_exists": "deliverables",
+        "moved_and_renamed_file": "deliverables/beta_done.txt",
+        "retained_file": "keep_alpha.txt",
+        "deleted_file_absent": "drop_me.txt"
+      }
+    }
+  },
+  {
+    "task_id": "audit_eval_0010",
+    "scene": "asset_audit",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Filepath\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Filepath",
+      "required_audit_count": 2,
+      "success_criteria": {
+        "website_opened": true,
+        "plan_name": "Filepath",
+        "audit_status": "未盘点",
+        "audited_records": 2
+      }
+    }
+  },
+  {
+    "task_id": "browser_eval_0011",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"光合作用是什么\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 eval_answers 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 eval_answers 文件夹中是否已经存在 eval_info.txt 文件，如果存在请先删除该文件，然后创建新的 eval_info.txt 文件。\n\n使用 libreoffice 打开 eval_info.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "光合作用是什么",
+      "expected_answer": "绿色植物利用光能把二氧化碳和水合成为有机物并释放氧气的过程",
+      "target_directory": "eval_answers",
+      "file_name": "eval_info.txt",
+      "success_criteria": {
+        "directory_exists": "eval_answers",
+        "file_exists": "eval_answers/eval_info.txt",
+        "document_contains": "绿色植物利用光能把二氧化碳和水合成为有机物并释放氧气的过程"
+      }
+    }
+  },
+  {
+    "task_id": "audit_eval_0005",
+    "scene": "asset_audit",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Wireline\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Wireline",
+      "required_audit_count": 2,
+      "success_criteria": {
+        "website_opened": true,
+        "plan_name": "Wireline",
+        "audit_status": "未盘点",
+        "audited_records": 2
+      }
+    }
+  },
+  {
+    "task_id": "audit_eval_0006",
+    "scene": "asset_audit",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Filepath\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Filepath",
+      "required_audit_count": 2,
+      "success_criteria": {
+        "website_opened": true,
+        "plan_name": "Filepath",
+        "audit_status": "未盘点",
+        "audited_records": 2
+      }
+    }
+  },
+  {
+    "task_id": "browser_eval_0018",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"世界上最高的山峰\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 eval_docs 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 eval_docs 文件夹中是否已经存在 eval_note.txt 文件，如果存在请先删除该文件，然后创建新的 eval_note.txt 文件。\n\n使用 libreoffice 打开 eval_note.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "世界上最高的山峰",
+      "expected_answer": "珠穆朗玛峰",
+      "target_directory": "eval_docs",
+      "file_name": "eval_note.txt",
+      "success_criteria": {
+        "directory_exists": "eval_docs",
+        "file_exists": "eval_docs/eval_note.txt",
+        "document_contains": "珠穆朗玛峰"
+      }
+    }
+  },
+  {
+    "task_id": "audit_eval_0011",
+    "scene": "asset_audit",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Lightfix\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Lightfix",
+      "required_audit_count": 2,
+      "success_criteria": {
+        "website_opened": true,
+        "plan_name": "Lightfix",
+        "audit_status": "未盘点",
+        "audited_records": 2
+      }
+    }
+  },
+  {
+    "task_id": "file_eval_0009",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 reports 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ndelta.txt、keep_alpha.txt。\n如果某个文件不存在，则创建该文件。\n\n将 delta.txt 移动到 reports 文件夹中。\n\n进入 reports 文件夹，将 delta.txt 重命名为 delta_done.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 garbage.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "reports",
+      "source_file_1": "delta.txt",
+      "source_file_2": "keep_alpha.txt",
+      "target_file_1": "delta_done.txt",
+      "delete_file": "garbage.txt",
+      "success_criteria": {
+        "folder_exists": "reports",
+        "moved_and_renamed_file": "reports/delta_done.txt",
+        "retained_file": "keep_alpha.txt",
+        "deleted_file_absent": "garbage.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_eval_0019",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 lab 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ngamma.txt、keep_beta.txt。\n如果某个文件不存在，则创建该文件。\n\n将 gamma.txt 移动到 lab 文件夹中。\n\n进入 lab 文件夹，将 gamma.txt 重命名为 alpha_done.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 legacy.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "lab",
+      "source_file_1": "gamma.txt",
+      "source_file_2": "keep_beta.txt",
+      "target_file_1": "alpha_done.txt",
+      "delete_file": "legacy.txt",
+      "success_criteria": {
+        "folder_exists": "lab",
+        "moved_and_renamed_file": "lab/alpha_done.txt",
+        "retained_file": "keep_beta.txt",
+        "deleted_file_absent": "legacy.txt"
+      }
+    }
+  },
+  {
+    "task_id": "browser_eval_0006",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"地球上最大的大陆\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 eval_results 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 eval_results 文件夹中是否已经存在 eval_ans.txt 文件，如果存在请先删除该文件，然后创建新的 eval_ans.txt 文件。\n\n使用 libreoffice 打开 eval_ans.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "地球上最大的大陆",
+      "expected_answer": "亚欧大陆",
+      "target_directory": "eval_results",
+      "file_name": "eval_ans.txt",
+      "success_criteria": {
+        "directory_exists": "eval_results",
+        "file_exists": "eval_results/eval_ans.txt",
+        "document_contains": "亚欧大陆"
+      }
+    }
+  },
+  {
+    "task_id": "audit_eval_0016",
+    "scene": "asset_audit",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Stationz\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Stationz",
+      "required_audit_count": 2,
+      "success_criteria": {
+        "website_opened": true,
+        "plan_name": "Stationz",
+        "audit_status": "未盘点",
+        "audited_records": 2
+      }
+    }
+  },
+  {
+    "task_id": "browser_eval_0007",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"加拿大的首都是哪里\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 eval_notes 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 eval_notes 文件夹中是否已经存在 eval_note.txt 文件，如果存在请先删除该文件，然后创建新的 eval_note.txt 文件。\n\n使用 libreoffice 打开 eval_note.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "加拿大的首都是哪里",
+      "expected_answer": "渥太华",
+      "target_directory": "eval_notes",
+      "file_name": "eval_note.txt",
+      "success_criteria": {
+        "directory_exists": "eval_notes",
+        "file_exists": "eval_notes/eval_note.txt",
+        "document_contains": "渥太华"
+      }
+    }
+  },
+  {
+    "task_id": "audit_eval_0001",
+    "scene": "asset_audit",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Wireline\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Wireline",
+      "required_audit_count": 2,
+      "success_criteria": {
+        "website_opened": true,
+        "plan_name": "Wireline",
+        "audit_status": "未盘点",
+        "audited_records": 2
+      }
+    }
+  },
+  {
+    "task_id": "browser_eval_0013",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"加拿大的首都是哪里\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 eval_results 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 eval_results 文件夹中是否已经存在 eval_note.txt 文件，如果存在请先删除该文件，然后创建新的 eval_note.txt 文件。\n\n使用 libreoffice 打开 eval_note.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "加拿大的首都是哪里",
+      "expected_answer": "渥太华",
+      "target_directory": "eval_results",
+      "file_name": "eval_note.txt",
+      "success_criteria": {
+        "directory_exists": "eval_results",
+        "file_exists": "eval_results/eval_note.txt",
+        "document_contains": "渥太华"
+      }
+    }
+  },
+  {
+    "task_id": "file_eval_0020",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 lab 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nbeta.txt、keep_alpha.txt。\n如果某个文件不存在，则创建该文件。\n\n将 beta.txt 移动到 lab 文件夹中。\n\n进入 lab 文件夹，将 beta.txt 重命名为 alpha_done.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 garbage.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "lab",
+      "source_file_1": "beta.txt",
+      "source_file_2": "keep_alpha.txt",
+      "target_file_1": "alpha_done.txt",
+      "delete_file": "garbage.txt",
+      "success_criteria": {
+        "folder_exists": "lab",
+        "moved_and_renamed_file": "lab/alpha_done.txt",
+        "retained_file": "keep_alpha.txt",
+        "deleted_file_absent": "garbage.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_eval_0008",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 reports 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nomega.txt、keep_beta.txt。\n如果某个文件不存在，则创建该文件。\n\n将 omega.txt 移动到 reports 文件夹中。\n\n进入 reports 文件夹，将 omega.txt 重命名为 beta_done.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 drop_me.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "reports",
+      "source_file_1": "omega.txt",
+      "source_file_2": "keep_beta.txt",
+      "target_file_1": "beta_done.txt",
+      "delete_file": "drop_me.txt",
+      "success_criteria": {
+        "folder_exists": "reports",
+        "moved_and_renamed_file": "reports/beta_done.txt",
+        "retained_file": "keep_beta.txt",
+        "deleted_file_absent": "drop_me.txt"
+      }
+    }
+  },
+  {
+    "task_id": "audit_eval_0015",
+    "scene": "asset_audit",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Lightfix\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Lightfix",
+      "required_audit_count": 2,
+      "success_criteria": {
+        "website_opened": true,
+        "plan_name": "Lightfix",
+        "audit_status": "未盘点",
+        "audited_records": 2
+      }
+    }
+  },
+  {
+    "task_id": "browser_eval_0001",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"世界上最高的山峰\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 eval_notes 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 eval_notes 文件夹中是否已经存在 eval_ans.txt 文件，如果存在请先删除该文件，然后创建新的 eval_ans.txt 文件。\n\n使用 libreoffice 打开 eval_ans.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "世界上最高的山峰",
+      "expected_answer": "珠穆朗玛峰",
+      "target_directory": "eval_notes",
+      "file_name": "eval_ans.txt",
+      "success_criteria": {
+        "directory_exists": "eval_notes",
+        "file_exists": "eval_notes/eval_ans.txt",
+        "document_contains": "珠穆朗玛峰"
+      }
+    }
+  },
+  {
+    "task_id": "browser_eval_0020",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"世界上最大的沙漠\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 eval_docs 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 eval_docs 文件夹中是否已经存在 eval_result.txt 文件，如果存在请先删除该文件，然后创建新的 eval_result.txt 文件。\n\n使用 libreoffice 打开 eval_result.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "世界上最大的沙漠",
+      "expected_answer": "南极沙漠",
+      "target_directory": "eval_docs",
+      "file_name": "eval_result.txt",
+      "success_criteria": {
+        "directory_exists": "eval_docs",
+        "file_exists": "eval_docs/eval_result.txt",
+        "document_contains": "南极沙漠"
+      }
+    }
+  },
+  {
+    "task_id": "browser_eval_0002",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"德国的首都是哪里\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 eval_answers 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 eval_answers 文件夹中是否已经存在 eval_note.txt 文件，如果存在请先删除该文件，然后创建新的 eval_note.txt 文件。\n\n使用 libreoffice 打开 eval_note.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "德国的首都是哪里",
+      "expected_answer": "柏林",
+      "target_directory": "eval_answers",
+      "file_name": "eval_note.txt",
+      "success_criteria": {
+        "directory_exists": "eval_answers",
+        "file_exists": "eval_answers/eval_note.txt",
+        "document_contains": "柏林"
+      }
+    }
+  },
+  {
+    "task_id": "audit_eval_0018",
+    "scene": "asset_audit",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Filepath\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Filepath",
+      "required_audit_count": 2,
+      "success_criteria": {
+        "website_opened": true,
+        "plan_name": "Filepath",
+        "audit_status": "未盘点",
+        "audited_records": 2
+      }
+    }
+  },
+  {
+    "task_id": "file_eval_0005",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 lab 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ngamma.txt、keep_alpha.txt。\n如果某个文件不存在，则创建该文件。\n\n将 gamma.txt 移动到 lab 文件夹中。\n\n进入 lab 文件夹，将 gamma.txt 重命名为 gamma_done.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 noise.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "lab",
+      "source_file_1": "gamma.txt",
+      "source_file_2": "keep_alpha.txt",
+      "target_file_1": "gamma_done.txt",
+      "delete_file": "noise.txt",
+      "success_criteria": {
+        "folder_exists": "lab",
+        "moved_and_renamed_file": "lab/gamma_done.txt",
+        "retained_file": "keep_alpha.txt",
+        "deleted_file_absent": "noise.txt"
+      }
+    }
+  },
+  {
+    "task_id": "browser_eval_0008",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"太阳系最小的行星\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 eval_docs 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 eval_docs 文件夹中是否已经存在 eval_note.txt 文件，如果存在请先删除该文件，然后创建新的 eval_note.txt 文件。\n\n使用 libreoffice 打开 eval_note.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "太阳系最小的行星",
+      "expected_answer": "水星",
+      "target_directory": "eval_docs",
+      "file_name": "eval_note.txt",
+      "success_criteria": {
+        "directory_exists": "eval_docs",
+        "file_exists": "eval_docs/eval_note.txt",
+        "document_contains": "水星"
+      }
+    }
+  },
+  {
+    "task_id": "browser_eval_0004",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"加拿大的首都是哪里\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 eval_results 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 eval_results 文件夹中是否已经存在 eval_ans.txt 文件，如果存在请先删除该文件，然后创建新的 eval_ans.txt 文件。\n\n使用 libreoffice 打开 eval_ans.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "加拿大的首都是哪里",
+      "expected_answer": "渥太华",
+      "target_directory": "eval_results",
+      "file_name": "eval_ans.txt",
+      "success_criteria": {
+        "directory_exists": "eval_results",
+        "file_exists": "eval_results/eval_ans.txt",
+        "document_contains": "渥太华"
+      }
+    }
+  },
+  {
+    "task_id": "file_eval_0013",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 lab 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nalpha.txt、keep_beta.txt。\n如果某个文件不存在，则创建该文件。\n\n将 alpha.txt 移动到 lab 文件夹中。\n\n进入 lab 文件夹，将 alpha.txt 重命名为 alpha_done.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 drop_me.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "lab",
+      "source_file_1": "alpha.txt",
+      "source_file_2": "keep_beta.txt",
+      "target_file_1": "alpha_done.txt",
+      "delete_file": "drop_me.txt",
+      "success_criteria": {
+        "folder_exists": "lab",
+        "moved_and_renamed_file": "lab/alpha_done.txt",
+        "retained_file": "keep_beta.txt",
+        "deleted_file_absent": "drop_me.txt"
+      }
+    }
+  },
+  {
+    "task_id": "audit_eval_0003",
+    "scene": "asset_audit",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Lightfix\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Lightfix",
+      "required_audit_count": 2,
+      "success_criteria": {
+        "website_opened": true,
+        "plan_name": "Lightfix",
+        "audit_status": "未盘点",
+        "audited_records": 2
+      }
+    }
+  },
+  {
+    "task_id": "audit_eval_0014",
+    "scene": "asset_audit",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Filepath\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Filepath",
+      "required_audit_count": 2,
+      "success_criteria": {
+        "website_opened": true,
+        "plan_name": "Filepath",
+        "audit_status": "未盘点",
+        "audited_records": 2
+      }
+    }
+  },
+  {
+    "task_id": "audit_eval_0008",
+    "scene": "asset_audit",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Stationz\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Stationz",
+      "required_audit_count": 2,
+      "success_criteria": {
+        "website_opened": true,
+        "plan_name": "Stationz",
+        "audit_status": "未盘点",
+        "audited_records": 2
+      }
+    }
+  },
+  {
+    "task_id": "audit_eval_0007",
+    "scene": "asset_audit",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Lightfix\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Lightfix",
+      "required_audit_count": 2,
+      "success_criteria": {
+        "website_opened": true,
+        "plan_name": "Lightfix",
+        "audit_status": "未盘点",
+        "audited_records": 2
+      }
+    }
+  },
+  {
+    "task_id": "audit_eval_0004",
+    "scene": "asset_audit",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Stationz\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Stationz",
+      "required_audit_count": 2,
+      "success_criteria": {
+        "website_opened": true,
+        "plan_name": "Stationz",
+        "audit_status": "未盘点",
+        "audited_records": 2
+      }
+    }
+  },
+  {
+    "task_id": "browser_eval_0015",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"加拿大的首都是哪里\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 eval_answers 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 eval_answers 文件夹中是否已经存在 eval_ans.txt 文件，如果存在请先删除该文件，然后创建新的 eval_ans.txt 文件。\n\n使用 libreoffice 打开 eval_ans.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "加拿大的首都是哪里",
+      "expected_answer": "渥太华",
+      "target_directory": "eval_answers",
+      "file_name": "eval_ans.txt",
+      "success_criteria": {
+        "directory_exists": "eval_answers",
+        "file_exists": "eval_answers/eval_ans.txt",
+        "document_contains": "渥太华"
+      }
+    }
+  },
+  {
+    "task_id": "audit_eval_0012",
+    "scene": "asset_audit",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Stationz\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Stationz",
+      "required_audit_count": 2,
+      "success_criteria": {
+        "website_opened": true,
+        "plan_name": "Stationz",
+        "audit_status": "未盘点",
+        "audited_records": 2
+      }
+    }
+  },
+  {
+    "task_id": "browser_eval_0014",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"世界上最大的沙漠\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 eval_docs 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 eval_docs 文件夹中是否已经存在 eval_ans.txt 文件，如果存在请先删除该文件，然后创建新的 eval_ans.txt 文件。\n\n使用 libreoffice 打开 eval_ans.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "世界上最大的沙漠",
+      "expected_answer": "南极沙漠",
+      "target_directory": "eval_docs",
+      "file_name": "eval_ans.txt",
+      "success_criteria": {
+        "directory_exists": "eval_docs",
+        "file_exists": "eval_docs/eval_ans.txt",
+        "document_contains": "南极沙漠"
+      }
+    }
+  },
+  {
+    "task_id": "file_eval_0001",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 deliverables 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nomega.txt、keep_delta.txt。\n如果某个文件不存在，则创建该文件。\n\n将 omega.txt 移动到 deliverables 文件夹中。\n\n进入 deliverables 文件夹，将 omega.txt 重命名为 omega_done.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 drop_me.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "deliverables",
+      "source_file_1": "omega.txt",
+      "source_file_2": "keep_delta.txt",
+      "target_file_1": "omega_done.txt",
+      "delete_file": "drop_me.txt",
+      "success_criteria": {
+        "folder_exists": "deliverables",
+        "moved_and_renamed_file": "deliverables/omega_done.txt",
+        "retained_file": "keep_delta.txt",
+        "deleted_file_absent": "drop_me.txt"
+      }
+    }
+  }
+]

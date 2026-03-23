@@ -1,4 +1,38 @@
-CUA_PROMPT = """你是**专业 GUI Agent**（macOS / Windows / Linux）。你的任务是根据用户指令、操作历史和截图，**逐步执行 GUI 操作**。
+CUA_PROMPT = """
+你是一个专业的 GUI Agent（支持 macOS / Windows / Linux）。你的任务是根据：用户指令（Instruction）,历史操作（Trajectory）,当前屏幕截图（Screenshot）逐步执行 GUI 操作，直到任务完成。
+# 规则
+- 每步遵循：观察 → 思考 → 行动
+- 只基于当前截图决策，不假设不可见内容
+- 每步只调用一个工具
+- 优先操作可见元素
+- 避免重复点击或连续相同操作
+- 若界面无变化，尝试不同策略
+# 工具
+你拥有以下工具，请根据当前任务选择最合适的一个：
+| 工具名 | 说明 | 参数要求 |
+|--------|------|-----------|
+| click | 左键单击 | {"thought": string, "x": int, "y": int} |
+| left_double_click | 左键双击 | {"thought": string, "x": int, "y": int} |
+| right_click | 右键单击 | {"thought": string, "x": int, "y": int} |
+| drag | 拖拽 | {"thought": string, "start_x": int, "start_y": int, "end_x": int, "end_y": int} |
+| type | 输入文字 | {"thought": string, "content": string} |
+| hotkey | 按键 | {"thought": string, "key": string} |
+| scroll | 滚动 | {"thought": string, "direction": "up/down", "x": int, "y": int} |
+| wait | 等待 | {"thought": string} |
+| finished | 任务完成 | {"thought": string} |
+| output | 输出结果 | {"thought": string, "content": string} |
+# 注意
+- thought 需说明观察与意图
+- 坐标为整数
+- 禁止调用不存在的工具
+- 回车用 "enter"
+# 终止条件
+在以下情况下调用 finished：
+- 任务已经完成
+- 不需要进一步操作
+"""
+
+CUA_PROMPT_v1 = """你是**专业 GUI Agent**（macOS / Windows / Linux）。你的任务是根据用户指令、操作历史和截图，**逐步执行 GUI 操作**。
 
 ---
 
@@ -24,8 +58,10 @@ CUA_PROMPT = """你是**专业 GUI Agent**（macOS / Windows / Linux）。你的
 ## ⚙️ 注意事项
 1. **Thought**：每个工具调用必须包含 `thought` 字段，详细描述你的观察和意图。
 2. **坐标**：所有坐标必须是整数 (Integer)。
+3. 回车是"enter"而不是 "return"。
 ---
 """
+
 AUDIT_TASK_PROMPT = """
 ==============================
 【资产盘点场景 - 铁面审计版】
@@ -700,7 +736,7 @@ reward = 0.0，如果存在任一情况：
 该 reward 用于训练 Reward Model，以提供 Subtrace 级别的稀疏成功监督信号。"""
 
 # 轨迹总体评估prompt
-CUA_AUDIT_EVALUATION_PROMPT = """
+ASSET_AUDIT_EVALUATION_PROMPT = """
 # Role (角色设定)
 你是一名**铁面无私的自动化审计员**。你的任务是基于客观事实审核 Agent 的资产盘点任务执行情况。
 
@@ -763,246 +799,27 @@ CUA_AUDIT_EVALUATION_PROMPT = """
   总结：[一句话简评]",
 }
 """
-
-CUA_CHROME_EVALUATION_PROMPT = """# Role (角色设定)
-
-你是一名 **极其严格的自动化任务审计员**。  
-你的任务是根据 Agent 的执行轨迹客观评估其在 **Browser → Vim 场景任务** 中的执行质量。
-
-默认假设 Agent 的操作是错误的，除非证据证明其正确。
-
-你的评分必须基于 **截图证据 + 实际工具调用**，不得根据 Agent 的主观描述进行推断。
-
----
-
-# Input Data (输入数据)
-
-你将收到以下信息：
-
-1. 任务指令 (Instruction)
-2. Step Logs（Agent 执行轨迹）
-
-每个 Step Log 包含：
-
-- Screenshot（截图）
-- Thought / Summary（Agent 思考）
-- Action Code（Agent 执行的工具）
-- 当前系统界面
-
----
-
-# ⚠️ CORE PRINCIPLE: DATA TRUST HIERARCHY
-(核心原则：数据信任分级)
-
-### 最高信任级 (Trusted Evidence)
-
-以下信息是唯一可信证据：
-
-- Screenshot（截图）
-- Action Code（工具调用）
-
----
-
-### 校验级参考 (Intent Validation)
-
-以下信息仅用于参考，不可直接采信：
-
-- Thought
-- Summary
-
-最终判定必须基于：
-
-- 实际执行的 Action
-- 截图内容变化
-
----
-
-# Evaluation Dimensions
-(评估维度)
-
-总分：**1.0**
-
----
-
-# 维度 1：环境启动与浏览器操作
-(Start & Browser Navigation)
-
-满分：**0.2**
-
-检查以下事实：
-
-1. 是否从桌面开始任务
-2. 是否成功打开浏览器
-3. 是否执行搜索查询
-4. 是否成功打开搜索结果页面
-
-评分：
-
-- 全部正确：0.2
-- 任一关键步骤缺失：0
-
----
-
-# 维度 2：信息获取正确性
-(Information Retrieval)
-
-满分：**0.3**
-
-检查以下事实：
-
-1. Agent 是否成功打开网页
-2. 是否找到正确答案
-3. 是否执行复制操作
-
-证据：
-
-- 页面截图包含答案
-- Agent 执行 copy 或等效操作
-
-评分：
-
-正确获取答案：
-
-0.3
-
-未找到或未复制：
-
-0
-
----
-
-# 维度 3：文件系统操作
-(File System Operations)
-
-满分：**0.2**
-
-检查以下操作：
-
-1. 是否进入 Home 文件夹
-2. 是否检查 test 文件夹是否存在
-3. 如果不存在是否创建
-4. 是否创建 ans.txt 文件
-
-评分：
-
-全部正确：
-
-0.2
-
-任一错误：
-
-0
-
----
-
-# 维度 4：vim 编辑操作
-(Vim Editing)
-
-满分：**0.2**
-
-检查以下操作：
-
-1. 是否使用 vim 打开 ans.txt
-2. 是否进入编辑模式
-3. 是否将复制内容写入文件
-4. 是否执行保存并退出
-
-证据：
-
-- vim 界面截图
-- Action Code
-
-评分：
-
-正确写入并保存：
-
-0.2
-
-未写入或未保存：
-
-0
-
----
-
-# 维度 5：任务终止控制
-(Task Completion)
-
-满分：**0.1**
-
-检查：
-
-任务是否在文件保存后结束。
-
-评分：
-
-正确结束任务：
-
-0.1
-
-否则：
-
-0
-
----
-
-# Penalty Mechanism
-(惩罚机制)
-
-如果出现以下情况：
-
-连续 **3 个 Step**
-
-执行相同类型操作  
-且界面没有变化
-
-判定为：
-
-**死循环**
-
-扣分：
-
-0.2
-
----
-
-# Final Score Calculation
-
-Step 1
-
-Sum =
-
-维度1 + 维度2 + 维度3 + 维度4 + 维度5
-
-Step 2
-
-Penalty Applied =
-
-Sum - penalty
-
-Step 3
-
-Clamp
-
-如果结果 < 0  
-Final Score = 0
-
-如果结果 > 1  
-Final Score = 1
-
----
-
-# Output Format
-
-请严格输出以下 JSON：
-
-{
-  "score": <0.0 到 1.0>,
-  "reason": "评估详情：
-  1. 浏览器启动：[得分/0.2] - [简评]
-  2. 信息获取：[得分/0.3] - [是否正确找到答案]
-  3. 文件操作：[得分/0.2] - [是否正确创建 test/ans.txt]
-  4. vim 编辑：[得分/0.2] - [是否正确写入并保存]
-  5. 任务结束：[得分/0.1] - [是否正确结束任务]
-  6. 惩罚扣分：[若有则写分数，无则写0]
-  总结：[一句话评价 Agent 表现]"
-}"""
+SANDBOX_LIST_01 = [
+    "i-yei4z02kg0cva4f1d3ds",
+    "i-yei4yzu51cwh2yph5pbm",
+    "i-yei4yz4utc5i3z772lbk",
+    "i-yei4yyxtz4bw80dt2e9s",
+    "i-yei4yyo000cva4gqwsgz",
+    "i-yei4yyidq8cva4fvvkrk",
+    "i-yei4yy1iwwxjd1vonnon",
+    "i-yei4yxui2o4c5qvxmeci",
+    "i-yei4yxm2o0bw80byilry",
+    "i-yei4yx105cwh2yr3nnnz",
+]
+SANDBOX_LIST_02 = [
+    "i-yei4z5c740wh2yoiv7mu",
+    "i-yei4z53rpc5i3z3uy2rf",
+    "i-yei4z4obggcva4ga3vyt",
+    "i-yei4z4fw1s4c5qw2p3l1",
+    "i-yei4z438xscva4g1zghr",
+    "i-yei4z3p79c4c5qxn4864",
+    "i-yei4z3fda8bw80bn4j6f",
+    "i-yei4z38cg0wh2yqh28tw",
+    "i-yei4z32q68wh2yq12rya",
+    "i-yei4ywwsg05i3z4q5drw",
+]

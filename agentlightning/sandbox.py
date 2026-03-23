@@ -1,13 +1,12 @@
-import threading, time
-from typing import Optional, Dict, Any, List, Set
+import threading
+import time
+from typing import Optional, Dict, Set
 from enum import Enum
 import requests
-import time
-from typing import Optional, Dict
-import traceback
 from dotenv import load_dotenv
 import os
 import agentlightning
+from examples.cua.constants import SANDBOX_LIST_01, SANDBOX_LIST_02
 
 agentlightning.configure_logger()
 
@@ -16,9 +15,9 @@ logger = agentlightning.configure_logger(name=__name__)
 load_dotenv()
 
 # 沙箱管理器配置（对应前端 sandboxManagerClient）
-SANDBOX_MANAGER_URL = os.getenv("sandbox_manager_url")
-KEY_AUTH = os.getenv("sandbox_key_auth")
-SANDBOX_OS_TYPE = "Linux"
+sandbox_manager_url = os.getenv("SANDBOX_MANAGER_URL")
+sandbox_key_auth = os.getenv("PLANNER_KEY_AUTH")  # 目前共用一个 KEY_AUTH，后续可区分权限或使用不同变量
+sandbox_os_type = "Linux"
 
 
 class SandboxBusyError(RuntimeError):
@@ -42,7 +41,7 @@ class SandboxStatus(str, Enum):
 
 # 需要添加创建linux sandbox的功能
 class SandboxManager:
-    def __init__(self, lease_ttl_s: Optional[int] = None):
+    def __init__(self, lease_ttl_s: Optional[int] = None, sandbox_list: Optional[list[str]] = None):
         self._lock = threading.RLock()
         # 条件变量用于在“无空闲且已达上限”时等待
         self._cv = threading.Condition(self._lock)
@@ -51,6 +50,7 @@ class SandboxManager:
         self._free: Set[str] = set()  # uri set
         self._in_use: Dict[str, dict] = {}  # uri -> {"task_id": str, "ts": float}
         self._ttl = lease_ttl_s
+        self._bootstrap_sandbox_list = list(dict.fromkeys(sandbox_list or []))
 
         # 启动时从远端加载当前运行中的沙箱到空闲池
         self._bootstrap_free_pool_from_remote()
@@ -64,22 +64,16 @@ class SandboxManager:
 
     def _bootstrap_free_pool_from_remote(self):
         """初始化：获取当前 RUNNING 的沙箱并加入空闲池"""
+        running_uris: list[str] = []
         try:
-            resp = self.list_sandbox()
-            sandboxes = resp.get("Result", []) or []
-            # running_uris = [sb.get("SandboxId") for sb in sandboxes if sb.get("Status") == "RUNNING"]
-            running_uris = [
-                "i-yehjzhvj7kxjd1v7mm4f",
-                "i-yehjzheoe8xjd1vfgvs2",
-                "i-yehjzh68zk4c5qw6rg8j",
-                "i-yehjzgz85c4c5qwfyafk",
-                "i-yehjzgs7b4xjd1vqfe5x",
-                "i-yehjzgjrwgwh2ysgydu3",
-                "i-yehjzg9xxcwh2ypweixw",
-                "i-yehjzg2x34wh2ypshlh8",
-                "i-yehk3xce80cva4f87dzv",
-                "i-yehk3tzldscva4f5ynrl",
-            ]
+            if self._bootstrap_sandbox_list:
+                running_uris = self._bootstrap_sandbox_list
+            else:
+                resp = self.list_sandbox()
+                sandboxes = resp.get("Result", []) or []
+                running_uris = [sb.get("SandboxId") for sb in sandboxes if sb.get("Status") == SandboxStatus.RUNNING]
+                if not running_uris:
+                    running_uris = SANDBOX_LIST_02
             logger.info(f"✅当前沙箱列表: {running_uris}")
             if not running_uris:
                 return
@@ -90,8 +84,15 @@ class SandboxManager:
                 if running_uris:
                     self._cv.notify_all()
         except Exception as e:
-            # 初始化失败不致命，仅告警
-            logger.warn(f"⚠️ 初始化空闲池失败: {e}")
+            # 初始化失败不致命，回退到默认硬编码列表
+            fallback_uris = list(dict.fromkeys(SANDBOX_LIST_02))
+            logger.warning(f"⚠️ 初始化空闲池失败，回退默认列表: {e}")
+            with self._lock:
+                for uri in fallback_uris:
+                    if uri and uri not in self._in_use:
+                        self._free.add(uri)
+                if fallback_uris:
+                    self._cv.notify_all()
 
     def allocate(self, task_id: str) -> str:
         """分配一个空闲沙箱；当前模式仅使用预置 running_uris 池。"""
@@ -154,17 +155,17 @@ class SandboxManager:
                 "uris_in_use": list(self._in_use.keys()),
             }
 
-    def create_sandbox(self, os_type: str = SANDBOX_OS_TYPE) -> str:
+    def create_sandbox(self, os_type: str = sandbox_os_type) -> str:
         """创建沙箱并等待其进入 RUNNING，再注册并返回"""
-        if not SANDBOX_MANAGER_URL or not KEY_AUTH:
+        if not sandbox_manager_url or not sandbox_key_auth:
             raise EnvironmentError("请设置 SANDBOX_MANAGER_URL 和 KEY_AUTH")
 
-        headers = {"Content-Type": "application/json", "Authorization": KEY_AUTH}
+        headers = {"Content-Type": "application/json", "Authorization": sandbox_key_auth}
         params = {"Action": "CreateSandbox", "Version": "2020-04-01", "OsType": os_type}
 
         logger.info(f"✅ 正在创建 {os_type} 沙箱...")
         try:
-            response = requests.get(SANDBOX_MANAGER_URL, headers=headers, params=params, timeout=30)
+            response = requests.get(sandbox_manager_url, headers=headers, params=params, timeout=30)
             response.raise_for_status()
             result = response.json()
             uri = result.get("Result", {}).get("SandboxId")
@@ -200,14 +201,14 @@ class SandboxManager:
 
     def list_sandbox(self):
 
-        if not SANDBOX_MANAGER_URL or not KEY_AUTH:
+        if not sandbox_manager_url or not sandbox_key_auth:
             raise EnvironmentError("请设置 SANDBOX_MANAGER_URL 和 KEY_AUTH")
 
-        headers = {"Content-Type": "application/json", "Authorization": KEY_AUTH}
+        headers = {"Content-Type": "application/json", "Authorization": sandbox_key_auth}
         params = {"Action": "DescribeSandboxes", "Version": "2020-04-01"}
 
         # logger.info(f"✅ 获取沙箱列表中...")
-        response = requests.get(SANDBOX_MANAGER_URL, headers=headers, params=params, timeout=30)
+        response = requests.get(sandbox_manager_url, headers=headers, params=params, timeout=30)
         response.raise_for_status()
         result = response.json()
         # logger.info(f"✅ 沙箱列表获取成功")
@@ -216,14 +217,14 @@ class SandboxManager:
     def delete_sandbox(self, uri: str):
         """删除沙箱"""
 
-        if not SANDBOX_MANAGER_URL or not KEY_AUTH:
+        if not sandbox_manager_url or not sandbox_key_auth:
             raise EnvironmentError("请设置 SANDBOX_MANAGER_URL 和 KEY_AUTH")
 
-        headers = {"Content-Type": "application/json", "Authorization": KEY_AUTH}
+        headers = {"Content-Type": "application/json", "Authorization": sandbox_key_auth}
         params = {"Action": "DeleteSandbox", "Version": "2020-04-01", "SandboxId": uri}
 
         logger.info(f"🗑️ 正在删除沙箱 {uri} ...")
-        response = requests.get(SANDBOX_MANAGER_URL, headers=headers, params=params, timeout=10)
+        response = requests.get(sandbox_manager_url, headers=headers, params=params, timeout=10)
         response.raise_for_status()
         logger.info(f"🗑️ 沙箱删除成功: {uri}")
 

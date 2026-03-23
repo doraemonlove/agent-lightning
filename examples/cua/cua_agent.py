@@ -14,22 +14,26 @@ from convert_triplets import convert_traces_to_triplets
 from reward_server import score_trace
 from dotenv import load_dotenv
 
-from constants import CUA_PROMPT, AUDIT_TASK_PROMPT
-
-TASK_PROMPT = CUA_PROMPT + AUDIT_TASK_PROMPT
+from constants import CUA_PROMPT
 
 load_dotenv()
 agentlightning.configure_logger()
 
 logger = agentlightning.configure_logger(name=__name__)
 
-TRACE_DIR = "./trace/0316/hybrid_reward_v3"
+TRACE_DIR = os.getenv("TRACE_DIR", "./traces")
+EXP_NAME = os.getenv("EXP_NAME", "cua_exp")
+AGENT_PLANNER_PORT = int(os.getenv("AGENT_PLANNER_PORT", 8331))
+PLANNER_KEY_AUTH = os.getenv("PLANNER_KEY_AUTH")
+REWARD_SERVER_PORT = int(os.getenv("REWARD_SERVER_PORT", 8003))
 os.makedirs(TRACE_DIR, exist_ok=True)
 
 
 def _build_trace_out_path(sample: dict[str, Any], is_training: bool, rollout_id: str) -> str:
-    """Build trace path as <root>/<train|val>/step<idx>/<rollout_id>_model_output.json."""
+    """Build trace path as <root>/<date>/<exp>/<train|val>/step<idx>/<rollout_id>_model_output.json."""
     base_dir = TRACE_DIR
+    date_dir = time.strftime("%Y%m%d")
+    exp_name = EXP_NAME
     mode = "train" if is_training else "val"
     meta = sample.get("_agentlightning") if isinstance(sample, dict) else None
 
@@ -42,7 +46,7 @@ def _build_trace_out_path(sample: dict[str, Any], is_training: bool, rollout_id:
     else:
         step_folder = "step_unknown"
 
-    return os.path.join(base_dir, mode, step_folder, f"{rollout_id}_model_output.json")
+    return os.path.join(base_dir, date_dir, exp_name, mode, step_folder, f"{rollout_id}_model_output.json")
 
 
 async def run_planner_task(
@@ -61,14 +65,11 @@ async def run_planner_task(
     最终把完整的 result 追加为一条 "result" 记录到同一文件。
     （不使用 rollout_id，按要求简化）
     """
-    AGENT_PLANNER_URL = os.getenv("AGENT_PLANNER_URL", "http://127.0.0.1:8331/planner")
-    # 统一认证密钥（沙箱和Planner共享，前端均使用 process.env.KEY_AUTH）
-    KEY_AUTH = os.getenv("sandbox_key_auth")
 
-    url = f"{AGENT_PLANNER_URL}/run/task"
+    url = f"http://0.0.0.0:{AGENT_PLANNER_PORT}/planner/run/task"
     headers = {"Content-Type": "application/json"}
-    if KEY_AUTH:
-        headers["Authorization"] = KEY_AUTH
+    if PLANNER_KEY_AUTH:
+        headers["Authorization"] = PLANNER_KEY_AUTH
     data = {
         "system_prompt": system_prompt,
         "user_prompt": user_prompt,
@@ -76,8 +77,8 @@ async def run_planner_task(
         "model_name": model_name,
         "model_endpoint": model_endpoint,
         "model_api_key": api_key,
-        "max_actions": 30,
-        "max_images": 5,
+        "max_actions": 45,
+        "max_images": 3,
         "thinking_type": "enabled",
         "is_training": True,
         "turn_on_review": False,
@@ -131,8 +132,8 @@ def test_llm_endpoint(endpoint: str, model_name: str):
 
 
 class LitCUAAgent(agentlightning.LitAgent):
-    overall_score_endpoint: str = "http://localhost:8003/overall_score"
-    group_score_endpoint: str = "http://localhost:8003/group_score"
+    overall_score_endpoint: str = f"http://localhost:{REWARD_SERVER_PORT}/overall_score"
+    group_score_endpoint: str = f"http://localhost:{REWARD_SERVER_PORT}/group_score"
 
     async def _execute_rollout(
         self, sample: dict[str, Any], *, resources: agentlightning.NamedResources, rollout_id: str, is_training: bool
@@ -151,7 +152,7 @@ class LitCUAAgent(agentlightning.LitAgent):
             model_name = "/models/Qwen3-VL-8B-Instruct"
             result = await run_planner_task(
                 sandbox_id=sandbox_uri,
-                system_prompt=TASK_PROMPT,
+                system_prompt=CUA_PROMPT,
                 user_prompt=sample["instruction"],
                 model_name=model_name,
                 model_endpoint=llm.endpoint,
@@ -173,6 +174,7 @@ class LitCUAAgent(agentlightning.LitAgent):
                 url=self.overall_score_endpoint,
                 trace=result,
                 user_instruction=sample["instruction"],
+                scene=sample["scene"],
             )
             overall_score = overall_score_response.get("score", 0.0)
             logger.info(f"整体任务评分成功: {overall_score}")

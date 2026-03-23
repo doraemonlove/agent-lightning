@@ -1,0 +1,42 @@
+[
+    {
+        "task_id": 1,
+        "instruction": "打开终端，输入sudo apt update 更新源，更新完成后输入sudo apt install libreoffice 来安装，安装完成后关闭所有窗口，完成任务"
+    },
+    {
+        "task_id": 2,
+        "instruction": "打开终端，输入sudo apt update 更新源，更新完成后输入sudo apt install libreoffice 来安装，安装完成后关闭所有窗口，完成任务"
+    },
+    {
+        "task_id": 3,
+        "instruction": "打开终端，输入sudo apt update 更新源，更新完成后输入sudo apt install libreoffice 来安装，安装完成后关闭所有窗口，完成任务"
+    },
+    {
+        "task_id": 4,
+        "instruction": "打开终端，输入sudo apt update 更新源，更新完成后输入sudo apt install libreoffice 来安装，安装完成后关闭所有窗口，完成任务"
+    },
+    {
+        "task_id": 5,
+        "instruction": "打开终端，输入sudo apt update 更新源，更新完成后输入sudo apt install libreoffice 来安装，安装完成后关闭所有窗口，完成任务"
+    },
+    {
+        "task_id": 6,
+        "instruction": "打开终端，输入sudo apt update 更新源，更新完成后输入sudo apt install libreoffice 来安装，安装完成后关闭所有窗口，完成任务"
+    },
+    {
+        "task_id": 7,
+        "instruction": "打开终端，输入sudo apt update 更新源，更新完成后输入sudo apt install libreoffice 来安装，安装完成后关闭所有窗口，完成任务"
+    },
+    {
+        "task_id": 8,
+        "instruction": "打开终端，输入sudo apt update 更新源，更新完成后输入sudo apt install libreoffice 来安装，安装完成后关闭所有窗口，完成任务"
+    },
+    {
+        "task_id": 9,
+        "instruction": "打开终端，输入sudo apt update 更新源，更新完成后输入sudo apt install libreoffice 来安装，安装完成后关闭所有窗口，完成任务"
+    },
+    {
+        "task_id": 10,
+        "instruction": "打开终端，输入sudo apt update 更新源，更新完成后输入sudo apt install libreoffice 来安装，安装完成后关闭所有窗口，完成任务"
+    }
+]

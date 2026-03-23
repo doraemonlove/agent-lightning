@@ -11,15 +11,12 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 import asyncio
 from cua_reward_model import CUARewardModel
-from constants import CUA_CHROME_EVALUATION_PROMPT
 
 agentlightning.configure_logger()
 
 logger = agentlightning.configure_logger(name=__name__)
 
 load_dotenv(find_dotenv())
-
-api_key = os.getenv("score_api_key")
 
 
 try:
@@ -33,18 +30,21 @@ except Exception:
 
 if not OPENAI_AVAILABLE:
     raise RuntimeError("openai 包不可用，请先安装 openai")
-if not api_key:
-    raise RuntimeError("环境变量 score_api_key 未设置")
 
 reward_model = CUARewardModel(
-    base_url="https://ark.cn-beijing.volces.com/api/v3",
-    api_key=api_key,
-    model="doubao-seed-1-6-251015",
-    overall_reward_prompt=CUA_CHROME_EVALUATION_PROMPT,
+    base_url=os.getenv("BASE_URL", "https://ark.cn-beijing.volces.com/api/v3"),
+    api_key=os.getenv("API_KEY"),
+    model=os.getenv("REWARD_MODEL", "doubao-seed-1-6-251015"),
 )
 
 
-class ScoreRequest(BaseModel):
+class OverallScoreRequest(BaseModel):
+    trace: Union[str, List[Dict[str, Any]], Dict[str, Any]]
+    user_instruction: str
+    scene: str
+
+
+class SubScoreRequest(BaseModel):
     trace: Union[str, List[Dict[str, Any]], Dict[str, Any]]
     user_instruction: str
 
@@ -101,12 +101,13 @@ app = FastAPI(
 
 
 @app.post("/overall_score", response_model=OverallScoreResponse)
-async def score_trace(request: ScoreRequest):
+async def overall_score_trace(request: OverallScoreRequest):
     try:
         normalized_trace = _normalize_trace(request.trace)
         result = await reward_model.get_overall_reward(
             trace=normalized_trace,
             user_instruction=request.user_instruction,
+            scene=request.scene,
         )
         return OverallScoreResponse(score=result[0], reason=result[1])
     except HTTPException:
@@ -116,7 +117,7 @@ async def score_trace(request: ScoreRequest):
 
 
 @app.post("/group_score", response_model=GroupScoreResponse)
-async def group_score_trace(request: ScoreRequest):
+async def group_score_trace(request: SubScoreRequest):
     try:
         normalized_trace = _normalize_trace(request.trace)
         result = await reward_model.get_group_rewards(
@@ -139,20 +140,21 @@ if __name__ == "__main__":
     uvicorn.run(
         app,
         host="0.0.0.0",
-        port=8003,
+        port=int(os.getenv("REWARD_SERVER_PORT", 8003)),
         timeout_keep_alive=600,  # 保持连接时间
         timeout_graceful_shutdown=60,  # 优雅关闭时间
     )
 
 
 # 评分接口
-async def score_trace(url, trace: list[dict] = None, user_instruction: str = None):
+async def score_trace(url, trace: list[dict] = None, user_instruction: str = None, scene: str = None) -> dict:
     try:
         # 1. 检查数据量，防止发送过大炸弹
         # 如果 trace 中包含 image，建议在此处做截断或只发 url
         payload = {
             "trace": trace,
             "user_instruction": user_instruction,
+            "scene": scene,
         }
 
         # 打印大小日志

@@ -1,6 +1,6 @@
 [
   {
-    "task_id": "audit_eval_0001",
+    "task_id": "audit_eval_0013",
     "scene": "asset_audit",
     "split": "eval",
     "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Wireline\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
@@ -10,6 +10,22 @@
       "success_criteria": {
         "website_opened": true,
         "plan_name": "Wireline",
+        "audit_status": "未盘点",
+        "audited_records": 2
+      }
+    }
+  },
+  {
+    "task_id": "audit_eval_0019",
+    "scene": "asset_audit",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Lightfix\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Lightfix",
+      "required_audit_count": 2,
+      "success_criteria": {
+        "website_opened": true,
+        "plan_name": "Lightfix",
         "audit_status": "未盘点",
         "audited_records": 2
       }
@@ -32,23 +48,23 @@
     }
   },
   {
-    "task_id": "audit_eval_0003",
+    "task_id": "audit_eval_0009",
     "scene": "asset_audit",
     "split": "eval",
-    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Lightfix\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Wireline\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
     "meta": {
-      "plan_name": "Lightfix",
+      "plan_name": "Wireline",
       "required_audit_count": 2,
       "success_criteria": {
         "website_opened": true,
-        "plan_name": "Lightfix",
+        "plan_name": "Wireline",
         "audit_status": "未盘点",
         "audited_records": 2
       }
     }
   },
   {
-    "task_id": "audit_eval_0004",
+    "task_id": "audit_eval_0020",
     "scene": "asset_audit",
     "split": "eval",
     "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Stationz\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
@@ -58,6 +74,38 @@
       "success_criteria": {
         "website_opened": true,
         "plan_name": "Stationz",
+        "audit_status": "未盘点",
+        "audited_records": 2
+      }
+    }
+  },
+  {
+    "task_id": "audit_eval_0017",
+    "scene": "asset_audit",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Wireline\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Wireline",
+      "required_audit_count": 2,
+      "success_criteria": {
+        "website_opened": true,
+        "plan_name": "Wireline",
+        "audit_status": "未盘点",
+        "audited_records": 2
+      }
+    }
+  },
+  {
+    "task_id": "audit_eval_0010",
+    "scene": "asset_audit",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Filepath\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Filepath",
+      "required_audit_count": 2,
+      "success_criteria": {
+        "website_opened": true,
+        "plan_name": "Filepath",
         "audit_status": "未盘点",
         "audited_records": 2
       }
@@ -96,135 +144,7 @@
     }
   },
   {
-    "task_id": "audit_eval_0007",
-    "scene": "asset_audit",
-    "split": "eval",
-    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Lightfix\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
-    "meta": {
-      "plan_name": "Lightfix",
-      "required_audit_count": 2,
-      "success_criteria": {
-        "website_opened": true,
-        "plan_name": "Lightfix",
-        "audit_status": "未盘点",
-        "audited_records": 2
-      }
-    }
-  },
-  {
-    "task_id": "audit_eval_0008",
-    "scene": "asset_audit",
-    "split": "eval",
-    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Stationz\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
-    "meta": {
-      "plan_name": "Stationz",
-      "required_audit_count": 2,
-      "success_criteria": {
-        "website_opened": true,
-        "plan_name": "Stationz",
-        "audit_status": "未盘点",
-        "audited_records": 2
-      }
-    }
-  },
-  {
-    "task_id": "audit_eval_0009",
-    "scene": "asset_audit",
-    "split": "eval",
-    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Wireline\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
-    "meta": {
-      "plan_name": "Wireline",
-      "required_audit_count": 2,
-      "success_criteria": {
-        "website_opened": true,
-        "plan_name": "Wireline",
-        "audit_status": "未盘点",
-        "audited_records": 2
-      }
-    }
-  },
-  {
-    "task_id": "audit_eval_0010",
-    "scene": "asset_audit",
-    "split": "eval",
-    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Filepath\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
-    "meta": {
-      "plan_name": "Filepath",
-      "required_audit_count": 2,
-      "success_criteria": {
-        "website_opened": true,
-        "plan_name": "Filepath",
-        "audit_status": "未盘点",
-        "audited_records": 2
-      }
-    }
-  },
-  {
     "task_id": "audit_eval_0011",
-    "scene": "asset_audit",
-    "split": "eval",
-    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Lightfix\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
-    "meta": {
-      "plan_name": "Lightfix",
-      "required_audit_count": 2,
-      "success_criteria": {
-        "website_opened": true,
-        "plan_name": "Lightfix",
-        "audit_status": "未盘点",
-        "audited_records": 2
-      }
-    }
-  },
-  {
-    "task_id": "audit_eval_0012",
-    "scene": "asset_audit",
-    "split": "eval",
-    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Stationz\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
-    "meta": {
-      "plan_name": "Stationz",
-      "required_audit_count": 2,
-      "success_criteria": {
-        "website_opened": true,
-        "plan_name": "Stationz",
-        "audit_status": "未盘点",
-        "audited_records": 2
-      }
-    }
-  },
-  {
-    "task_id": "audit_eval_0013",
-    "scene": "asset_audit",
-    "split": "eval",
-    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Wireline\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
-    "meta": {
-      "plan_name": "Wireline",
-      "required_audit_count": 2,
-      "success_criteria": {
-        "website_opened": true,
-        "plan_name": "Wireline",
-        "audit_status": "未盘点",
-        "audited_records": 2
-      }
-    }
-  },
-  {
-    "task_id": "audit_eval_0014",
-    "scene": "asset_audit",
-    "split": "eval",
-    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Filepath\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
-    "meta": {
-      "plan_name": "Filepath",
-      "required_audit_count": 2,
-      "success_criteria": {
-        "website_opened": true,
-        "plan_name": "Filepath",
-        "audit_status": "未盘点",
-        "audited_records": 2
-      }
-    }
-  },
-  {
-    "task_id": "audit_eval_0015",
     "scene": "asset_audit",
     "split": "eval",
     "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Lightfix\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
@@ -256,7 +176,7 @@
     }
   },
   {
-    "task_id": "audit_eval_0017",
+    "task_id": "audit_eval_0001",
     "scene": "asset_audit",
     "split": "eval",
     "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Wireline\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
@@ -266,6 +186,22 @@
       "success_criteria": {
         "website_opened": true,
         "plan_name": "Wireline",
+        "audit_status": "未盘点",
+        "audited_records": 2
+      }
+    }
+  },
+  {
+    "task_id": "audit_eval_0015",
+    "scene": "asset_audit",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Lightfix\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Lightfix",
+      "required_audit_count": 2,
+      "success_criteria": {
+        "website_opened": true,
+        "plan_name": "Lightfix",
         "audit_status": "未盘点",
         "audited_records": 2
       }
@@ -288,7 +224,7 @@
     }
   },
   {
-    "task_id": "audit_eval_0019",
+    "task_id": "audit_eval_0003",
     "scene": "asset_audit",
     "split": "eval",
     "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Lightfix\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
@@ -304,7 +240,71 @@
     }
   },
   {
-    "task_id": "audit_eval_0020",
+    "task_id": "audit_eval_0014",
+    "scene": "asset_audit",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Filepath\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Filepath",
+      "required_audit_count": 2,
+      "success_criteria": {
+        "website_opened": true,
+        "plan_name": "Filepath",
+        "audit_status": "未盘点",
+        "audited_records": 2
+      }
+    }
+  },
+  {
+    "task_id": "audit_eval_0008",
+    "scene": "asset_audit",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Stationz\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Stationz",
+      "required_audit_count": 2,
+      "success_criteria": {
+        "website_opened": true,
+        "plan_name": "Stationz",
+        "audit_status": "未盘点",
+        "audited_records": 2
+      }
+    }
+  },
+  {
+    "task_id": "audit_eval_0007",
+    "scene": "asset_audit",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Lightfix\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Lightfix",
+      "required_audit_count": 2,
+      "success_criteria": {
+        "website_opened": true,
+        "plan_name": "Lightfix",
+        "audit_status": "未盘点",
+        "audited_records": 2
+      }
+    }
+  },
+  {
+    "task_id": "audit_eval_0004",
+    "scene": "asset_audit",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Stationz\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Stationz",
+      "required_audit_count": 2,
+      "success_criteria": {
+        "website_opened": true,
+        "plan_name": "Stationz",
+        "audit_status": "未盘点",
+        "audited_records": 2
+      }
+    }
+  },
+  {
+    "task_id": "audit_eval_0012",
     "scene": "asset_audit",
     "split": "eval",
     "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\n\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，请完成以下资产盘点任务。\n\n首先，在页面中找到资产盘点审核相关界面，并设置筛选条件：\n\n- 盘点计划：Stationz\n- 盘点审核结果：未盘点\n\n盘点计划的选择列表可能不会同时显示所有计划，盘点计划列表支持滚动或搜索。\n完成筛选后，页面将显示待审核的资产记录列表。\n\n每条记录通常包含以下信息：\n\n- 系统记录的资产条码\n- 对应资产的图片\n- 用于执行审核的操作按钮（例如“盘点审核”、“通过”或“驳回”等）\n\n资产图片支持放大查看，以便更清晰地识别条码内容。\n\n你的任务是对 **2 条资产记录** 进行盘点审核。\n\n审核规则如下：\n\n请检查图片中的条码是否与系统记录的条码一致：\n\n- 如果图片中的条码与系统条码 **完全一致**，选择 **通过**\n- 如果条码 **不一致、无法识别或图片不清晰**，选择 **驳回**\n\n完成两条记录的审核后，结束盘点任务。\n\n最后关闭浏览器并结束任务。\n",

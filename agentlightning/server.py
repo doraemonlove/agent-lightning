@@ -30,6 +30,7 @@ from .types import (
     TaskIfAny,
 )
 from .sandbox import SandboxManager, SandboxBusyError
+from examples.cua.constants import SANDBOX_LIST_02
 import agentlightning
 
 agentlightning.configure_logger()
@@ -236,7 +237,7 @@ class AgentLightningServer:
         self.endpoint = f"http://{host}:{port}"
         self._task_timeout_seconds = task_timeout_seconds
 
-        self.sandbox_mgr = SandboxManager()
+        self.sandbox_mgr = SandboxManager(sandbox_list=SANDBOX_LIST_02)
         # Defer initialization and use event for cross-thread communication
         self._store: Optional[ServerDataStore] = None
         self.loop: Optional[asyncio.AbstractEventLoop] = None

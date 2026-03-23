@@ -11,13 +11,17 @@ import csv
 import sys
 import threading
 import asyncio
+from concurrent.futures import ThreadPoolExecutor
 from reward_server import score_trace
 from dotenv import load_dotenv, find_dotenv
-from constants import CUA_PROMPT
+from constants import CUA_PROMPT, SANDBOX_LIST_02, SANDBOX_LIST_01
+from agentlightning.sandbox import SandboxManager
 
 load_dotenv(find_dotenv())
 # ================= 配置与常量 =================
-SANDBOX_KEY_AUTH = os.getenv("sandbox_key_auth")
+PLANNER_KEY_AUTH = os.getenv("PLANNER_KEY_AUTH")
+REWARD_SERVER_PORT = int(os.getenv("REWARD_SERVER_PORT", 8003))
+AGENT_PLANNER_PORT = int(os.getenv("AGENT_PLANNER_PORT", 8331))
 
 logging.basicConfig(
     level=logging.INFO,
@@ -30,66 +34,11 @@ logger = logging.getLogger(__name__)
 CSV_LOCK = threading.Lock()
 
 
-class SandboxBusyError(RuntimeError):
-    pass
-
-
-class SandboxManager:
-    def __init__(self, lease_ttl_s: int | None = None):
-        self._lock = threading.RLock()
-        self._cv = threading.Condition(self._lock)
-        self._free: set[str] = set()
-        self._in_use: dict[str, dict] = {}
-        self._ttl = lease_ttl_s
-        self._bootstrap_free_pool_from_remote()
-
-    def _bootstrap_free_pool_from_remote(self):
-        try:
-            running_uris = ["i-yea0n5udc0bw80duzulj"]
-            running_uris = list(set(running_uris))  # 简单的去重
-            logger.info(f"✅ 初始化沙箱池，共 {len(running_uris)} 个沙箱")
-
-            with self._lock:
-                for uri in running_uris:
-                    if uri and uri not in self._in_use:
-                        self._free.add(uri)
-                if running_uris:
-                    self._cv.notify_all()
-        except Exception as e:
-            logger.warning(f"⚠️ 初始化空闲池失败: {e}")
-
-    def allocate(self, task_id: str) -> str:
-        """分配沙箱，如果无空闲则阻塞等待"""
-        while True:
-            with self._lock:
-                if self._free:
-                    uri = self._free.pop()
-                    self._in_use[uri] = {"task_id": task_id, "ts": time.time()}
-                    logger.info(f"[Alloc] Task {task_id} -> Sandbox {uri}")
-                    return uri
-                logger.debug(f"Task {task_id} waiting for sandbox...")
-                self._cv.wait()
-
-    def release(self, uri: str):
-        """释放沙箱"""
-        with self._lock:
-            if uri not in self._in_use:
-                return
-            self._in_use.pop(uri, None)
-            self._free.add(uri)
-            logger.info(f"[Release] Sandbox {uri} released. Free pool: {len(self._free)}")
-            self._cv.notify()
-
-    def get_pool_size(self):
-        with self._lock:
-            return len(self._free) + len(self._in_use)
-
-
 class CuaEvalutor:
 
     def __init__(self, results_file: str = "./eval_results.csv"):
         self.results_file = results_file
-        self.score_endpoint = "http://localhost:8003/overall_score"
+        self.score_endpoint = f"http://0.0.0.0:{REWARD_SERVER_PORT}/overall_score"
 
     def run_planner_task(
         self,
@@ -100,7 +49,7 @@ class CuaEvalutor:
         model_endpoint: str,
         model_api_key: str,
         model_provider: str = "openai",
-        agent_planner_url: str = "http://0.0.0.0:8331/planner",
+        agent_planner_url: str = f"http://0.0.0.0:{AGENT_PLANNER_PORT}/planner",
         key_auth: str = "",
         rollout_id: str = "",
     ) -> list[dict[str, Any]]:
@@ -114,7 +63,7 @@ class CuaEvalutor:
             "model_name": model_name,
             "model_endpoint": model_endpoint,
             "model_provider": model_provider,
-            "max_actions": 60,
+            "max_actions": 45,
             "max_images": 3,
             "thinking_type": "disabled",
             "is_training": True,
@@ -146,19 +95,20 @@ class CuaEvalutor:
         self,
         sample: dict,
         sandbox_uri: str,
-        unique_task_id: str,  # 用来区分同一各样本的不同变体
+        unique_task_id: str,
         model_name: str,
         system_prompt: str,
         trace_save_dir: str,
         model_endpoint: str = "",
         model_api_key: str = "",
         model_provider: str = "bedrock",
-        agent_planner_url: str = "http://0.0.0.0:8331/planner",
+        agent_planner_url: str = f"http://0.0.0.0:{AGENT_PLANNER_PORT}/planner",
         key_auth: str = "",
     ) -> tuple[float, float] | None:
 
         start_time = time.time()
         instruction = sample["instruction"]
+        scene = sample.get("scene", "unknown")
 
         try:
             logger.info(f"[{unique_task_id}] 开始 Rollout")
@@ -180,29 +130,35 @@ class CuaEvalutor:
             # 文件名加入 unique_task_id 防止覆盖
             out_path = os.path.join(trace_save_dir, f"{unique_task_id}.json")
 
-            full_trace = [{"instruction": instruction, "sandbox_id": sandbox_uri}] + result
+            full_trace = [{"instruction": instruction, "scene": scene, "sandbox_id": sandbox_uri}] + result
             with open(out_path, "w", encoding="utf-8") as f:
                 json.dump(full_trace, f, ensure_ascii=False, indent=4)
 
             # 评分
             end_time_rollout = time.time()
-            score_result = await score_trace(url=self.score_endpoint, trace=result, user_instruction=instruction)
+            score_result = await score_trace(
+                url=self.score_endpoint, trace=result, user_instruction=instruction, scene=scene
+            )
             reward = score_result["score"]
             reason = score_result["reason"]
 
             # 写入 CSV (加锁)
             elapsed = end_time_rollout - start_time
             row = {
-                "reward": reward,
-                "reason": json.dumps(reason, ensure_ascii=False),
-                "time_sec": f"{elapsed:.4f}",
                 "task_id": unique_task_id,  # 记录具体的任务ID
                 "original_sample_id": sample.get("task_id", "unknown"),
+                "reward": reward,
+                "scene": scene,
+                "reason": json.dumps(reason, ensure_ascii=False),
+                "time_sec": f"{elapsed:.4f}",
             }
-            fieldnames = ["task_id", "original_sample_id", "reward", "reason", "time_sec"]
+            fieldnames = ["task_id", "original_sample_id", "reward", "scene", "reason", "time_sec"]
 
             with CSV_LOCK:
                 write_header = not os.path.exists(self.results_file) or os.path.getsize(self.results_file) == 0
+                result_dir = os.path.dirname(self.results_file)
+                if result_dir:
+                    os.makedirs(result_dir, exist_ok=True)
                 with open(self.results_file, "a", encoding="utf-8", newline="") as f:
                     writer = csv.DictWriter(f, fieldnames=fieldnames)
                     if write_header:
@@ -214,46 +170,6 @@ class CuaEvalutor:
         except Exception as e:
             logger.exception(f"[{unique_task_id}] Rollout Error: {e}")
             return None
-
-    async def execute_eval_offline(
-        self,
-        instruction: str,
-        eval_dir: str,
-    ) -> tuple[float, float] | None:
-
-        for filename in os.listdir(eval_dir):
-            try:
-                if not filename.endswith("json"):
-                    continue
-                file_path = os.path.join(eval_dir, filename)
-                with open(file_path, "r") as f:
-                    result = json.load(f)
-
-                score_result = await score_trace(url=self.score_endpoint, trace=result, user_instruction=instruction)
-                reward = score_result["score"]
-                reason = score_result["reason"]
-
-                logger.info("评分完成: result=%s", score_result)
-
-            except Exception as e:
-                logger.exception("[Rollout Error during agent invocation] %s", e)
-                continue
-
-            row = {
-                "reward": reward,
-                "reason": json.dumps(reason, ensure_ascii=False),
-            }
-            fieldnames = ["reward", "reason"]
-            try:
-                write_header = not os.path.exists(self.results_file) or os.path.getsize(self.results_file) == 0
-                with open(self.results_file, "a", encoding="utf-8", newline="") as f:
-                    writer = csv.DictWriter(f, fieldnames=fieldnames)
-                    if write_header:
-                        writer.writeheader()
-                    writer.writerow(row)
-                logger.info("评估结果已写入 %s: %s", self.results_file, row)
-            except Exception as e:
-                logger.exception("写入评估结果文件失败: %s", e)
 
 
 # ================= Worker Function =================
@@ -297,11 +213,48 @@ async def worker_process_sample(
             sandbox_manager.release(sandbox_uri)
 
 
+def _concurrent_worker(
+    sample: dict, unique_task_id: str, sandbox_manager: SandboxManager, evaluator: CuaEvalutor, config: dict
+):
+    """并发模式下的同步 Worker，供 ThreadPoolExecutor 调用。"""
+    sandbox_uri = None
+    try:
+        sandbox_uri = sandbox_manager.allocate(unique_task_id)
+        asyncio.run(
+            evaluator.execute_eval_rollout(
+                sample=sample,
+                sandbox_uri=sandbox_uri,
+                unique_task_id=unique_task_id,
+                system_prompt=config["system_prompt"],
+                model_name=config["model_name"],
+                model_api_key=config["model_api_key"],
+                model_endpoint=config["model_endpoint"],
+                trace_save_dir=config["trace_save_dir"],
+                model_provider=config["model_provider"],
+                agent_planner_url=config["agent_planner_url"],
+                key_auth=config["key_auth"],
+            )
+        )
+    except Exception as e:
+        logger.error(f"Worker execution failed for {unique_task_id}: {e}")
+    finally:
+        if sandbox_uri:
+            sandbox_manager.release(sandbox_uri)
+
+
 # ================= Main =================
 def iterate_parquet_samples(parquet_path: str, start_row: int = 0):
     df = pd.read_parquet(parquet_path)
     for idx, row in df.iloc[start_row:].iterrows():
         yield idx, row.to_dict()
+
+
+def build_eval_output_paths(trace_dir: str, exp_name: str) -> tuple[str, str]:
+    """Build output paths as <trace_dir>/<date>/<exp_name>/... for CSV and trace files."""
+    date_dir = time.strftime("%Y%m%d")
+    output_root = os.path.join(trace_dir, date_dir, exp_name)
+    result_csv = os.path.join(output_root, f"{exp_name}.csv")
+    return output_root, result_csv
 
 
 def eval_offline():
@@ -312,73 +265,139 @@ def eval_offline():
 
 def main():
     # 1. 配置
+    # 获取环境变量，若不存在则使用默认值
+    model_name = os.getenv("claude_model_name", "claude-3-5-sonnet")
+    model_provider = os.getenv("claude_model_provider", "bedrock")
+    model_endpoint = os.getenv("claude_model_endpoint", "")  # bedrock 不需要
+    model_api_key = os.getenv("claude_model_api_key", "")  # bedrock 不需要
+
     config = {
-        "eval_path": "data/cross_app_eval.parquet",
-        "result_csv": "./trace/0309/0309-claude-sonnet-4-5-chrome-test/0309-claude-sonnet-4-5.csv",
-        "model_name": "global.anthropic.claude-sonnet-4-5-20250929-v1:0",
-        "model_endpoint": "",
-        "model_api_key": "",
-        "model_provider": "bedrock",
+        "eval_path": "data/eval.parquet",
+        "trace_dir": "./trace",
+        "exp_name": "claude-sonnet-4-5-hybrid-eval-3",
+        "model_name": model_name,
+        "model_endpoint": model_endpoint,
+        "model_api_key": model_api_key,
+        "model_provider": model_provider,
         "system_prompt": CUA_PROMPT,
-        "trace_save_dir": "./trace/0309/0309-claude-sonnet-4-5-chrome-test/",
-        "agent_planner_url": "http://0.0.0.0:8331/planner",
-        "key_auth": SANDBOX_KEY_AUTH,
+        "agent_planner_url": f"http://0.0.0.0:{AGENT_PLANNER_PORT}/planner",
+        "key_auth": PLANNER_KEY_AUTH,
+        "use_concurrent": True,
+        "sandbox_list": SANDBOX_LIST_01,
     }
 
     if not os.path.exists(config["eval_path"]):
         logger.error("数据文件不存在")
         return
 
+    trace_save_dir, result_csv = build_eval_output_paths(trace_dir=config["trace_dir"], exp_name=config["exp_name"])
+    config["trace_save_dir"] = trace_save_dir
+    config["result_csv"] = result_csv
+
+    os.makedirs(config["trace_save_dir"], exist_ok=True)
+    result_dir = os.path.dirname(config["result_csv"])
+    if result_dir:
+        os.makedirs(result_dir, exist_ok=True)
+
     # 2. 初始化组件
-    sandbox_manager = SandboxManager(lease_ttl_s=1200)
+    configured_sandbox_list = list(dict.fromkeys(config.get("sandbox_list") or []))
+    sandbox_manager = SandboxManager(sandbox_list=configured_sandbox_list)
     evaluator = CuaEvalutor(config["result_csv"])
 
-    logger.info("🚀 启动同步评估流程")
+    use_concurrent = config.get("use_concurrent", False)
 
-    # 3. 直接读取并遍历所有样本
-    all_samples = list(iterate_parquet_samples(config["eval_path"]))
-
-    # 4. 同步执行任务
-    completed_tasks = 0
-    for idx, original_sample in all_samples:
-        # 深拷贝样本以防修改冲突
-        sample_copy = original_sample.copy()
-
-        # 生成唯一任务 ID
-        unique_task_id = f"sample_{idx}"
-
-        asyncio.run(
-            worker_process_sample(
-                sample=sample_copy,
-                unique_task_id=unique_task_id,
-                sandbox_manager=sandbox_manager,
-                evaluator=evaluator,
-                config=config,
+    if use_concurrent:
+        # ===== 并发模式（ThreadPoolExecutor，与 collect_trace 保持一致）=====
+        max_workers = len(configured_sandbox_list)
+        if max_workers <= 0:
+            logger.error("未配置可用 sandbox_list，无法启动并发评估")
+            return
+        logger.info(f"🚀 启动并发评估流程，最大并发数: {max_workers}")
+        tasks = []
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            for idx, original_sample in iterate_parquet_samples(config["eval_path"]):
+                task_id = str(original_sample["task_id"])
+                future = executor.submit(
+                    _concurrent_worker,
+                    sample=original_sample,
+                    unique_task_id=task_id,
+                    sandbox_manager=sandbox_manager,
+                    evaluator=evaluator,
+                    config=config,
+                )
+                tasks.append(future)
+            logger.info(f"已提交 {len(tasks)} 个任务到队列，等待执行...")
+    else:
+        # ===== 顺序模式 =====
+        logger.info("🚀 启动顺序评估流程")
+        all_samples = list(iterate_parquet_samples(config["eval_path"]))
+        completed_tasks = 0
+        for idx, original_sample in all_samples:
+            task_id = str(original_sample["task_id"])
+            asyncio.run(
+                worker_process_sample(
+                    sample=original_sample,
+                    unique_task_id=task_id,
+                    sandbox_manager=sandbox_manager,
+                    evaluator=evaluator,
+                    config=config,
+                )
             )
-        )
-        completed_tasks += 1
-
-    logger.info(f"已同步执行 {completed_tasks} 个随机均衡分配的任务")
+            completed_tasks += 1
+        logger.info(f"已顺序执行 {completed_tasks} 个任务")
 
     logger.info("所有评估任务完成，正在计算最终得分...")
 
-    # 5. 计算总平均分
+    # 3. 统计并写入 CSV
+    fieldnames = ["task_id", "original_sample_id", "reward", "scene", "reason", "time_sec"]
     try:
         if os.path.exists(config["result_csv"]):
-            # 读取结果文件
             df_results = pd.read_csv(config["result_csv"])
+            # 过滤掉历史 SUMMARY 行，避免重复运行时重复累计
+            df_data = df_results[~df_results["task_id"].astype(str).str.startswith("SUMMARY")]
 
-            if not df_results.empty:
-                # 直接对 reward 列求平均
-                total_avg = df_results["reward"].mean()
-                total_count = len(df_results)
+            if not df_data.empty:
+                total_avg = df_data["reward"].mean()
+                total_count = len(df_data)
 
-                # 打印结果
                 print("\n" + "=" * 40)
-                logger.info(f"📊 评估完成统计报告")
+                logger.info("📊 评估完成统计报告")
                 logger.info(f"总计完成样本数: {total_count}")
                 logger.info(f"全量任务平均分: {total_avg:.4f}")
+
+                scene_avgs = df_data.groupby("scene")["reward"].mean()
+                for scene, avg in scene_avgs.items():
+                    count = int((df_data["scene"] == scene).sum())
+                    logger.info(f"  场景 [{scene}] 样本数: {count}, 平均分: {avg:.4f}")
                 print("=" * 40 + "\n")
+
+                # 汇总行写入 CSV
+                summary_rows = [
+                    {
+                        "task_id": "SUMMARY_overall",
+                        "original_sample_id": "SUMMARY",
+                        "reward": round(float(total_avg), 4),
+                        "scene": "all",
+                        "reason": f"total_count={total_count}",
+                        "time_sec": "",
+                    }
+                ]
+                for scene, avg in scene_avgs.items():
+                    count = int((df_data["scene"] == scene).sum())
+                    summary_rows.append(
+                        {
+                            "task_id": f"SUMMARY_{scene}",
+                            "original_sample_id": "SUMMARY",
+                            "reward": round(float(avg), 4),
+                            "scene": scene,
+                            "reason": f"count={count}",
+                            "time_sec": "",
+                        }
+                    )
+                with open(config["result_csv"], "a", encoding="utf-8", newline="") as f:
+                    writer = csv.DictWriter(f, fieldnames=fieldnames)
+                    writer.writerows(summary_rows)
+                logger.info("摘要统计已写入 CSV")
             else:
                 logger.warning("结果 CSV 文件为空，无法计算分数。")
         else:

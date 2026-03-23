@@ -1,0 +1,1902 @@
+[
+  {
+    "task_id": "file_train_0008",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 archive 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ndraft.txt、record.txt。\n如果某个文件不存在，则创建该文件。\n\n将 draft.txt 移动到 archive 文件夹中。\n\n进入 archive 文件夹，将 draft.txt 重命名为 meeting_note.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 delete_me.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "archive",
+      "source_file_1": "draft.txt",
+      "source_file_2": "record.txt",
+      "target_file_1": "meeting_note.txt",
+      "delete_file": "delete_me.txt",
+      "success_criteria": {
+        "folder_exists": "archive",
+        "moved_and_renamed_file": "archive/meeting_note.txt",
+        "retained_file": "record.txt",
+        "deleted_file_absent": "delete_me.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0084",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 project 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nitem.txt、meta.txt。\n如果某个文件不存在，则创建该文件。\n\n将 item.txt 移动到 project 文件夹中。\n\n进入 project 文件夹，将 item.txt 重命名为 todo.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 temp.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "project",
+      "source_file_1": "item.txt",
+      "source_file_2": "meta.txt",
+      "target_file_1": "todo.txt",
+      "delete_file": "temp.txt",
+      "success_criteria": {
+        "folder_exists": "project",
+        "moved_and_renamed_file": "project/todo.txt",
+        "retained_file": "meta.txt",
+        "deleted_file_absent": "temp.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0080",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 docs 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ndraft.txt、fileB.txt。\n如果某个文件不存在，则创建该文件。\n\n将 draft.txt 移动到 docs 文件夹中。\n\n进入 docs 文件夹，将 draft.txt 重命名为 dataset.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 delete_me.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "docs",
+      "source_file_1": "draft.txt",
+      "source_file_2": "fileB.txt",
+      "target_file_1": "dataset.txt",
+      "delete_file": "delete_me.txt",
+      "success_criteria": {
+        "folder_exists": "docs",
+        "moved_and_renamed_file": "docs/dataset.txt",
+        "retained_file": "fileB.txt",
+        "deleted_file_absent": "delete_me.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0085",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 records 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ndraft.txt、meta.txt。\n如果某个文件不存在，则创建该文件。\n\n将 draft.txt 移动到 records 文件夹中。\n\n进入 records 文件夹，将 draft.txt 重命名为 final.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 old.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "records",
+      "source_file_1": "draft.txt",
+      "source_file_2": "meta.txt",
+      "target_file_1": "final.txt",
+      "delete_file": "old.txt",
+      "success_criteria": {
+        "folder_exists": "records",
+        "moved_and_renamed_file": "records/final.txt",
+        "retained_file": "meta.txt",
+        "deleted_file_absent": "old.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0079",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 records 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nresult.txt、info.txt。\n如果某个文件不存在，则创建该文件。\n\n将 result.txt 移动到 records 文件夹中。\n\n进入 records 文件夹，将 result.txt 重命名为 meeting.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 temp.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "records",
+      "source_file_1": "result.txt",
+      "source_file_2": "info.txt",
+      "target_file_1": "meeting.txt",
+      "delete_file": "temp.txt",
+      "success_criteria": {
+        "folder_exists": "records",
+        "moved_and_renamed_file": "records/meeting.txt",
+        "retained_file": "info.txt",
+        "deleted_file_absent": "temp.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0097",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 project 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ndata.txt、remain.txt。\n如果某个文件不存在，则创建该文件。\n\n将 data.txt 移动到 project 文件夹中。\n\n进入 project 文件夹，将 data.txt 重命名为 dataset.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 unused.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "project",
+      "source_file_1": "data.txt",
+      "source_file_2": "remain.txt",
+      "target_file_1": "dataset.txt",
+      "delete_file": "unused.txt",
+      "success_criteria": {
+        "folder_exists": "project",
+        "moved_and_renamed_file": "project/dataset.txt",
+        "retained_file": "remain.txt",
+        "deleted_file_absent": "unused.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0029",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 tasks 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nnote.txt、list.txt。\n如果某个文件不存在，则创建该文件。\n\n将 note.txt 移动到 tasks 文件夹中。\n\n进入 tasks 文件夹，将 note.txt 重命名为 meeting.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 trash.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "tasks",
+      "source_file_1": "note.txt",
+      "source_file_2": "list.txt",
+      "target_file_1": "meeting.txt",
+      "delete_file": "trash.txt",
+      "success_criteria": {
+        "folder_exists": "tasks",
+        "moved_and_renamed_file": "tasks/meeting.txt",
+        "retained_file": "list.txt",
+        "deleted_file_absent": "trash.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0087",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 tasks 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nnote.txt、list.txt。\n如果某个文件不存在，则创建该文件。\n\n将 note.txt 移动到 tasks 文件夹中。\n\n进入 tasks 文件夹，将 note.txt 重命名为 meeting_note.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 temp_note.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "tasks",
+      "source_file_1": "note.txt",
+      "source_file_2": "list.txt",
+      "target_file_1": "meeting_note.txt",
+      "delete_file": "temp_note.txt",
+      "success_criteria": {
+        "folder_exists": "tasks",
+        "moved_and_renamed_file": "tasks/meeting_note.txt",
+        "retained_file": "list.txt",
+        "deleted_file_absent": "temp_note.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0039",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 results 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nlog.txt、trace.txt。\n如果某个文件不存在，则创建该文件。\n\n将 log.txt 移动到 results 文件夹中。\n\n进入 results 文件夹，将 log.txt 重命名为 record_final.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 debug.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "results",
+      "source_file_1": "log.txt",
+      "source_file_2": "trace.txt",
+      "target_file_1": "record_final.txt",
+      "delete_file": "debug.txt",
+      "success_criteria": {
+        "folder_exists": "results",
+        "moved_and_renamed_file": "results/record_final.txt",
+        "retained_file": "trace.txt",
+        "deleted_file_absent": "debug.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0060",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 storage 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nfileA.txt、log.txt。\n如果某个文件不存在，则创建该文件。\n\n将 fileA.txt 移动到 storage 文件夹中。\n\n进入 storage 文件夹，将 fileA.txt 重命名为 backup_log.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 unused.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "storage",
+      "source_file_1": "fileA.txt",
+      "source_file_2": "log.txt",
+      "target_file_1": "backup_log.txt",
+      "delete_file": "unused.txt",
+      "success_criteria": {
+        "folder_exists": "storage",
+        "moved_and_renamed_file": "storage/backup_log.txt",
+        "retained_file": "log.txt",
+        "deleted_file_absent": "unused.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0009",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 tasks 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nitem.txt、keep.txt。\n如果某个文件不存在，则创建该文件。\n\n将 item.txt 移动到 tasks 文件夹中。\n\n进入 tasks 文件夹，将 item.txt 重命名为 project_a.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 temp.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "tasks",
+      "source_file_1": "item.txt",
+      "source_file_2": "keep.txt",
+      "target_file_1": "project_a.txt",
+      "delete_file": "temp.txt",
+      "success_criteria": {
+        "folder_exists": "tasks",
+        "moved_and_renamed_file": "tasks/project_a.txt",
+        "retained_file": "keep.txt",
+        "deleted_file_absent": "temp.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0069",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 test 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ntask.txt、info.txt。\n如果某个文件不存在，则创建该文件。\n\n将 task.txt 移动到 test 文件夹中。\n\n进入 test 文件夹，将 task.txt 重命名为 doc.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 old_task.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "test",
+      "source_file_1": "task.txt",
+      "source_file_2": "info.txt",
+      "target_file_1": "doc.txt",
+      "delete_file": "old_task.txt",
+      "success_criteria": {
+        "folder_exists": "test",
+        "moved_and_renamed_file": "test/doc.txt",
+        "retained_file": "info.txt",
+        "deleted_file_absent": "old_task.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0050",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 docs 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nlog.txt、keep.txt。\n如果某个文件不存在，则创建该文件。\n\n将 log.txt 移动到 docs 文件夹中。\n\n进入 docs 文件夹，将 log.txt 重命名为 meeting_note.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 debug.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "docs",
+      "source_file_1": "log.txt",
+      "source_file_2": "keep.txt",
+      "target_file_1": "meeting_note.txt",
+      "delete_file": "debug.txt",
+      "success_criteria": {
+        "folder_exists": "docs",
+        "moved_and_renamed_file": "docs/meeting_note.txt",
+        "retained_file": "keep.txt",
+        "deleted_file_absent": "debug.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0058",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 results 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nreport.txt、info.txt。\n如果某个文件不存在，则创建该文件。\n\n将 report.txt 移动到 results 文件夹中。\n\n进入 results 文件夹，将 report.txt 重命名为 dataset.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 tmp.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "results",
+      "source_file_1": "report.txt",
+      "source_file_2": "info.txt",
+      "target_file_1": "dataset.txt",
+      "delete_file": "tmp.txt",
+      "success_criteria": {
+        "folder_exists": "results",
+        "moved_and_renamed_file": "results/dataset.txt",
+        "retained_file": "info.txt",
+        "deleted_file_absent": "tmp.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0042",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 project 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nreport.txt、keep.txt。\n如果某个文件不存在，则创建该文件。\n\n将 report.txt 移动到 project 文件夹中。\n\n进入 project 文件夹，将 report.txt 重命名为 store.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 delete_me.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "project",
+      "source_file_1": "report.txt",
+      "source_file_2": "keep.txt",
+      "target_file_1": "store.txt",
+      "delete_file": "delete_me.txt",
+      "success_criteria": {
+        "folder_exists": "project",
+        "moved_and_renamed_file": "project/store.txt",
+        "retained_file": "keep.txt",
+        "deleted_file_absent": "delete_me.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0038",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 tasks 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nnote.txt、record.txt。\n如果某个文件不存在，则创建该文件。\n\n将 note.txt 移动到 tasks 文件夹中。\n\n进入 tasks 文件夹，将 note.txt 重命名为 doc.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 old_task.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "tasks",
+      "source_file_1": "note.txt",
+      "source_file_2": "record.txt",
+      "target_file_1": "doc.txt",
+      "delete_file": "old_task.txt",
+      "success_criteria": {
+        "folder_exists": "tasks",
+        "moved_and_renamed_file": "tasks/doc.txt",
+        "retained_file": "record.txt",
+        "deleted_file_absent": "old_task.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0054",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 tasks 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ntask.txt、remain.txt。\n如果某个文件不存在，则创建该文件。\n\n将 task.txt 移动到 tasks 文件夹中。\n\n进入 tasks 文件夹，将 task.txt 重命名为 final.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 unused.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "tasks",
+      "source_file_1": "task.txt",
+      "source_file_2": "remain.txt",
+      "target_file_1": "final.txt",
+      "delete_file": "unused.txt",
+      "success_criteria": {
+        "folder_exists": "tasks",
+        "moved_and_renamed_file": "tasks/final.txt",
+        "retained_file": "remain.txt",
+        "deleted_file_absent": "unused.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0066",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 project 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nlog.txt、keep.txt。\n如果某个文件不存在，则创建该文件。\n\n将 log.txt 移动到 project 文件夹中。\n\n进入 project 文件夹，将 log.txt 重命名为 doc.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 remove.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "project",
+      "source_file_1": "log.txt",
+      "source_file_2": "keep.txt",
+      "target_file_1": "doc.txt",
+      "delete_file": "remove.txt",
+      "success_criteria": {
+        "folder_exists": "project",
+        "moved_and_renamed_file": "project/doc.txt",
+        "retained_file": "keep.txt",
+        "deleted_file_absent": "remove.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0025",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 storage 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nresult.txt、memo.txt。\n如果某个文件不存在，则创建该文件。\n\n将 result.txt 移动到 storage 文件夹中。\n\n进入 storage 文件夹，将 result.txt 重命名为 todo.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 remove.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "storage",
+      "source_file_1": "result.txt",
+      "source_file_2": "memo.txt",
+      "target_file_1": "todo.txt",
+      "delete_file": "remove.txt",
+      "success_criteria": {
+        "folder_exists": "storage",
+        "moved_and_renamed_file": "storage/todo.txt",
+        "retained_file": "memo.txt",
+        "deleted_file_absent": "remove.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0045",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 archive 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nfileA.txt、record.txt。\n如果某个文件不存在，则创建该文件。\n\n将 fileA.txt 移动到 archive 文件夹中。\n\n进入 archive 文件夹，将 fileA.txt 重命名为 record_final.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 old_task.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "archive",
+      "source_file_1": "fileA.txt",
+      "source_file_2": "record.txt",
+      "target_file_1": "record_final.txt",
+      "delete_file": "old_task.txt",
+      "success_criteria": {
+        "folder_exists": "archive",
+        "moved_and_renamed_file": "archive/record_final.txt",
+        "retained_file": "record.txt",
+        "deleted_file_absent": "old_task.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0059",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 archive 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nreport.txt、record.txt。\n如果某个文件不存在，则创建该文件。\n\n将 report.txt 移动到 archive 文件夹中。\n\n进入 archive 文件夹，将 report.txt 重命名为 meeting.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 temp_note.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "archive",
+      "source_file_1": "report.txt",
+      "source_file_2": "record.txt",
+      "target_file_1": "meeting.txt",
+      "delete_file": "temp_note.txt",
+      "success_criteria": {
+        "folder_exists": "archive",
+        "moved_and_renamed_file": "archive/meeting.txt",
+        "retained_file": "record.txt",
+        "deleted_file_absent": "temp_note.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0052",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 backup 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nresult.txt、trace.txt。\n如果某个文件不存在，则创建该文件。\n\n将 result.txt 移动到 backup 文件夹中。\n\n进入 backup 文件夹，将 result.txt 重命名为 store.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 old.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "backup",
+      "source_file_1": "result.txt",
+      "source_file_2": "trace.txt",
+      "target_file_1": "store.txt",
+      "delete_file": "old.txt",
+      "success_criteria": {
+        "folder_exists": "backup",
+        "moved_and_renamed_file": "backup/store.txt",
+        "retained_file": "trace.txt",
+        "deleted_file_absent": "old.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0022",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 notes 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ntask.txt、trace.txt。\n如果某个文件不存在，则创建该文件。\n\n将 task.txt 移动到 notes 文件夹中。\n\n进入 notes 文件夹，将 task.txt 重命名为 project_a.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 unused.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "notes",
+      "source_file_1": "task.txt",
+      "source_file_2": "trace.txt",
+      "target_file_1": "project_a.txt",
+      "delete_file": "unused.txt",
+      "success_criteria": {
+        "folder_exists": "notes",
+        "moved_and_renamed_file": "notes/project_a.txt",
+        "retained_file": "trace.txt",
+        "deleted_file_absent": "unused.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0083",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 docs 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nitem.txt、log.txt。\n如果某个文件不存在，则创建该文件。\n\n将 item.txt 移动到 docs 文件夹中。\n\n进入 docs 文件夹，将 item.txt 重命名为 todo.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 old_task.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "docs",
+      "source_file_1": "item.txt",
+      "source_file_2": "log.txt",
+      "target_file_1": "todo.txt",
+      "delete_file": "old_task.txt",
+      "success_criteria": {
+        "folder_exists": "docs",
+        "moved_and_renamed_file": "docs/todo.txt",
+        "retained_file": "log.txt",
+        "deleted_file_absent": "old_task.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0089",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 records 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nlog.txt、list.txt。\n如果某个文件不存在，则创建该文件。\n\n将 log.txt 移动到 records 文件夹中。\n\n进入 records 文件夹，将 log.txt 重命名为 project_a.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 delete_me.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "records",
+      "source_file_1": "log.txt",
+      "source_file_2": "list.txt",
+      "target_file_1": "project_a.txt",
+      "delete_file": "delete_me.txt",
+      "success_criteria": {
+        "folder_exists": "records",
+        "moved_and_renamed_file": "records/project_a.txt",
+        "retained_file": "list.txt",
+        "deleted_file_absent": "delete_me.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0094",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 storage 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nreport.txt、meta.txt。\n如果某个文件不存在，则创建该文件。\n\n将 report.txt 移动到 storage 文件夹中。\n\n进入 storage 文件夹，将 report.txt 重命名为 dataset.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 temp.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "storage",
+      "source_file_1": "report.txt",
+      "source_file_2": "meta.txt",
+      "target_file_1": "dataset.txt",
+      "delete_file": "temp.txt",
+      "success_criteria": {
+        "folder_exists": "storage",
+        "moved_and_renamed_file": "storage/dataset.txt",
+        "retained_file": "meta.txt",
+        "deleted_file_absent": "temp.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0023",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 storage 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nsource.txt、meta.txt。\n如果某个文件不存在，则创建该文件。\n\n将 source.txt 移动到 storage 文件夹中。\n\n进入 storage 文件夹，将 source.txt 重命名为 doc.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 unused.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "storage",
+      "source_file_1": "source.txt",
+      "source_file_2": "meta.txt",
+      "target_file_1": "doc.txt",
+      "delete_file": "unused.txt",
+      "success_criteria": {
+        "folder_exists": "storage",
+        "moved_and_renamed_file": "storage/doc.txt",
+        "retained_file": "meta.txt",
+        "deleted_file_absent": "unused.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0086",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 backup 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nlog.txt、fileB.txt。\n如果某个文件不存在，则创建该文件。\n\n将 log.txt 移动到 backup 文件夹中。\n\n进入 backup 文件夹，将 log.txt 重命名为 record_final.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 remove.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "backup",
+      "source_file_1": "log.txt",
+      "source_file_2": "fileB.txt",
+      "target_file_1": "record_final.txt",
+      "delete_file": "remove.txt",
+      "success_criteria": {
+        "folder_exists": "backup",
+        "moved_and_renamed_file": "backup/record_final.txt",
+        "retained_file": "fileB.txt",
+        "deleted_file_absent": "remove.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0046",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 archive 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nnote.txt、memo.txt。\n如果某个文件不存在，则创建该文件。\n\n将 note.txt 移动到 archive 文件夹中。\n\n进入 archive 文件夹，将 note.txt 重命名为 backup_log.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 old_task.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "archive",
+      "source_file_1": "note.txt",
+      "source_file_2": "memo.txt",
+      "target_file_1": "backup_log.txt",
+      "delete_file": "old_task.txt",
+      "success_criteria": {
+        "folder_exists": "archive",
+        "moved_and_renamed_file": "archive/backup_log.txt",
+        "retained_file": "memo.txt",
+        "deleted_file_absent": "old_task.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0093",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 project 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nnote.txt、remain.txt。\n如果某个文件不存在，则创建该文件。\n\n将 note.txt 移动到 project 文件夹中。\n\n进入 project 文件夹，将 note.txt 重命名为 project_a.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 old.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "project",
+      "source_file_1": "note.txt",
+      "source_file_2": "remain.txt",
+      "target_file_1": "project_a.txt",
+      "delete_file": "old.txt",
+      "success_criteria": {
+        "folder_exists": "project",
+        "moved_and_renamed_file": "project/project_a.txt",
+        "retained_file": "remain.txt",
+        "deleted_file_absent": "old.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0075",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 archive 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nfileA.txt、fileB.txt。\n如果某个文件不存在，则创建该文件。\n\n将 fileA.txt 移动到 archive 文件夹中。\n\n进入 archive 文件夹，将 fileA.txt 重命名为 project_a.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 temp_note.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "archive",
+      "source_file_1": "fileA.txt",
+      "source_file_2": "fileB.txt",
+      "target_file_1": "project_a.txt",
+      "delete_file": "temp_note.txt",
+      "success_criteria": {
+        "folder_exists": "archive",
+        "moved_and_renamed_file": "archive/project_a.txt",
+        "retained_file": "fileB.txt",
+        "deleted_file_absent": "temp_note.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0005",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 backup 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ntask.txt、record.txt。\n如果某个文件不存在，则创建该文件。\n\n将 task.txt 移动到 backup 文件夹中。\n\n进入 backup 文件夹，将 task.txt 重命名为 final.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 temp_note.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "backup",
+      "source_file_1": "task.txt",
+      "source_file_2": "record.txt",
+      "target_file_1": "final.txt",
+      "delete_file": "temp_note.txt",
+      "success_criteria": {
+        "folder_exists": "backup",
+        "moved_and_renamed_file": "backup/final.txt",
+        "retained_file": "record.txt",
+        "deleted_file_absent": "temp_note.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0070",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 records 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nitem.txt、keep.txt。\n如果某个文件不存在，则创建该文件。\n\n将 item.txt 移动到 records 文件夹中。\n\n进入 records 文件夹，将 item.txt 重命名为 store.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 remove.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "records",
+      "source_file_1": "item.txt",
+      "source_file_2": "keep.txt",
+      "target_file_1": "store.txt",
+      "delete_file": "remove.txt",
+      "success_criteria": {
+        "folder_exists": "records",
+        "moved_and_renamed_file": "records/store.txt",
+        "retained_file": "keep.txt",
+        "deleted_file_absent": "remove.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0010",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 archive 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nfileA.txt、keep.txt。\n如果某个文件不存在，则创建该文件。\n\n将 fileA.txt 移动到 archive 文件夹中。\n\n进入 archive 文件夹，将 fileA.txt 重命名为 project_a.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 trash.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "archive",
+      "source_file_1": "fileA.txt",
+      "source_file_2": "keep.txt",
+      "target_file_1": "project_a.txt",
+      "delete_file": "trash.txt",
+      "success_criteria": {
+        "folder_exists": "archive",
+        "moved_and_renamed_file": "archive/project_a.txt",
+        "retained_file": "keep.txt",
+        "deleted_file_absent": "trash.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0002",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 archive 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nresult.txt、remain.txt。\n如果某个文件不存在，则创建该文件。\n\n将 result.txt 移动到 archive 文件夹中。\n\n进入 archive 文件夹，将 result.txt 重命名为 record_final.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 debug.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "archive",
+      "source_file_1": "result.txt",
+      "source_file_2": "remain.txt",
+      "target_file_1": "record_final.txt",
+      "delete_file": "debug.txt",
+      "success_criteria": {
+        "folder_exists": "archive",
+        "moved_and_renamed_file": "archive/record_final.txt",
+        "retained_file": "remain.txt",
+        "deleted_file_absent": "debug.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0091",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 records 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nreport.txt、remain.txt。\n如果某个文件不存在，则创建该文件。\n\n将 report.txt 移动到 records 文件夹中。\n\n进入 records 文件夹，将 report.txt 重命名为 final.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 temp.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "records",
+      "source_file_1": "report.txt",
+      "source_file_2": "remain.txt",
+      "target_file_1": "final.txt",
+      "delete_file": "temp.txt",
+      "success_criteria": {
+        "folder_exists": "records",
+        "moved_and_renamed_file": "records/final.txt",
+        "retained_file": "remain.txt",
+        "deleted_file_absent": "temp.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0057",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 archive 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ntask.txt、keep.txt。\n如果某个文件不存在，则创建该文件。\n\n将 task.txt 移动到 archive 文件夹中。\n\n进入 archive 文件夹，将 task.txt 重命名为 todo.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 old.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "archive",
+      "source_file_1": "task.txt",
+      "source_file_2": "keep.txt",
+      "target_file_1": "todo.txt",
+      "delete_file": "old.txt",
+      "success_criteria": {
+        "folder_exists": "archive",
+        "moved_and_renamed_file": "archive/todo.txt",
+        "retained_file": "keep.txt",
+        "deleted_file_absent": "old.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0017",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 test 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nresult.txt、info.txt。\n如果某个文件不存在，则创建该文件。\n\n将 result.txt 移动到 test 文件夹中。\n\n进入 test 文件夹，将 result.txt 重命名为 todo.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 tmp.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "test",
+      "source_file_1": "result.txt",
+      "source_file_2": "info.txt",
+      "target_file_1": "todo.txt",
+      "delete_file": "tmp.txt",
+      "success_criteria": {
+        "folder_exists": "test",
+        "moved_and_renamed_file": "test/todo.txt",
+        "retained_file": "info.txt",
+        "deleted_file_absent": "tmp.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0006",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 backup 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nnote.txt、fileB.txt。\n如果某个文件不存在，则创建该文件。\n\n将 note.txt 移动到 backup 文件夹中。\n\n进入 backup 文件夹，将 note.txt 重命名为 record_final.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 temp_note.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "backup",
+      "source_file_1": "note.txt",
+      "source_file_2": "fileB.txt",
+      "target_file_1": "record_final.txt",
+      "delete_file": "temp_note.txt",
+      "success_criteria": {
+        "folder_exists": "backup",
+        "moved_and_renamed_file": "backup/record_final.txt",
+        "retained_file": "fileB.txt",
+        "deleted_file_absent": "temp_note.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0012",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 tasks 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ndraft.txt、log.txt。\n如果某个文件不存在，则创建该文件。\n\n将 draft.txt 移动到 tasks 文件夹中。\n\n进入 tasks 文件夹，将 draft.txt 重命名为 meeting_note.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 temp.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "tasks",
+      "source_file_1": "draft.txt",
+      "source_file_2": "log.txt",
+      "target_file_1": "meeting_note.txt",
+      "delete_file": "temp.txt",
+      "success_criteria": {
+        "folder_exists": "tasks",
+        "moved_and_renamed_file": "tasks/meeting_note.txt",
+        "retained_file": "log.txt",
+        "deleted_file_absent": "temp.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0007",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 project 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nsource.txt、keep.txt。\n如果某个文件不存在，则创建该文件。\n\n将 source.txt 移动到 project 文件夹中。\n\n进入 project 文件夹，将 source.txt 重命名为 backup_log.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 old_task.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "project",
+      "source_file_1": "source.txt",
+      "source_file_2": "keep.txt",
+      "target_file_1": "backup_log.txt",
+      "delete_file": "old_task.txt",
+      "success_criteria": {
+        "folder_exists": "project",
+        "moved_and_renamed_file": "project/backup_log.txt",
+        "retained_file": "keep.txt",
+        "deleted_file_absent": "old_task.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0033",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 results 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nsource.txt、record.txt。\n如果某个文件不存在，则创建该文件。\n\n将 source.txt 移动到 results 文件夹中。\n\n进入 results 文件夹，将 source.txt 重命名为 store.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 temp_note.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "results",
+      "source_file_1": "source.txt",
+      "source_file_2": "record.txt",
+      "target_file_1": "store.txt",
+      "delete_file": "temp_note.txt",
+      "success_criteria": {
+        "folder_exists": "results",
+        "moved_and_renamed_file": "results/store.txt",
+        "retained_file": "record.txt",
+        "deleted_file_absent": "temp_note.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0065",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 storage 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ntask.txt、record.txt。\n如果某个文件不存在，则创建该文件。\n\n将 task.txt 移动到 storage 文件夹中。\n\n进入 storage 文件夹，将 task.txt 重命名为 store.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 trash.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "storage",
+      "source_file_1": "task.txt",
+      "source_file_2": "record.txt",
+      "target_file_1": "store.txt",
+      "delete_file": "trash.txt",
+      "success_criteria": {
+        "folder_exists": "storage",
+        "moved_and_renamed_file": "storage/store.txt",
+        "retained_file": "record.txt",
+        "deleted_file_absent": "trash.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0082",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 docs 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nsource.txt、log.txt。\n如果某个文件不存在，则创建该文件。\n\n将 source.txt 移动到 docs 文件夹中。\n\n进入 docs 文件夹，将 source.txt 重命名为 meeting.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 temp.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "docs",
+      "source_file_1": "source.txt",
+      "source_file_2": "log.txt",
+      "target_file_1": "meeting.txt",
+      "delete_file": "temp.txt",
+      "success_criteria": {
+        "folder_exists": "docs",
+        "moved_and_renamed_file": "docs/meeting.txt",
+        "retained_file": "log.txt",
+        "deleted_file_absent": "temp.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0088",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 tasks 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nreport.txt、record.txt。\n如果某个文件不存在，则创建该文件。\n\n将 report.txt 移动到 tasks 文件夹中。\n\n进入 tasks 文件夹，将 report.txt 重命名为 record_final.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 remove.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "tasks",
+      "source_file_1": "report.txt",
+      "source_file_2": "record.txt",
+      "target_file_1": "record_final.txt",
+      "delete_file": "remove.txt",
+      "success_criteria": {
+        "folder_exists": "tasks",
+        "moved_and_renamed_file": "tasks/record_final.txt",
+        "retained_file": "record.txt",
+        "deleted_file_absent": "remove.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0044",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 docs 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nresult.txt、keep.txt。\n如果某个文件不存在，则创建该文件。\n\n将 result.txt 移动到 docs 文件夹中。\n\n进入 docs 文件夹，将 result.txt 重命名为 dataset.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 temp_note.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "docs",
+      "source_file_1": "result.txt",
+      "source_file_2": "keep.txt",
+      "target_file_1": "dataset.txt",
+      "delete_file": "temp_note.txt",
+      "success_criteria": {
+        "folder_exists": "docs",
+        "moved_and_renamed_file": "docs/dataset.txt",
+        "retained_file": "keep.txt",
+        "deleted_file_absent": "temp_note.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0092",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 records 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nresult.txt、log.txt。\n如果某个文件不存在，则创建该文件。\n\n将 result.txt 移动到 records 文件夹中。\n\n进入 records 文件夹，将 result.txt 重命名为 meeting.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 unused.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "records",
+      "source_file_1": "result.txt",
+      "source_file_2": "log.txt",
+      "target_file_1": "meeting.txt",
+      "delete_file": "unused.txt",
+      "success_criteria": {
+        "folder_exists": "records",
+        "moved_and_renamed_file": "records/meeting.txt",
+        "retained_file": "log.txt",
+        "deleted_file_absent": "unused.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0037",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 project 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ndata.txt、info.txt。\n如果某个文件不存在，则创建该文件。\n\n将 data.txt 移动到 project 文件夹中。\n\n进入 project 文件夹，将 data.txt 重命名为 meeting.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 old_task.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "project",
+      "source_file_1": "data.txt",
+      "source_file_2": "info.txt",
+      "target_file_1": "meeting.txt",
+      "delete_file": "old_task.txt",
+      "success_criteria": {
+        "folder_exists": "project",
+        "moved_and_renamed_file": "project/meeting.txt",
+        "retained_file": "info.txt",
+        "deleted_file_absent": "old_task.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0071",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 backup 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nreport.txt、info.txt。\n如果某个文件不存在，则创建该文件。\n\n将 report.txt 移动到 backup 文件夹中。\n\n进入 backup 文件夹，将 report.txt 重命名为 store.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 old.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "backup",
+      "source_file_1": "report.txt",
+      "source_file_2": "info.txt",
+      "target_file_1": "store.txt",
+      "delete_file": "old.txt",
+      "success_criteria": {
+        "folder_exists": "backup",
+        "moved_and_renamed_file": "backup/store.txt",
+        "retained_file": "info.txt",
+        "deleted_file_absent": "old.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0096",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 backup 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nnote.txt、fileB.txt。\n如果某个文件不存在，则创建该文件。\n\n将 note.txt 移动到 backup 文件夹中。\n\n进入 backup 文件夹，将 note.txt 重命名为 meeting_note.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 unused.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "backup",
+      "source_file_1": "note.txt",
+      "source_file_2": "fileB.txt",
+      "target_file_1": "meeting_note.txt",
+      "delete_file": "unused.txt",
+      "success_criteria": {
+        "folder_exists": "backup",
+        "moved_and_renamed_file": "backup/meeting_note.txt",
+        "retained_file": "fileB.txt",
+        "deleted_file_absent": "unused.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0014",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 archive 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ndata.txt、record.txt。\n如果某个文件不存在，则创建该文件。\n\n将 data.txt 移动到 archive 文件夹中。\n\n进入 archive 文件夹，将 data.txt 重命名为 record_final.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 tmp.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "archive",
+      "source_file_1": "data.txt",
+      "source_file_2": "record.txt",
+      "target_file_1": "record_final.txt",
+      "delete_file": "tmp.txt",
+      "success_criteria": {
+        "folder_exists": "archive",
+        "moved_and_renamed_file": "archive/record_final.txt",
+        "retained_file": "record.txt",
+        "deleted_file_absent": "tmp.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0030",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 storage 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nnote.txt、info.txt。\n如果某个文件不存在，则创建该文件。\n\n将 note.txt 移动到 storage 文件夹中。\n\n进入 storage 文件夹，将 note.txt 重命名为 meeting.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 old_task.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "storage",
+      "source_file_1": "note.txt",
+      "source_file_2": "info.txt",
+      "target_file_1": "meeting.txt",
+      "delete_file": "old_task.txt",
+      "success_criteria": {
+        "folder_exists": "storage",
+        "moved_and_renamed_file": "storage/meeting.txt",
+        "retained_file": "info.txt",
+        "deleted_file_absent": "old_task.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0035",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 backup 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ntask.txt、list.txt。\n如果某个文件不存在，则创建该文件。\n\n将 task.txt 移动到 backup 文件夹中。\n\n进入 backup 文件夹，将 task.txt 重命名为 todo.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 remove.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "backup",
+      "source_file_1": "task.txt",
+      "source_file_2": "list.txt",
+      "target_file_1": "todo.txt",
+      "delete_file": "remove.txt",
+      "success_criteria": {
+        "folder_exists": "backup",
+        "moved_and_renamed_file": "backup/todo.txt",
+        "retained_file": "list.txt",
+        "deleted_file_absent": "remove.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0027",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 tasks 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nresult.txt、meta.txt。\n如果某个文件不存在，则创建该文件。\n\n将 result.txt 移动到 tasks 文件夹中。\n\n进入 tasks 文件夹，将 result.txt 重命名为 backup_log.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 temp.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "tasks",
+      "source_file_1": "result.txt",
+      "source_file_2": "meta.txt",
+      "target_file_1": "backup_log.txt",
+      "delete_file": "temp.txt",
+      "success_criteria": {
+        "folder_exists": "tasks",
+        "moved_and_renamed_file": "tasks/backup_log.txt",
+        "retained_file": "meta.txt",
+        "deleted_file_absent": "temp.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0078",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 notes 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nreport.txt、log.txt。\n如果某个文件不存在，则创建该文件。\n\n将 report.txt 移动到 notes 文件夹中。\n\n进入 notes 文件夹，将 report.txt 重命名为 meeting.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 delete_me.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "notes",
+      "source_file_1": "report.txt",
+      "source_file_2": "log.txt",
+      "target_file_1": "meeting.txt",
+      "delete_file": "delete_me.txt",
+      "success_criteria": {
+        "folder_exists": "notes",
+        "moved_and_renamed_file": "notes/meeting.txt",
+        "retained_file": "log.txt",
+        "deleted_file_absent": "delete_me.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0073",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 archive 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nreport.txt、keep.txt。\n如果某个文件不存在，则创建该文件。\n\n将 report.txt 移动到 archive 文件夹中。\n\n进入 archive 文件夹，将 report.txt 重命名为 backup_log.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 temp_note.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "archive",
+      "source_file_1": "report.txt",
+      "source_file_2": "keep.txt",
+      "target_file_1": "backup_log.txt",
+      "delete_file": "temp_note.txt",
+      "success_criteria": {
+        "folder_exists": "archive",
+        "moved_and_renamed_file": "archive/backup_log.txt",
+        "retained_file": "keep.txt",
+        "deleted_file_absent": "temp_note.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0095",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 tasks 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ntask.txt、keep.txt。\n如果某个文件不存在，则创建该文件。\n\n将 task.txt 移动到 tasks 文件夹中。\n\n进入 tasks 文件夹，将 task.txt 重命名为 todo.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 temp_note.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "tasks",
+      "source_file_1": "task.txt",
+      "source_file_2": "keep.txt",
+      "target_file_1": "todo.txt",
+      "delete_file": "temp_note.txt",
+      "success_criteria": {
+        "folder_exists": "tasks",
+        "moved_and_renamed_file": "tasks/todo.txt",
+        "retained_file": "keep.txt",
+        "deleted_file_absent": "temp_note.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0063",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 records 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ndata.txt、list.txt。\n如果某个文件不存在，则创建该文件。\n\n将 data.txt 移动到 records 文件夹中。\n\n进入 records 文件夹，将 data.txt 重命名为 store.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 temp.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "records",
+      "source_file_1": "data.txt",
+      "source_file_2": "list.txt",
+      "target_file_1": "store.txt",
+      "delete_file": "temp.txt",
+      "success_criteria": {
+        "folder_exists": "records",
+        "moved_and_renamed_file": "records/store.txt",
+        "retained_file": "list.txt",
+        "deleted_file_absent": "temp.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0090",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 test 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nsource.txt、record.txt。\n如果某个文件不存在，则创建该文件。\n\n将 source.txt 移动到 test 文件夹中。\n\n进入 test 文件夹，将 source.txt 重命名为 backup_log.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 temp_note.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "test",
+      "source_file_1": "source.txt",
+      "source_file_2": "record.txt",
+      "target_file_1": "backup_log.txt",
+      "delete_file": "temp_note.txt",
+      "success_criteria": {
+        "folder_exists": "test",
+        "moved_and_renamed_file": "test/backup_log.txt",
+        "retained_file": "record.txt",
+        "deleted_file_absent": "temp_note.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0003",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 test 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nfileA.txt、memo.txt。\n如果某个文件不存在，则创建该文件。\n\n将 fileA.txt 移动到 test 文件夹中。\n\n进入 test 文件夹，将 fileA.txt 重命名为 store.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 temp_note.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "test",
+      "source_file_1": "fileA.txt",
+      "source_file_2": "memo.txt",
+      "target_file_1": "store.txt",
+      "delete_file": "temp_note.txt",
+      "success_criteria": {
+        "folder_exists": "test",
+        "moved_and_renamed_file": "test/store.txt",
+        "retained_file": "memo.txt",
+        "deleted_file_absent": "temp_note.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0019",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 archive 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nnote.txt、fileB.txt。\n如果某个文件不存在，则创建该文件。\n\n将 note.txt 移动到 archive 文件夹中。\n\n进入 archive 文件夹，将 note.txt 重命名为 meeting_note.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 temp.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "archive",
+      "source_file_1": "note.txt",
+      "source_file_2": "fileB.txt",
+      "target_file_1": "meeting_note.txt",
+      "delete_file": "temp.txt",
+      "success_criteria": {
+        "folder_exists": "archive",
+        "moved_and_renamed_file": "archive/meeting_note.txt",
+        "retained_file": "fileB.txt",
+        "deleted_file_absent": "temp.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0077",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 backup 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ntask.txt、list.txt。\n如果某个文件不存在，则创建该文件。\n\n将 task.txt 移动到 backup 文件夹中。\n\n进入 backup 文件夹，将 task.txt 重命名为 project_a.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 trash.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "backup",
+      "source_file_1": "task.txt",
+      "source_file_2": "list.txt",
+      "target_file_1": "project_a.txt",
+      "delete_file": "trash.txt",
+      "success_criteria": {
+        "folder_exists": "backup",
+        "moved_and_renamed_file": "backup/project_a.txt",
+        "retained_file": "list.txt",
+        "deleted_file_absent": "trash.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0034",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 storage 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ndraft.txt、log.txt。\n如果某个文件不存在，则创建该文件。\n\n将 draft.txt 移动到 storage 文件夹中。\n\n进入 storage 文件夹，将 draft.txt 重命名为 project_a.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 old_task.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "storage",
+      "source_file_1": "draft.txt",
+      "source_file_2": "log.txt",
+      "target_file_1": "project_a.txt",
+      "delete_file": "old_task.txt",
+      "success_criteria": {
+        "folder_exists": "storage",
+        "moved_and_renamed_file": "storage/project_a.txt",
+        "retained_file": "log.txt",
+        "deleted_file_absent": "old_task.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0062",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 records 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nfileA.txt、info.txt。\n如果某个文件不存在，则创建该文件。\n\n将 fileA.txt 移动到 records 文件夹中。\n\n进入 records 文件夹，将 fileA.txt 重命名为 record_final.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 unused.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "records",
+      "source_file_1": "fileA.txt",
+      "source_file_2": "info.txt",
+      "target_file_1": "record_final.txt",
+      "delete_file": "unused.txt",
+      "success_criteria": {
+        "folder_exists": "records",
+        "moved_and_renamed_file": "records/record_final.txt",
+        "retained_file": "info.txt",
+        "deleted_file_absent": "unused.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0053",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 test 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nlog.txt、meta.txt。\n如果某个文件不存在，则创建该文件。\n\n将 log.txt 移动到 test 文件夹中。\n\n进入 test 文件夹，将 log.txt 重命名为 record_final.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 tmp.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "test",
+      "source_file_1": "log.txt",
+      "source_file_2": "meta.txt",
+      "target_file_1": "record_final.txt",
+      "delete_file": "tmp.txt",
+      "success_criteria": {
+        "folder_exists": "test",
+        "moved_and_renamed_file": "test/record_final.txt",
+        "retained_file": "meta.txt",
+        "deleted_file_absent": "tmp.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0067",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 tasks 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nfileA.txt、memo.txt。\n如果某个文件不存在，则创建该文件。\n\n将 fileA.txt 移动到 tasks 文件夹中。\n\n进入 tasks 文件夹，将 fileA.txt 重命名为 final.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 delete_me.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "tasks",
+      "source_file_1": "fileA.txt",
+      "source_file_2": "memo.txt",
+      "target_file_1": "final.txt",
+      "delete_file": "delete_me.txt",
+      "success_criteria": {
+        "folder_exists": "tasks",
+        "moved_and_renamed_file": "tasks/final.txt",
+        "retained_file": "memo.txt",
+        "deleted_file_absent": "delete_me.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0011",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 records 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nsource.txt、keep.txt。\n如果某个文件不存在，则创建该文件。\n\n将 source.txt 移动到 records 文件夹中。\n\n进入 records 文件夹，将 source.txt 重命名为 record_final.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 old_task.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "records",
+      "source_file_1": "source.txt",
+      "source_file_2": "keep.txt",
+      "target_file_1": "record_final.txt",
+      "delete_file": "old_task.txt",
+      "success_criteria": {
+        "folder_exists": "records",
+        "moved_and_renamed_file": "records/record_final.txt",
+        "retained_file": "keep.txt",
+        "deleted_file_absent": "old_task.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0031",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 results 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nlog.txt、keep.txt。\n如果某个文件不存在，则创建该文件。\n\n将 log.txt 移动到 results 文件夹中。\n\n进入 results 文件夹，将 log.txt 重命名为 meeting_note.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 unused.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "results",
+      "source_file_1": "log.txt",
+      "source_file_2": "keep.txt",
+      "target_file_1": "meeting_note.txt",
+      "delete_file": "unused.txt",
+      "success_criteria": {
+        "folder_exists": "results",
+        "moved_and_renamed_file": "results/meeting_note.txt",
+        "retained_file": "keep.txt",
+        "deleted_file_absent": "unused.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0018",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 test 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nfileA.txt、trace.txt。\n如果某个文件不存在，则创建该文件。\n\n将 fileA.txt 移动到 test 文件夹中。\n\n进入 test 文件夹，将 fileA.txt 重命名为 doc.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 tmp.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "test",
+      "source_file_1": "fileA.txt",
+      "source_file_2": "trace.txt",
+      "target_file_1": "doc.txt",
+      "delete_file": "tmp.txt",
+      "success_criteria": {
+        "folder_exists": "test",
+        "moved_and_renamed_file": "test/doc.txt",
+        "retained_file": "trace.txt",
+        "deleted_file_absent": "tmp.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0048",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 archive 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nnote.txt、meta.txt。\n如果某个文件不存在，则创建该文件。\n\n将 note.txt 移动到 archive 文件夹中。\n\n进入 archive 文件夹，将 note.txt 重命名为 store.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 old_task.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "archive",
+      "source_file_1": "note.txt",
+      "source_file_2": "meta.txt",
+      "target_file_1": "store.txt",
+      "delete_file": "old_task.txt",
+      "success_criteria": {
+        "folder_exists": "archive",
+        "moved_and_renamed_file": "archive/store.txt",
+        "retained_file": "meta.txt",
+        "deleted_file_absent": "old_task.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0021",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 backup 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nreport.txt、meta.txt。\n如果某个文件不存在，则创建该文件。\n\n将 report.txt 移动到 backup 文件夹中。\n\n进入 backup 文件夹，将 report.txt 重命名为 record_final.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 tmp.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "backup",
+      "source_file_1": "report.txt",
+      "source_file_2": "meta.txt",
+      "target_file_1": "record_final.txt",
+      "delete_file": "tmp.txt",
+      "success_criteria": {
+        "folder_exists": "backup",
+        "moved_and_renamed_file": "backup/record_final.txt",
+        "retained_file": "meta.txt",
+        "deleted_file_absent": "tmp.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0041",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 backup 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ntask.txt、list.txt。\n如果某个文件不存在，则创建该文件。\n\n将 task.txt 移动到 backup 文件夹中。\n\n进入 backup 文件夹，将 task.txt 重命名为 meeting.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 old.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "backup",
+      "source_file_1": "task.txt",
+      "source_file_2": "list.txt",
+      "target_file_1": "meeting.txt",
+      "delete_file": "old.txt",
+      "success_criteria": {
+        "folder_exists": "backup",
+        "moved_and_renamed_file": "backup/meeting.txt",
+        "retained_file": "list.txt",
+        "deleted_file_absent": "old.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0081",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 project 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ndata.txt、keep.txt。\n如果某个文件不存在，则创建该文件。\n\n将 data.txt 移动到 project 文件夹中。\n\n进入 project 文件夹，将 data.txt 重命名为 dataset.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 delete_me.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "project",
+      "source_file_1": "data.txt",
+      "source_file_2": "keep.txt",
+      "target_file_1": "dataset.txt",
+      "delete_file": "delete_me.txt",
+      "success_criteria": {
+        "folder_exists": "project",
+        "moved_and_renamed_file": "project/dataset.txt",
+        "retained_file": "keep.txt",
+        "deleted_file_absent": "delete_me.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0015",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 storage 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ndraft.txt、info.txt。\n如果某个文件不存在，则创建该文件。\n\n将 draft.txt 移动到 storage 文件夹中。\n\n进入 storage 文件夹，将 draft.txt 重命名为 record_final.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 unused.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "storage",
+      "source_file_1": "draft.txt",
+      "source_file_2": "info.txt",
+      "target_file_1": "record_final.txt",
+      "delete_file": "unused.txt",
+      "success_criteria": {
+        "folder_exists": "storage",
+        "moved_and_renamed_file": "storage/record_final.txt",
+        "retained_file": "info.txt",
+        "deleted_file_absent": "unused.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0076",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 results 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nreport.txt、fileB.txt。\n如果某个文件不存在，则创建该文件。\n\n将 report.txt 移动到 results 文件夹中。\n\n进入 results 文件夹，将 report.txt 重命名为 meeting.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 remove.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "results",
+      "source_file_1": "report.txt",
+      "source_file_2": "fileB.txt",
+      "target_file_1": "meeting.txt",
+      "delete_file": "remove.txt",
+      "success_criteria": {
+        "folder_exists": "results",
+        "moved_and_renamed_file": "results/meeting.txt",
+        "retained_file": "fileB.txt",
+        "deleted_file_absent": "remove.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0040",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 docs 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nresult.txt、trace.txt。\n如果某个文件不存在，则创建该文件。\n\n将 result.txt 移动到 docs 文件夹中。\n\n进入 docs 文件夹，将 result.txt 重命名为 record_final.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 unused.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "docs",
+      "source_file_1": "result.txt",
+      "source_file_2": "trace.txt",
+      "target_file_1": "record_final.txt",
+      "delete_file": "unused.txt",
+      "success_criteria": {
+        "folder_exists": "docs",
+        "moved_and_renamed_file": "docs/record_final.txt",
+        "retained_file": "trace.txt",
+        "deleted_file_absent": "unused.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0074",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 backup 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nreport.txt、list.txt。\n如果某个文件不存在，则创建该文件。\n\n将 report.txt 移动到 backup 文件夹中。\n\n进入 backup 文件夹，将 report.txt 重命名为 dataset.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 debug.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "backup",
+      "source_file_1": "report.txt",
+      "source_file_2": "list.txt",
+      "target_file_1": "dataset.txt",
+      "delete_file": "debug.txt",
+      "success_criteria": {
+        "folder_exists": "backup",
+        "moved_and_renamed_file": "backup/dataset.txt",
+        "retained_file": "list.txt",
+        "deleted_file_absent": "debug.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0068",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 test 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nsource.txt、memo.txt。\n如果某个文件不存在，则创建该文件。\n\n将 source.txt 移动到 test 文件夹中。\n\n进入 test 文件夹，将 source.txt 重命名为 dataset.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 old_task.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "test",
+      "source_file_1": "source.txt",
+      "source_file_2": "memo.txt",
+      "target_file_1": "dataset.txt",
+      "delete_file": "old_task.txt",
+      "success_criteria": {
+        "folder_exists": "test",
+        "moved_and_renamed_file": "test/dataset.txt",
+        "retained_file": "memo.txt",
+        "deleted_file_absent": "old_task.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0100",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 backup 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nlog.txt、meta.txt。\n如果某个文件不存在，则创建该文件。\n\n将 log.txt 移动到 backup 文件夹中。\n\n进入 backup 文件夹，将 log.txt 重命名为 meeting_note.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 debug.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "backup",
+      "source_file_1": "log.txt",
+      "source_file_2": "meta.txt",
+      "target_file_1": "meeting_note.txt",
+      "delete_file": "debug.txt",
+      "success_criteria": {
+        "folder_exists": "backup",
+        "moved_and_renamed_file": "backup/meeting_note.txt",
+        "retained_file": "meta.txt",
+        "deleted_file_absent": "debug.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0001",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 records 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nresult.txt、remain.txt。\n如果某个文件不存在，则创建该文件。\n\n将 result.txt 移动到 records 文件夹中。\n\n进入 records 文件夹，将 result.txt 重命名为 dataset.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 temp.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "records",
+      "source_file_1": "result.txt",
+      "source_file_2": "remain.txt",
+      "target_file_1": "dataset.txt",
+      "delete_file": "temp.txt",
+      "success_criteria": {
+        "folder_exists": "records",
+        "moved_and_renamed_file": "records/dataset.txt",
+        "retained_file": "remain.txt",
+        "deleted_file_absent": "temp.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0098",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 notes 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ndata.txt、info.txt。\n如果某个文件不存在，则创建该文件。\n\n将 data.txt 移动到 notes 文件夹中。\n\n进入 notes 文件夹，将 data.txt 重命名为 meeting_note.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 delete_me.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "notes",
+      "source_file_1": "data.txt",
+      "source_file_2": "info.txt",
+      "target_file_1": "meeting_note.txt",
+      "delete_file": "delete_me.txt",
+      "success_criteria": {
+        "folder_exists": "notes",
+        "moved_and_renamed_file": "notes/meeting_note.txt",
+        "retained_file": "info.txt",
+        "deleted_file_absent": "delete_me.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0016",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 results 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nlog.txt、trace.txt。\n如果某个文件不存在，则创建该文件。\n\n将 log.txt 移动到 results 文件夹中。\n\n进入 results 文件夹，将 log.txt 重命名为 doc.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 debug.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "results",
+      "source_file_1": "log.txt",
+      "source_file_2": "trace.txt",
+      "target_file_1": "doc.txt",
+      "delete_file": "debug.txt",
+      "success_criteria": {
+        "folder_exists": "results",
+        "moved_and_renamed_file": "results/doc.txt",
+        "retained_file": "trace.txt",
+        "deleted_file_absent": "debug.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0055",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 notes 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nreport.txt、list.txt。\n如果某个文件不存在，则创建该文件。\n\n将 report.txt 移动到 notes 文件夹中。\n\n进入 notes 文件夹，将 report.txt 重命名为 dataset.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 unused.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "notes",
+      "source_file_1": "report.txt",
+      "source_file_2": "list.txt",
+      "target_file_1": "dataset.txt",
+      "delete_file": "unused.txt",
+      "success_criteria": {
+        "folder_exists": "notes",
+        "moved_and_renamed_file": "notes/dataset.txt",
+        "retained_file": "list.txt",
+        "deleted_file_absent": "unused.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0043",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 project 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ndraft.txt、keep.txt。\n如果某个文件不存在，则创建该文件。\n\n将 draft.txt 移动到 project 文件夹中。\n\n进入 project 文件夹，将 draft.txt 重命名为 meeting.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 old.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "project",
+      "source_file_1": "draft.txt",
+      "source_file_2": "keep.txt",
+      "target_file_1": "meeting.txt",
+      "delete_file": "old.txt",
+      "success_criteria": {
+        "folder_exists": "project",
+        "moved_and_renamed_file": "project/meeting.txt",
+        "retained_file": "keep.txt",
+        "deleted_file_absent": "old.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0061",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 backup 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ndraft.txt、list.txt。\n如果某个文件不存在，则创建该文件。\n\n将 draft.txt 移动到 backup 文件夹中。\n\n进入 backup 文件夹，将 draft.txt 重命名为 meeting.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 unused.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "backup",
+      "source_file_1": "draft.txt",
+      "source_file_2": "list.txt",
+      "target_file_1": "meeting.txt",
+      "delete_file": "unused.txt",
+      "success_criteria": {
+        "folder_exists": "backup",
+        "moved_and_renamed_file": "backup/meeting.txt",
+        "retained_file": "list.txt",
+        "deleted_file_absent": "unused.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0024",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 test 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nfileA.txt、record.txt。\n如果某个文件不存在，则创建该文件。\n\n将 fileA.txt 移动到 test 文件夹中。\n\n进入 test 文件夹，将 fileA.txt 重命名为 store.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 temp_note.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "test",
+      "source_file_1": "fileA.txt",
+      "source_file_2": "record.txt",
+      "target_file_1": "store.txt",
+      "delete_file": "temp_note.txt",
+      "success_criteria": {
+        "folder_exists": "test",
+        "moved_and_renamed_file": "test/store.txt",
+        "retained_file": "record.txt",
+        "deleted_file_absent": "temp_note.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0004",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 tasks 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ndraft.txt、info.txt。\n如果某个文件不存在，则创建该文件。\n\n将 draft.txt 移动到 tasks 文件夹中。\n\n进入 tasks 文件夹，将 draft.txt 重命名为 record_final.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 old_task.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "tasks",
+      "source_file_1": "draft.txt",
+      "source_file_2": "info.txt",
+      "target_file_1": "record_final.txt",
+      "delete_file": "old_task.txt",
+      "success_criteria": {
+        "folder_exists": "tasks",
+        "moved_and_renamed_file": "tasks/record_final.txt",
+        "retained_file": "info.txt",
+        "deleted_file_absent": "old_task.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0013",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 storage 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nnote.txt、info.txt。\n如果某个文件不存在，则创建该文件。\n\n将 note.txt 移动到 storage 文件夹中。\n\n进入 storage 文件夹，将 note.txt 重命名为 meeting_note.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 debug.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "storage",
+      "source_file_1": "note.txt",
+      "source_file_2": "info.txt",
+      "target_file_1": "meeting_note.txt",
+      "delete_file": "debug.txt",
+      "success_criteria": {
+        "folder_exists": "storage",
+        "moved_and_renamed_file": "storage/meeting_note.txt",
+        "retained_file": "info.txt",
+        "deleted_file_absent": "debug.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0026",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 project 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ntask.txt、fileB.txt。\n如果某个文件不存在，则创建该文件。\n\n将 task.txt 移动到 project 文件夹中。\n\n进入 project 文件夹，将 task.txt 重命名为 todo.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 debug.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "project",
+      "source_file_1": "task.txt",
+      "source_file_2": "fileB.txt",
+      "target_file_1": "todo.txt",
+      "delete_file": "debug.txt",
+      "success_criteria": {
+        "folder_exists": "project",
+        "moved_and_renamed_file": "project/todo.txt",
+        "retained_file": "fileB.txt",
+        "deleted_file_absent": "debug.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0020",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 project 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ndraft.txt、trace.txt。\n如果某个文件不存在，则创建该文件。\n\n将 draft.txt 移动到 project 文件夹中。\n\n进入 project 文件夹，将 draft.txt 重命名为 backup_log.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 unused.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "project",
+      "source_file_1": "draft.txt",
+      "source_file_2": "trace.txt",
+      "target_file_1": "backup_log.txt",
+      "delete_file": "unused.txt",
+      "success_criteria": {
+        "folder_exists": "project",
+        "moved_and_renamed_file": "project/backup_log.txt",
+        "retained_file": "trace.txt",
+        "deleted_file_absent": "unused.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0064",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 docs 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nitem.txt、trace.txt。\n如果某个文件不存在，则创建该文件。\n\n将 item.txt 移动到 docs 文件夹中。\n\n进入 docs 文件夹，将 item.txt 重命名为 doc.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 temp.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "docs",
+      "source_file_1": "item.txt",
+      "source_file_2": "trace.txt",
+      "target_file_1": "doc.txt",
+      "delete_file": "temp.txt",
+      "success_criteria": {
+        "folder_exists": "docs",
+        "moved_and_renamed_file": "docs/doc.txt",
+        "retained_file": "trace.txt",
+        "deleted_file_absent": "temp.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0072",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 backup 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ndraft.txt、fileB.txt。\n如果某个文件不存在，则创建该文件。\n\n将 draft.txt 移动到 backup 文件夹中。\n\n进入 backup 文件夹，将 draft.txt 重命名为 project_a.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 temp.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "backup",
+      "source_file_1": "draft.txt",
+      "source_file_2": "fileB.txt",
+      "target_file_1": "project_a.txt",
+      "delete_file": "temp.txt",
+      "success_criteria": {
+        "folder_exists": "backup",
+        "moved_and_renamed_file": "backup/project_a.txt",
+        "retained_file": "fileB.txt",
+        "deleted_file_absent": "temp.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0047",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 results 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nreport.txt、memo.txt。\n如果某个文件不存在，则创建该文件。\n\n将 report.txt 移动到 results 文件夹中。\n\n进入 results 文件夹，将 report.txt 重命名为 record_final.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 unused.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "results",
+      "source_file_1": "report.txt",
+      "source_file_2": "memo.txt",
+      "target_file_1": "record_final.txt",
+      "delete_file": "unused.txt",
+      "success_criteria": {
+        "folder_exists": "results",
+        "moved_and_renamed_file": "results/record_final.txt",
+        "retained_file": "memo.txt",
+        "deleted_file_absent": "unused.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0036",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 test 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nreport.txt、list.txt。\n如果某个文件不存在，则创建该文件。\n\n将 report.txt 移动到 test 文件夹中。\n\n进入 test 文件夹，将 report.txt 重命名为 backup_log.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 old.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "test",
+      "source_file_1": "report.txt",
+      "source_file_2": "list.txt",
+      "target_file_1": "backup_log.txt",
+      "delete_file": "old.txt",
+      "success_criteria": {
+        "folder_exists": "test",
+        "moved_and_renamed_file": "test/backup_log.txt",
+        "retained_file": "list.txt",
+        "deleted_file_absent": "old.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0049",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 docs 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nitem.txt、keep.txt。\n如果某个文件不存在，则创建该文件。\n\n将 item.txt 移动到 docs 文件夹中。\n\n进入 docs 文件夹，将 item.txt 重命名为 backup_log.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 debug.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "docs",
+      "source_file_1": "item.txt",
+      "source_file_2": "keep.txt",
+      "target_file_1": "backup_log.txt",
+      "delete_file": "debug.txt",
+      "success_criteria": {
+        "folder_exists": "docs",
+        "moved_and_renamed_file": "docs/backup_log.txt",
+        "retained_file": "keep.txt",
+        "deleted_file_absent": "debug.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0099",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 results 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nreport.txt、memo.txt。\n如果某个文件不存在，则创建该文件。\n\n将 report.txt 移动到 results 文件夹中。\n\n进入 results 文件夹，将 report.txt 重命名为 project_a.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 tmp.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "results",
+      "source_file_1": "report.txt",
+      "source_file_2": "memo.txt",
+      "target_file_1": "project_a.txt",
+      "delete_file": "tmp.txt",
+      "success_criteria": {
+        "folder_exists": "results",
+        "moved_and_renamed_file": "results/project_a.txt",
+        "retained_file": "memo.txt",
+        "deleted_file_absent": "tmp.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0056",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 storage 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nreport.txt、trace.txt。\n如果某个文件不存在，则创建该文件。\n\n将 report.txt 移动到 storage 文件夹中。\n\n进入 storage 文件夹，将 report.txt 重命名为 meeting_note.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 trash.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "storage",
+      "source_file_1": "report.txt",
+      "source_file_2": "trace.txt",
+      "target_file_1": "meeting_note.txt",
+      "delete_file": "trash.txt",
+      "success_criteria": {
+        "folder_exists": "storage",
+        "moved_and_renamed_file": "storage/meeting_note.txt",
+        "retained_file": "trace.txt",
+        "deleted_file_absent": "trash.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0032",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 project 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nsource.txt、info.txt。\n如果某个文件不存在，则创建该文件。\n\n将 source.txt 移动到 project 文件夹中。\n\n进入 project 文件夹，将 source.txt 重命名为 record_final.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 remove.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "project",
+      "source_file_1": "source.txt",
+      "source_file_2": "info.txt",
+      "target_file_1": "record_final.txt",
+      "delete_file": "remove.txt",
+      "success_criteria": {
+        "folder_exists": "project",
+        "moved_and_renamed_file": "project/record_final.txt",
+        "retained_file": "info.txt",
+        "deleted_file_absent": "remove.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0051",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 storage 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\nsource.txt、trace.txt。\n如果某个文件不存在，则创建该文件。\n\n将 source.txt 移动到 storage 文件夹中。\n\n进入 storage 文件夹，将 source.txt 重命名为 project_a.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 old.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "storage",
+      "source_file_1": "source.txt",
+      "source_file_2": "trace.txt",
+      "target_file_1": "project_a.txt",
+      "delete_file": "old.txt",
+      "success_criteria": {
+        "folder_exists": "storage",
+        "moved_and_renamed_file": "storage/project_a.txt",
+        "retained_file": "trace.txt",
+        "deleted_file_absent": "old.txt"
+      }
+    }
+  },
+  {
+    "task_id": "file_train_0028",
+    "scene": "file_organization",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹。\n\n检查是否存在名为 records 的文件夹，如果不存在则创建该文件夹。\n\n在 Home 文件夹中检查以下文件是否存在：\ntask.txt、log.txt。\n如果某个文件不存在，则创建该文件。\n\n将 task.txt 移动到 records 文件夹中。\n\n进入 records 文件夹，将 task.txt 重命名为 meeting_note.txt。\n\n返回 Home 文件夹。\n\n如果 Home 文件夹中存在 old.txt 文件，则删除该文件。\n\n完成后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "records",
+      "source_file_1": "task.txt",
+      "source_file_2": "log.txt",
+      "target_file_1": "meeting_note.txt",
+      "delete_file": "old.txt",
+      "success_criteria": {
+        "folder_exists": "records",
+        "moved_and_renamed_file": "records/meeting_note.txt",
+        "retained_file": "log.txt",
+        "deleted_file_absent": "old.txt"
+      }
+    }
+  }
+]

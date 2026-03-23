@@ -1,0 +1,1702 @@
+[
+  {
+    "task_id": "browser_train_0035",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"复旦大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 results 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 results 文件夹中是否已经存在 ans.txt 文件，如果存在请先删除该文件，然后创建新的 ans.txt 文件。\n\n使用 libreoffice 打开 ans.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "复旦大学地址",
+      "expected_answer": "上海市杨浦区邯郸路220号",
+      "target_directory": "results",
+      "file_name": "ans.txt",
+      "success_criteria": {
+        "directory_exists": "results",
+        "file_exists": "results/ans.txt",
+        "document_contains": "上海市杨浦区邯郸路220号"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0021",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"中国的首都是哪里\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 fact_files 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 fact_files 文件夹中是否已经存在 result.txt 文件，如果存在请先删除该文件，然后创建新的 result.txt 文件。\n\n使用 libreoffice 打开 result.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "中国的首都是哪里",
+      "expected_answer": "北京",
+      "target_directory": "fact_files",
+      "file_name": "result.txt",
+      "success_criteria": {
+        "directory_exists": "fact_files",
+        "file_exists": "fact_files/result.txt",
+        "document_contains": "北京"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0087",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"天津大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 test 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 test 文件夹中是否已经存在 result.txt 文件，如果存在请先删除该文件，然后创建新的 result.txt 文件。\n\n使用 libreoffice 打开 result.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "天津大学地址",
+      "expected_answer": "天津市南开区卫津路92号",
+      "target_directory": "test",
+      "file_name": "result.txt",
+      "success_criteria": {
+        "directory_exists": "test",
+        "file_exists": "test/result.txt",
+        "document_contains": "天津市南开区卫津路92号"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0076",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"复旦大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 results 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 results 文件夹中是否已经存在 answer.txt 文件，如果存在请先删除该文件，然后创建新的 answer.txt 文件。\n\n使用 libreoffice 打开 answer.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "复旦大学地址",
+      "expected_answer": "上海市杨浦区邯郸路220号",
+      "target_directory": "results",
+      "file_name": "answer.txt",
+      "success_criteria": {
+        "directory_exists": "results",
+        "file_exists": "results/answer.txt",
+        "document_contains": "上海市杨浦区邯郸路220号"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0057",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"埃菲尔铁塔高度是多少\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 results 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 results 文件夹中是否已经存在 result.txt 文件，如果存在请先删除该文件，然后创建新的 result.txt 文件。\n\n使用 libreoffice 打开 result.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "埃菲尔铁塔高度是多少",
+      "expected_answer": "330米",
+      "target_directory": "results",
+      "file_name": "result.txt",
+      "success_criteria": {
+        "directory_exists": "results",
+        "file_exists": "results/result.txt",
+        "document_contains": "330米"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0071",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"南开大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 test 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 test 文件夹中是否已经存在 result.txt 文件，如果存在请先删除该文件，然后创建新的 result.txt 文件。\n\n使用 libreoffice 打开 result.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "南开大学地址",
+      "expected_answer": "天津市南开区卫津路94号",
+      "target_directory": "test",
+      "file_name": "result.txt",
+      "success_criteria": {
+        "directory_exists": "test",
+        "file_exists": "test/result.txt",
+        "document_contains": "天津市南开区卫津路94号"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0022",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"Python列表推导式是什么\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 fact_files 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 fact_files 文件夹中是否已经存在 answer.txt 文件，如果存在请先删除该文件，然后创建新的 answer.txt 文件。\n\n使用 libreoffice 打开 answer.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "Python列表推导式是什么",
+      "expected_answer": "一种用于从可迭代对象生成新列表的简洁语法",
+      "target_directory": "fact_files",
+      "file_name": "answer.txt",
+      "success_criteria": {
+        "directory_exists": "fact_files",
+        "file_exists": "fact_files/answer.txt",
+        "document_contains": "一种用于从可迭代对象生成新列表的简洁语法"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0020",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"天津大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 records 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 records 文件夹中是否已经存在 answer.txt 文件，如果存在请先删除该文件，然后创建新的 answer.txt 文件。\n\n使用 libreoffice 打开 answer.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "天津大学地址",
+      "expected_answer": "天津市南开区卫津路92号",
+      "target_directory": "records",
+      "file_name": "answer.txt",
+      "success_criteria": {
+        "directory_exists": "records",
+        "file_exists": "records/answer.txt",
+        "document_contains": "天津市南开区卫津路92号"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0011",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"哈佛大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 browser_output 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 browser_output 文件夹中是否已经存在 ans.txt 文件，如果存在请先删除该文件，然后创建新的 ans.txt 文件。\n\n使用 libreoffice 打开 ans.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "哈佛大学地址",
+      "expected_answer": "Massachusetts Hall, Cambridge, MA 02138, USA",
+      "target_directory": "browser_output",
+      "file_name": "ans.txt",
+      "success_criteria": {
+        "directory_exists": "browser_output",
+        "file_exists": "browser_output/ans.txt",
+        "document_contains": "Massachusetts Hall, Cambridge, MA 02138, USA"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0048",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"南开大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 notes 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 notes 文件夹中是否已经存在 output.txt 文件，如果存在请先删除该文件，然后创建新的 output.txt 文件。\n\n使用 libreoffice 打开 output.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "南开大学地址",
+      "expected_answer": "天津市南开区卫津路94号",
+      "target_directory": "notes",
+      "file_name": "output.txt",
+      "success_criteria": {
+        "directory_exists": "notes",
+        "file_exists": "notes/output.txt",
+        "document_contains": "天津市南开区卫津路94号"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0077",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"世界上最大的海洋\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 results 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 results 文件夹中是否已经存在 output.txt 文件，如果存在请先删除该文件，然后创建新的 output.txt 文件。\n\n使用 libreoffice 打开 output.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "世界上最大的海洋",
+      "expected_answer": "太平洋",
+      "target_directory": "results",
+      "file_name": "output.txt",
+      "success_criteria": {
+        "directory_exists": "results",
+        "file_exists": "results/output.txt",
+        "document_contains": "太平洋"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0062",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"Linux是什么\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 answers 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 answers 文件夹中是否已经存在 output.txt 文件，如果存在请先删除该文件，然后创建新的 output.txt 文件。\n\n使用 libreoffice 打开 output.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "Linux是什么",
+      "expected_answer": "一种自由和开放源代码的类Unix操作系统",
+      "target_directory": "answers",
+      "file_name": "output.txt",
+      "success_criteria": {
+        "directory_exists": "answers",
+        "file_exists": "answers/output.txt",
+        "document_contains": "一种自由和开放源代码的类Unix操作系统"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0078",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"法国的首都是哪里\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 browser_output 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 browser_output 文件夹中是否已经存在 answer.txt 文件，如果存在请先删除该文件，然后创建新的 answer.txt 文件。\n\n使用 libreoffice 打开 answer.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "法国的首都是哪里",
+      "expected_answer": "巴黎",
+      "target_directory": "browser_output",
+      "file_name": "answer.txt",
+      "success_criteria": {
+        "directory_exists": "browser_output",
+        "file_exists": "browser_output/answer.txt",
+        "document_contains": "巴黎"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0091",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"东京大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 notes 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 notes 文件夹中是否已经存在 info.txt 文件，如果存在请先删除该文件，然后创建新的 info.txt 文件。\n\n使用 libreoffice 打开 info.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "东京大学地址",
+      "expected_answer": "日本东京都文京区本乡7丁目3-1",
+      "target_directory": "notes",
+      "file_name": "info.txt",
+      "success_criteria": {
+        "directory_exists": "notes",
+        "file_exists": "notes/info.txt",
+        "document_contains": "日本东京都文京区本乡7丁目3-1"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0033",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"清华大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 fact_files 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 fact_files 文件夹中是否已经存在 info.txt 文件，如果存在请先删除该文件，然后创建新的 info.txt 文件。\n\n使用 libreoffice 打开 info.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "清华大学地址",
+      "expected_answer": "北京市海淀区清华园1号",
+      "target_directory": "fact_files",
+      "file_name": "info.txt",
+      "success_criteria": {
+        "directory_exists": "fact_files",
+        "file_exists": "fact_files/info.txt",
+        "document_contains": "北京市海淀区清华园1号"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0040",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"清华大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 test 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 test 文件夹中是否已经存在 info.txt 文件，如果存在请先删除该文件，然后创建新的 info.txt 文件。\n\n使用 libreoffice 打开 info.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "清华大学地址",
+      "expected_answer": "北京市海淀区清华园1号",
+      "target_directory": "test",
+      "file_name": "info.txt",
+      "success_criteria": {
+        "directory_exists": "test",
+        "file_exists": "test/info.txt",
+        "document_contains": "北京市海淀区清华园1号"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0095",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"哈佛大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 browser_output 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 browser_output 文件夹中是否已经存在 result.txt 文件，如果存在请先删除该文件，然后创建新的 result.txt 文件。\n\n使用 libreoffice 打开 result.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "哈佛大学地址",
+      "expected_answer": "Massachusetts Hall, Cambridge, MA 02138, USA",
+      "target_directory": "browser_output",
+      "file_name": "result.txt",
+      "success_criteria": {
+        "directory_exists": "browser_output",
+        "file_exists": "browser_output/result.txt",
+        "document_contains": "Massachusetts Hall, Cambridge, MA 02138, USA"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0066",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"哈佛大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 notes 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 notes 文件夹中是否已经存在 output.txt 文件，如果存在请先删除该文件，然后创建新的 output.txt 文件。\n\n使用 libreoffice 打开 output.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "哈佛大学地址",
+      "expected_answer": "Massachusetts Hall, Cambridge, MA 02138, USA",
+      "target_directory": "notes",
+      "file_name": "output.txt",
+      "success_criteria": {
+        "directory_exists": "notes",
+        "file_exists": "notes/output.txt",
+        "document_contains": "Massachusetts Hall, Cambridge, MA 02138, USA"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0001",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"Python列表推导式是什么\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 browser_output 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 browser_output 文件夹中是否已经存在 query_result.txt 文件，如果存在请先删除该文件，然后创建新的 query_result.txt 文件。\n\n使用 libreoffice 打开 query_result.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "Python列表推导式是什么",
+      "expected_answer": "一种用于从可迭代对象生成新列表的简洁语法",
+      "target_directory": "browser_output",
+      "file_name": "query_result.txt",
+      "success_criteria": {
+        "directory_exists": "browser_output",
+        "file_exists": "browser_output/query_result.txt",
+        "document_contains": "一种用于从可迭代对象生成新列表的简洁语法"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0069",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"Python列表推导式是什么\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 notes 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 notes 文件夹中是否已经存在 ans.txt 文件，如果存在请先删除该文件，然后创建新的 ans.txt 文件。\n\n使用 libreoffice 打开 ans.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "Python列表推导式是什么",
+      "expected_answer": "一种用于从可迭代对象生成新列表的简洁语法",
+      "target_directory": "notes",
+      "file_name": "ans.txt",
+      "success_criteria": {
+        "directory_exists": "notes",
+        "file_exists": "notes/ans.txt",
+        "document_contains": "一种用于从可迭代对象生成新列表的简洁语法"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0007",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"太阳系最大的行星\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 test 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 test 文件夹中是否已经存在 fact.txt 文件，如果存在请先删除该文件，然后创建新的 fact.txt 文件。\n\n使用 libreoffice 打开 fact.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "太阳系最大的行星",
+      "expected_answer": "木星",
+      "target_directory": "test",
+      "file_name": "fact.txt",
+      "success_criteria": {
+        "directory_exists": "test",
+        "file_exists": "test/fact.txt",
+        "document_contains": "木星"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0075",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"南开大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 results 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 results 文件夹中是否已经存在 output.txt 文件，如果存在请先删除该文件，然后创建新的 output.txt 文件。\n\n使用 libreoffice 打开 output.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "南开大学地址",
+      "expected_answer": "天津市南开区卫津路94号",
+      "target_directory": "results",
+      "file_name": "output.txt",
+      "success_criteria": {
+        "directory_exists": "results",
+        "file_exists": "results/output.txt",
+        "document_contains": "天津市南开区卫津路94号"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0061",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"东京大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 docs 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 docs 文件夹中是否已经存在 answer.txt 文件，如果存在请先删除该文件，然后创建新的 answer.txt 文件。\n\n使用 libreoffice 打开 answer.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "东京大学地址",
+      "expected_answer": "日本东京都文京区本乡7丁目3-1",
+      "target_directory": "docs",
+      "file_name": "answer.txt",
+      "success_criteria": {
+        "directory_exists": "docs",
+        "file_exists": "docs/answer.txt",
+        "document_contains": "日本东京都文京区本乡7丁目3-1"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0037",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"东京大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 test 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 test 文件夹中是否已经存在 output.txt 文件，如果存在请先删除该文件，然后创建新的 output.txt 文件。\n\n使用 libreoffice 打开 output.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "东京大学地址",
+      "expected_answer": "日本东京都文京区本乡7丁目3-1",
+      "target_directory": "test",
+      "file_name": "output.txt",
+      "success_criteria": {
+        "directory_exists": "test",
+        "file_exists": "test/output.txt",
+        "document_contains": "日本东京都文京区本乡7丁目3-1"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0026",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"长城长度是多少\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 docs 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 docs 文件夹中是否已经存在 answer.txt 文件，如果存在请先删除该文件，然后创建新的 answer.txt 文件。\n\n使用 libreoffice 打开 answer.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "长城长度是多少",
+      "expected_answer": "21196.18千米",
+      "target_directory": "docs",
+      "file_name": "answer.txt",
+      "success_criteria": {
+        "directory_exists": "docs",
+        "file_exists": "docs/answer.txt",
+        "document_contains": "21196.18千米"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0016",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"世界上最长的河流\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 docs 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 docs 文件夹中是否已经存在 info.txt 文件，如果存在请先删除该文件，然后创建新的 info.txt 文件。\n\n使用 libreoffice 打开 info.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "世界上最长的河流",
+      "expected_answer": "尼罗河",
+      "target_directory": "docs",
+      "file_name": "info.txt",
+      "success_criteria": {
+        "directory_exists": "docs",
+        "file_exists": "docs/info.txt",
+        "document_contains": "尼罗河"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0032",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"珠穆朗玛峰高度是多少\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 browser_output 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 browser_output 文件夹中是否已经存在 info.txt 文件，如果存在请先删除该文件，然后创建新的 info.txt 文件。\n\n使用 libreoffice 打开 info.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "珠穆朗玛峰高度是多少",
+      "expected_answer": "8848.86米",
+      "target_directory": "browser_output",
+      "file_name": "info.txt",
+      "success_criteria": {
+        "directory_exists": "browser_output",
+        "file_exists": "browser_output/info.txt",
+        "document_contains": "8848.86米"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0100",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"Linux是什么\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 results 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 results 文件夹中是否已经存在 note.txt 文件，如果存在请先删除该文件，然后创建新的 note.txt 文件。\n\n使用 libreoffice 打开 note.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "Linux是什么",
+      "expected_answer": "一种自由和开放源代码的类Unix操作系统",
+      "target_directory": "results",
+      "file_name": "note.txt",
+      "success_criteria": {
+        "directory_exists": "results",
+        "file_exists": "results/note.txt",
+        "document_contains": "一种自由和开放源代码的类Unix操作系统"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0047",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"Python列表推导式是什么\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 docs 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 docs 文件夹中是否已经存在 answer.txt 文件，如果存在请先删除该文件，然后创建新的 answer.txt 文件。\n\n使用 libreoffice 打开 answer.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "Python列表推导式是什么",
+      "expected_answer": "一种用于从可迭代对象生成新列表的简洁语法",
+      "target_directory": "docs",
+      "file_name": "answer.txt",
+      "success_criteria": {
+        "directory_exists": "docs",
+        "file_exists": "docs/answer.txt",
+        "document_contains": "一种用于从可迭代对象生成新列表的简洁语法"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0082",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"清华大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 results 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 results 文件夹中是否已经存在 result.txt 文件，如果存在请先删除该文件，然后创建新的 result.txt 文件。\n\n使用 libreoffice 打开 result.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "清华大学地址",
+      "expected_answer": "北京市海淀区清华园1号",
+      "target_directory": "results",
+      "file_name": "result.txt",
+      "success_criteria": {
+        "directory_exists": "results",
+        "file_exists": "results/result.txt",
+        "document_contains": "北京市海淀区清华园1号"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0097",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"法国的首都是哪里\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 fact_files 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 fact_files 文件夹中是否已经存在 fact.txt 文件，如果存在请先删除该文件，然后创建新的 fact.txt 文件。\n\n使用 libreoffice 打开 fact.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "法国的首都是哪里",
+      "expected_answer": "巴黎",
+      "target_directory": "fact_files",
+      "file_name": "fact.txt",
+      "success_criteria": {
+        "directory_exists": "fact_files",
+        "file_exists": "fact_files/fact.txt",
+        "document_contains": "巴黎"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0085",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"清华大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 answers 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 answers 文件夹中是否已经存在 answer.txt 文件，如果存在请先删除该文件，然后创建新的 answer.txt 文件。\n\n使用 libreoffice 打开 answer.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "清华大学地址",
+      "expected_answer": "北京市海淀区清华园1号",
+      "target_directory": "answers",
+      "file_name": "answer.txt",
+      "success_criteria": {
+        "directory_exists": "answers",
+        "file_exists": "answers/answer.txt",
+        "document_contains": "北京市海淀区清华园1号"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0068",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"东京大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 answers 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 answers 文件夹中是否已经存在 info.txt 文件，如果存在请先删除该文件，然后创建新的 info.txt 文件。\n\n使用 libreoffice 打开 info.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "东京大学地址",
+      "expected_answer": "日本东京都文京区本乡7丁目3-1",
+      "target_directory": "answers",
+      "file_name": "info.txt",
+      "success_criteria": {
+        "directory_exists": "answers",
+        "file_exists": "answers/info.txt",
+        "document_contains": "日本东京都文京区本乡7丁目3-1"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0012",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"上海人口是多少\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 answers 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 answers 文件夹中是否已经存在 result.txt 文件，如果存在请先删除该文件，然后创建新的 result.txt 文件。\n\n使用 libreoffice 打开 result.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "上海人口是多少",
+      "expected_answer": "2487.09万人",
+      "target_directory": "answers",
+      "file_name": "result.txt",
+      "success_criteria": {
+        "directory_exists": "answers",
+        "file_exists": "answers/result.txt",
+        "document_contains": "2487.09万人"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0006",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"北京大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 test 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 test 文件夹中是否已经存在 result.txt 文件，如果存在请先删除该文件，然后创建新的 result.txt 文件。\n\n使用 libreoffice 打开 result.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "北京大学地址",
+      "expected_answer": "北京市海淀区颐和园路5号",
+      "target_directory": "test",
+      "file_name": "result.txt",
+      "success_criteria": {
+        "directory_exists": "test",
+        "file_exists": "test/result.txt",
+        "document_contains": "北京市海淀区颐和园路5号"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0072",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"东京人口是多少\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 answers 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 answers 文件夹中是否已经存在 info.txt 文件，如果存在请先删除该文件，然后创建新的 info.txt 文件。\n\n使用 libreoffice 打开 info.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "东京人口是多少",
+      "expected_answer": "约1400万人",
+      "target_directory": "answers",
+      "file_name": "info.txt",
+      "success_criteria": {
+        "directory_exists": "answers",
+        "file_exists": "answers/info.txt",
+        "document_contains": "约1400万人"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0027",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"上海人口是多少\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 docs 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 docs 文件夹中是否已经存在 note.txt 文件，如果存在请先删除该文件，然后创建新的 note.txt 文件。\n\n使用 libreoffice 打开 note.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "上海人口是多少",
+      "expected_answer": "2487.09万人",
+      "target_directory": "docs",
+      "file_name": "note.txt",
+      "success_criteria": {
+        "directory_exists": "docs",
+        "file_exists": "docs/note.txt",
+        "document_contains": "2487.09万人"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0096",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"哈佛大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 records 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 records 文件夹中是否已经存在 note.txt 文件，如果存在请先删除该文件，然后创建新的 note.txt 文件。\n\n使用 libreoffice 打开 note.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "哈佛大学地址",
+      "expected_answer": "Massachusetts Hall, Cambridge, MA 02138, USA",
+      "target_directory": "records",
+      "file_name": "note.txt",
+      "success_criteria": {
+        "directory_exists": "records",
+        "file_exists": "records/note.txt",
+        "document_contains": "Massachusetts Hall, Cambridge, MA 02138, USA"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0042",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"世界上最长的河流\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 answers 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 answers 文件夹中是否已经存在 answer.txt 文件，如果存在请先删除该文件，然后创建新的 answer.txt 文件。\n\n使用 libreoffice 打开 answer.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "世界上最长的河流",
+      "expected_answer": "尼罗河",
+      "target_directory": "answers",
+      "file_name": "answer.txt",
+      "success_criteria": {
+        "directory_exists": "answers",
+        "file_exists": "answers/answer.txt",
+        "document_contains": "尼罗河"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0010",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"清华大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 test 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 test 文件夹中是否已经存在 output.txt 文件，如果存在请先删除该文件，然后创建新的 output.txt 文件。\n\n使用 libreoffice 打开 output.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "清华大学地址",
+      "expected_answer": "北京市海淀区清华园1号",
+      "target_directory": "test",
+      "file_name": "output.txt",
+      "success_criteria": {
+        "directory_exists": "test",
+        "file_exists": "test/output.txt",
+        "document_contains": "北京市海淀区清华园1号"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0064",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"法国的首都是哪里\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 results 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 results 文件夹中是否已经存在 note.txt 文件，如果存在请先删除该文件，然后创建新的 note.txt 文件。\n\n使用 libreoffice 打开 note.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "法国的首都是哪里",
+      "expected_answer": "巴黎",
+      "target_directory": "results",
+      "file_name": "note.txt",
+      "success_criteria": {
+        "directory_exists": "results",
+        "file_exists": "results/note.txt",
+        "document_contains": "巴黎"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0044",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"埃菲尔铁塔高度是多少\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 fact_files 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 fact_files 文件夹中是否已经存在 fact.txt 文件，如果存在请先删除该文件，然后创建新的 fact.txt 文件。\n\n使用 libreoffice 打开 fact.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "埃菲尔铁塔高度是多少",
+      "expected_answer": "330米",
+      "target_directory": "fact_files",
+      "file_name": "fact.txt",
+      "success_criteria": {
+        "directory_exists": "fact_files",
+        "file_exists": "fact_files/fact.txt",
+        "document_contains": "330米"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0055",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"长城长度是多少\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 fact_files 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 fact_files 文件夹中是否已经存在 info.txt 文件，如果存在请先删除该文件，然后创建新的 info.txt 文件。\n\n使用 libreoffice 打开 info.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "长城长度是多少",
+      "expected_answer": "21196.18千米",
+      "target_directory": "fact_files",
+      "file_name": "info.txt",
+      "success_criteria": {
+        "directory_exists": "fact_files",
+        "file_exists": "fact_files/info.txt",
+        "document_contains": "21196.18千米"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0051",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"日本的首都是哪里\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 results 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 results 文件夹中是否已经存在 info.txt 文件，如果存在请先删除该文件，然后创建新的 info.txt 文件。\n\n使用 libreoffice 打开 info.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "日本的首都是哪里",
+      "expected_answer": "东京",
+      "target_directory": "results",
+      "file_name": "info.txt",
+      "success_criteria": {
+        "directory_exists": "results",
+        "file_exists": "results/info.txt",
+        "document_contains": "东京"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0013",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"太阳系最大的行星\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 test 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 test 文件夹中是否已经存在 query_result.txt 文件，如果存在请先删除该文件，然后创建新的 query_result.txt 文件。\n\n使用 libreoffice 打开 query_result.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "太阳系最大的行星",
+      "expected_answer": "木星",
+      "target_directory": "test",
+      "file_name": "query_result.txt",
+      "success_criteria": {
+        "directory_exists": "test",
+        "file_exists": "test/query_result.txt",
+        "document_contains": "木星"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0086",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"Python列表推导式是什么\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 test 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 test 文件夹中是否已经存在 info.txt 文件，如果存在请先删除该文件，然后创建新的 info.txt 文件。\n\n使用 libreoffice 打开 info.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "Python列表推导式是什么",
+      "expected_answer": "一种用于从可迭代对象生成新列表的简洁语法",
+      "target_directory": "test",
+      "file_name": "info.txt",
+      "success_criteria": {
+        "directory_exists": "test",
+        "file_exists": "test/info.txt",
+        "document_contains": "一种用于从可迭代对象生成新列表的简洁语法"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0056",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"东京大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 test 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 test 文件夹中是否已经存在 note.txt 文件，如果存在请先删除该文件，然后创建新的 note.txt 文件。\n\n使用 libreoffice 打开 note.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "东京大学地址",
+      "expected_answer": "日本东京都文京区本乡7丁目3-1",
+      "target_directory": "test",
+      "file_name": "note.txt",
+      "success_criteria": {
+        "directory_exists": "test",
+        "file_exists": "test/note.txt",
+        "document_contains": "日本东京都文京区本乡7丁目3-1"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0058",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"南开大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 test 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 test 文件夹中是否已经存在 fact.txt 文件，如果存在请先删除该文件，然后创建新的 fact.txt 文件。\n\n使用 libreoffice 打开 fact.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "南开大学地址",
+      "expected_answer": "天津市南开区卫津路94号",
+      "target_directory": "test",
+      "file_name": "fact.txt",
+      "success_criteria": {
+        "directory_exists": "test",
+        "file_exists": "test/fact.txt",
+        "document_contains": "天津市南开区卫津路94号"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0030",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"天津大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 records 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 records 文件夹中是否已经存在 note.txt 文件，如果存在请先删除该文件，然后创建新的 note.txt 文件。\n\n使用 libreoffice 打开 note.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "天津大学地址",
+      "expected_answer": "天津市南开区卫津路92号",
+      "target_directory": "records",
+      "file_name": "note.txt",
+      "success_criteria": {
+        "directory_exists": "records",
+        "file_exists": "records/note.txt",
+        "document_contains": "天津市南开区卫津路92号"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0052",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"太阳系最大的行星\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 fact_files 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 fact_files 文件夹中是否已经存在 ans.txt 文件，如果存在请先删除该文件，然后创建新的 ans.txt 文件。\n\n使用 libreoffice 打开 ans.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "太阳系最大的行星",
+      "expected_answer": "木星",
+      "target_directory": "fact_files",
+      "file_name": "ans.txt",
+      "success_criteria": {
+        "directory_exists": "fact_files",
+        "file_exists": "fact_files/ans.txt",
+        "document_contains": "木星"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0065",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"东京人口是多少\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 records 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 records 文件夹中是否已经存在 output.txt 文件，如果存在请先删除该文件，然后创建新的 output.txt 文件。\n\n使用 libreoffice 打开 output.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "东京人口是多少",
+      "expected_answer": "约1400万人",
+      "target_directory": "records",
+      "file_name": "output.txt",
+      "success_criteria": {
+        "directory_exists": "records",
+        "file_exists": "records/output.txt",
+        "document_contains": "约1400万人"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0054",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"法国的首都是哪里\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 records 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 records 文件夹中是否已经存在 result.txt 文件，如果存在请先删除该文件，然后创建新的 result.txt 文件。\n\n使用 libreoffice 打开 result.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "法国的首都是哪里",
+      "expected_answer": "巴黎",
+      "target_directory": "records",
+      "file_name": "result.txt",
+      "success_criteria": {
+        "directory_exists": "records",
+        "file_exists": "records/result.txt",
+        "document_contains": "巴黎"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0060",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"Linux是什么\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 test 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 test 文件夹中是否已经存在 result.txt 文件，如果存在请先删除该文件，然后创建新的 result.txt 文件。\n\n使用 libreoffice 打开 result.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "Linux是什么",
+      "expected_answer": "一种自由和开放源代码的类Unix操作系统",
+      "target_directory": "test",
+      "file_name": "result.txt",
+      "success_criteria": {
+        "directory_exists": "test",
+        "file_exists": "test/result.txt",
+        "document_contains": "一种自由和开放源代码的类Unix操作系统"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0018",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"天津大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 results 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 results 文件夹中是否已经存在 query_result.txt 文件，如果存在请先删除该文件，然后创建新的 query_result.txt 文件。\n\n使用 libreoffice 打开 query_result.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "天津大学地址",
+      "expected_answer": "天津市南开区卫津路92号",
+      "target_directory": "results",
+      "file_name": "query_result.txt",
+      "success_criteria": {
+        "directory_exists": "results",
+        "file_exists": "results/query_result.txt",
+        "document_contains": "天津市南开区卫津路92号"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0002",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"中国的首都是哪里\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 test 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 test 文件夹中是否已经存在 result.txt 文件，如果存在请先删除该文件，然后创建新的 result.txt 文件。\n\n使用 libreoffice 打开 result.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "中国的首都是哪里",
+      "expected_answer": "北京",
+      "target_directory": "test",
+      "file_name": "result.txt",
+      "success_criteria": {
+        "directory_exists": "test",
+        "file_exists": "test/result.txt",
+        "document_contains": "北京"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0063",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"复旦大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 records 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 records 文件夹中是否已经存在 result.txt 文件，如果存在请先删除该文件，然后创建新的 result.txt 文件。\n\n使用 libreoffice 打开 result.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "复旦大学地址",
+      "expected_answer": "上海市杨浦区邯郸路220号",
+      "target_directory": "records",
+      "file_name": "result.txt",
+      "success_criteria": {
+        "directory_exists": "records",
+        "file_exists": "records/result.txt",
+        "document_contains": "上海市杨浦区邯郸路220号"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0034",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"北京大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 results 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 results 文件夹中是否已经存在 ans.txt 文件，如果存在请先删除该文件，然后创建新的 ans.txt 文件。\n\n使用 libreoffice 打开 ans.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "北京大学地址",
+      "expected_answer": "北京市海淀区颐和园路5号",
+      "target_directory": "results",
+      "file_name": "ans.txt",
+      "success_criteria": {
+        "directory_exists": "results",
+        "file_exists": "results/ans.txt",
+        "document_contains": "北京市海淀区颐和园路5号"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0045",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"Linux是什么\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 fact_files 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 fact_files 文件夹中是否已经存在 note.txt 文件，如果存在请先删除该文件，然后创建新的 note.txt 文件。\n\n使用 libreoffice 打开 note.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "Linux是什么",
+      "expected_answer": "一种自由和开放源代码的类Unix操作系统",
+      "target_directory": "fact_files",
+      "file_name": "note.txt",
+      "success_criteria": {
+        "directory_exists": "fact_files",
+        "file_exists": "fact_files/note.txt",
+        "document_contains": "一种自由和开放源代码的类Unix操作系统"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0090",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"Python列表推导式是什么\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 results 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 results 文件夹中是否已经存在 answer.txt 文件，如果存在请先删除该文件，然后创建新的 answer.txt 文件。\n\n使用 libreoffice 打开 answer.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "Python列表推导式是什么",
+      "expected_answer": "一种用于从可迭代对象生成新列表的简洁语法",
+      "target_directory": "results",
+      "file_name": "answer.txt",
+      "success_criteria": {
+        "directory_exists": "results",
+        "file_exists": "results/answer.txt",
+        "document_contains": "一种用于从可迭代对象生成新列表的简洁语法"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0008",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"世界上最长的河流\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 browser_output 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 browser_output 文件夹中是否已经存在 answer.txt 文件，如果存在请先删除该文件，然后创建新的 answer.txt 文件。\n\n使用 libreoffice 打开 answer.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "世界上最长的河流",
+      "expected_answer": "尼罗河",
+      "target_directory": "browser_output",
+      "file_name": "answer.txt",
+      "success_criteria": {
+        "directory_exists": "browser_output",
+        "file_exists": "browser_output/answer.txt",
+        "document_contains": "尼罗河"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0083",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"清华大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 docs 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 docs 文件夹中是否已经存在 output.txt 文件，如果存在请先删除该文件，然后创建新的 output.txt 文件。\n\n使用 libreoffice 打开 output.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "清华大学地址",
+      "expected_answer": "北京市海淀区清华园1号",
+      "target_directory": "docs",
+      "file_name": "output.txt",
+      "success_criteria": {
+        "directory_exists": "docs",
+        "file_exists": "docs/output.txt",
+        "document_contains": "北京市海淀区清华园1号"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0059",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"日本的首都是哪里\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 records 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 records 文件夹中是否已经存在 note.txt 文件，如果存在请先删除该文件，然后创建新的 note.txt 文件。\n\n使用 libreoffice 打开 note.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "日本的首都是哪里",
+      "expected_answer": "东京",
+      "target_directory": "records",
+      "file_name": "note.txt",
+      "success_criteria": {
+        "directory_exists": "records",
+        "file_exists": "records/note.txt",
+        "document_contains": "东京"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0080",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"北京大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 browser_output 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 browser_output 文件夹中是否已经存在 fact.txt 文件，如果存在请先删除该文件，然后创建新的 fact.txt 文件。\n\n使用 libreoffice 打开 fact.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "北京大学地址",
+      "expected_answer": "北京市海淀区颐和园路5号",
+      "target_directory": "browser_output",
+      "file_name": "fact.txt",
+      "success_criteria": {
+        "directory_exists": "browser_output",
+        "file_exists": "browser_output/fact.txt",
+        "document_contains": "北京市海淀区颐和园路5号"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0098",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"世界上最大的海洋\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 fact_files 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 fact_files 文件夹中是否已经存在 query_result.txt 文件，如果存在请先删除该文件，然后创建新的 query_result.txt 文件。\n\n使用 libreoffice 打开 query_result.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "世界上最大的海洋",
+      "expected_answer": "太平洋",
+      "target_directory": "fact_files",
+      "file_name": "query_result.txt",
+      "success_criteria": {
+        "directory_exists": "fact_files",
+        "file_exists": "fact_files/query_result.txt",
+        "document_contains": "太平洋"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0046",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"日本的首都是哪里\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 test 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 test 文件夹中是否已经存在 info.txt 文件，如果存在请先删除该文件，然后创建新的 info.txt 文件。\n\n使用 libreoffice 打开 info.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "日本的首都是哪里",
+      "expected_answer": "东京",
+      "target_directory": "test",
+      "file_name": "info.txt",
+      "success_criteria": {
+        "directory_exists": "test",
+        "file_exists": "test/info.txt",
+        "document_contains": "东京"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0004",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"北京大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 browser_output 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 browser_output 文件夹中是否已经存在 info.txt 文件，如果存在请先删除该文件，然后创建新的 info.txt 文件。\n\n使用 libreoffice 打开 info.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "北京大学地址",
+      "expected_answer": "北京市海淀区颐和园路5号",
+      "target_directory": "browser_output",
+      "file_name": "info.txt",
+      "success_criteria": {
+        "directory_exists": "browser_output",
+        "file_exists": "browser_output/info.txt",
+        "document_contains": "北京市海淀区颐和园路5号"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0073",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"太阳系最大的行星\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 notes 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 notes 文件夹中是否已经存在 output.txt 文件，如果存在请先删除该文件，然后创建新的 output.txt 文件。\n\n使用 libreoffice 打开 output.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "太阳系最大的行星",
+      "expected_answer": "木星",
+      "target_directory": "notes",
+      "file_name": "output.txt",
+      "success_criteria": {
+        "directory_exists": "notes",
+        "file_exists": "notes/output.txt",
+        "document_contains": "木星"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0081",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"中国的首都是哪里\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 docs 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 docs 文件夹中是否已经存在 answer.txt 文件，如果存在请先删除该文件，然后创建新的 answer.txt 文件。\n\n使用 libreoffice 打开 answer.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "中国的首都是哪里",
+      "expected_answer": "北京",
+      "target_directory": "docs",
+      "file_name": "answer.txt",
+      "success_criteria": {
+        "directory_exists": "docs",
+        "file_exists": "docs/answer.txt",
+        "document_contains": "北京"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0053",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"复旦大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 results 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 results 文件夹中是否已经存在 query_result.txt 文件，如果存在请先删除该文件，然后创建新的 query_result.txt 文件。\n\n使用 libreoffice 打开 query_result.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "复旦大学地址",
+      "expected_answer": "上海市杨浦区邯郸路220号",
+      "target_directory": "results",
+      "file_name": "query_result.txt",
+      "success_criteria": {
+        "directory_exists": "results",
+        "file_exists": "results/query_result.txt",
+        "document_contains": "上海市杨浦区邯郸路220号"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0031",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"Linux是什么\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 notes 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 notes 文件夹中是否已经存在 note.txt 文件，如果存在请先删除该文件，然后创建新的 note.txt 文件。\n\n使用 libreoffice 打开 note.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "Linux是什么",
+      "expected_answer": "一种自由和开放源代码的类Unix操作系统",
+      "target_directory": "notes",
+      "file_name": "note.txt",
+      "success_criteria": {
+        "directory_exists": "notes",
+        "file_exists": "notes/note.txt",
+        "document_contains": "一种自由和开放源代码的类Unix操作系统"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0094",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"长城长度是多少\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 results 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 results 文件夹中是否已经存在 info.txt 文件，如果存在请先删除该文件，然后创建新的 info.txt 文件。\n\n使用 libreoffice 打开 info.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "长城长度是多少",
+      "expected_answer": "21196.18千米",
+      "target_directory": "results",
+      "file_name": "info.txt",
+      "success_criteria": {
+        "directory_exists": "results",
+        "file_exists": "results/info.txt",
+        "document_contains": "21196.18千米"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0036",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"天津大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 fact_files 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 fact_files 文件夹中是否已经存在 result.txt 文件，如果存在请先删除该文件，然后创建新的 result.txt 文件。\n\n使用 libreoffice 打开 result.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "天津大学地址",
+      "expected_answer": "天津市南开区卫津路92号",
+      "target_directory": "fact_files",
+      "file_name": "result.txt",
+      "success_criteria": {
+        "directory_exists": "fact_files",
+        "file_exists": "fact_files/result.txt",
+        "document_contains": "天津市南开区卫津路92号"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0029",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"世界上最大的海洋\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 results 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 results 文件夹中是否已经存在 answer.txt 文件，如果存在请先删除该文件，然后创建新的 answer.txt 文件。\n\n使用 libreoffice 打开 answer.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "世界上最大的海洋",
+      "expected_answer": "太平洋",
+      "target_directory": "results",
+      "file_name": "answer.txt",
+      "success_criteria": {
+        "directory_exists": "results",
+        "file_exists": "results/answer.txt",
+        "document_contains": "太平洋"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0023",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"Python列表推导式是什么\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 answers 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 answers 文件夹中是否已经存在 output.txt 文件，如果存在请先删除该文件，然后创建新的 output.txt 文件。\n\n使用 libreoffice 打开 output.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "Python列表推导式是什么",
+      "expected_answer": "一种用于从可迭代对象生成新列表的简洁语法",
+      "target_directory": "answers",
+      "file_name": "output.txt",
+      "success_criteria": {
+        "directory_exists": "answers",
+        "file_exists": "answers/output.txt",
+        "document_contains": "一种用于从可迭代对象生成新列表的简洁语法"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0050",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"Python列表推导式是什么\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 answers 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 answers 文件夹中是否已经存在 note.txt 文件，如果存在请先删除该文件，然后创建新的 note.txt 文件。\n\n使用 libreoffice 打开 note.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "Python列表推导式是什么",
+      "expected_answer": "一种用于从可迭代对象生成新列表的简洁语法",
+      "target_directory": "answers",
+      "file_name": "note.txt",
+      "success_criteria": {
+        "directory_exists": "answers",
+        "file_exists": "answers/note.txt",
+        "document_contains": "一种用于从可迭代对象生成新列表的简洁语法"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0099",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"埃菲尔铁塔高度是多少\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 test 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 test 文件夹中是否已经存在 result.txt 文件，如果存在请先删除该文件，然后创建新的 result.txt 文件。\n\n使用 libreoffice 打开 result.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "埃菲尔铁塔高度是多少",
+      "expected_answer": "330米",
+      "target_directory": "test",
+      "file_name": "result.txt",
+      "success_criteria": {
+        "directory_exists": "test",
+        "file_exists": "test/result.txt",
+        "document_contains": "330米"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0092",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"Linux是什么\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 fact_files 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 fact_files 文件夹中是否已经存在 ans.txt 文件，如果存在请先删除该文件，然后创建新的 ans.txt 文件。\n\n使用 libreoffice 打开 ans.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "Linux是什么",
+      "expected_answer": "一种自由和开放源代码的类Unix操作系统",
+      "target_directory": "fact_files",
+      "file_name": "ans.txt",
+      "success_criteria": {
+        "directory_exists": "fact_files",
+        "file_exists": "fact_files/ans.txt",
+        "document_contains": "一种自由和开放源代码的类Unix操作系统"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0089",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"珠穆朗玛峰高度是多少\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 answers 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 answers 文件夹中是否已经存在 answer.txt 文件，如果存在请先删除该文件，然后创建新的 answer.txt 文件。\n\n使用 libreoffice 打开 answer.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "珠穆朗玛峰高度是多少",
+      "expected_answer": "8848.86米",
+      "target_directory": "answers",
+      "file_name": "answer.txt",
+      "success_criteria": {
+        "directory_exists": "answers",
+        "file_exists": "answers/answer.txt",
+        "document_contains": "8848.86米"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0049",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"复旦大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 docs 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 docs 文件夹中是否已经存在 info.txt 文件，如果存在请先删除该文件，然后创建新的 info.txt 文件。\n\n使用 libreoffice 打开 info.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "复旦大学地址",
+      "expected_answer": "上海市杨浦区邯郸路220号",
+      "target_directory": "docs",
+      "file_name": "info.txt",
+      "success_criteria": {
+        "directory_exists": "docs",
+        "file_exists": "docs/info.txt",
+        "document_contains": "上海市杨浦区邯郸路220号"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0084",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"珠穆朗玛峰高度是多少\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 results 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 results 文件夹中是否已经存在 note.txt 文件，如果存在请先删除该文件，然后创建新的 note.txt 文件。\n\n使用 libreoffice 打开 note.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "珠穆朗玛峰高度是多少",
+      "expected_answer": "8848.86米",
+      "target_directory": "results",
+      "file_name": "note.txt",
+      "success_criteria": {
+        "directory_exists": "results",
+        "file_exists": "results/note.txt",
+        "document_contains": "8848.86米"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0070",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"Linux是什么\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 fact_files 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 fact_files 文件夹中是否已经存在 fact.txt 文件，如果存在请先删除该文件，然后创建新的 fact.txt 文件。\n\n使用 libreoffice 打开 fact.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "Linux是什么",
+      "expected_answer": "一种自由和开放源代码的类Unix操作系统",
+      "target_directory": "fact_files",
+      "file_name": "fact.txt",
+      "success_criteria": {
+        "directory_exists": "fact_files",
+        "file_exists": "fact_files/fact.txt",
+        "document_contains": "一种自由和开放源代码的类Unix操作系统"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0043",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"东京人口是多少\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 test 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 test 文件夹中是否已经存在 query_result.txt 文件，如果存在请先删除该文件，然后创建新的 query_result.txt 文件。\n\n使用 libreoffice 打开 query_result.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "东京人口是多少",
+      "expected_answer": "约1400万人",
+      "target_directory": "test",
+      "file_name": "query_result.txt",
+      "success_criteria": {
+        "directory_exists": "test",
+        "file_exists": "test/query_result.txt",
+        "document_contains": "约1400万人"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0088",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"天津大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 test 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 test 文件夹中是否已经存在 fact.txt 文件，如果存在请先删除该文件，然后创建新的 fact.txt 文件。\n\n使用 libreoffice 打开 fact.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "天津大学地址",
+      "expected_answer": "天津市南开区卫津路92号",
+      "target_directory": "test",
+      "file_name": "fact.txt",
+      "success_criteria": {
+        "directory_exists": "test",
+        "file_exists": "test/fact.txt",
+        "document_contains": "天津市南开区卫津路92号"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0079",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"中国的首都是哪里\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 docs 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 docs 文件夹中是否已经存在 info.txt 文件，如果存在请先删除该文件，然后创建新的 info.txt 文件。\n\n使用 libreoffice 打开 info.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "中国的首都是哪里",
+      "expected_answer": "北京",
+      "target_directory": "docs",
+      "file_name": "info.txt",
+      "success_criteria": {
+        "directory_exists": "docs",
+        "file_exists": "docs/info.txt",
+        "document_contains": "北京"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0017",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"埃菲尔铁塔高度是多少\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 docs 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 docs 文件夹中是否已经存在 note.txt 文件，如果存在请先删除该文件，然后创建新的 note.txt 文件。\n\n使用 libreoffice 打开 note.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "埃菲尔铁塔高度是多少",
+      "expected_answer": "330米",
+      "target_directory": "docs",
+      "file_name": "note.txt",
+      "success_criteria": {
+        "directory_exists": "docs",
+        "file_exists": "docs/note.txt",
+        "document_contains": "330米"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0003",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"太阳系最大的行星\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 records 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 records 文件夹中是否已经存在 ans.txt 文件，如果存在请先删除该文件，然后创建新的 ans.txt 文件。\n\n使用 libreoffice 打开 ans.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "太阳系最大的行星",
+      "expected_answer": "木星",
+      "target_directory": "records",
+      "file_name": "ans.txt",
+      "success_criteria": {
+        "directory_exists": "records",
+        "file_exists": "records/ans.txt",
+        "document_contains": "木星"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0024",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"日本的首都是哪里\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 records 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 records 文件夹中是否已经存在 info.txt 文件，如果存在请先删除该文件，然后创建新的 info.txt 文件。\n\n使用 libreoffice 打开 info.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "日本的首都是哪里",
+      "expected_answer": "东京",
+      "target_directory": "records",
+      "file_name": "info.txt",
+      "success_criteria": {
+        "directory_exists": "records",
+        "file_exists": "records/info.txt",
+        "document_contains": "东京"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0025",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"上海人口是多少\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 docs 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 docs 文件夹中是否已经存在 answer.txt 文件，如果存在请先删除该文件，然后创建新的 answer.txt 文件。\n\n使用 libreoffice 打开 answer.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "上海人口是多少",
+      "expected_answer": "2487.09万人",
+      "target_directory": "docs",
+      "file_name": "answer.txt",
+      "success_criteria": {
+        "directory_exists": "docs",
+        "file_exists": "docs/answer.txt",
+        "document_contains": "2487.09万人"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0005",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"中国的首都是哪里\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 notes 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 notes 文件夹中是否已经存在 answer.txt 文件，如果存在请先删除该文件，然后创建新的 answer.txt 文件。\n\n使用 libreoffice 打开 answer.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "中国的首都是哪里",
+      "expected_answer": "北京",
+      "target_directory": "notes",
+      "file_name": "answer.txt",
+      "success_criteria": {
+        "directory_exists": "notes",
+        "file_exists": "notes/answer.txt",
+        "document_contains": "北京"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0093",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"东京人口是多少\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 records 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 records 文件夹中是否已经存在 info.txt 文件，如果存在请先删除该文件，然后创建新的 info.txt 文件。\n\n使用 libreoffice 打开 info.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "东京人口是多少",
+      "expected_answer": "约1400万人",
+      "target_directory": "records",
+      "file_name": "info.txt",
+      "success_criteria": {
+        "directory_exists": "records",
+        "file_exists": "records/info.txt",
+        "document_contains": "约1400万人"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0039",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"东京人口是多少\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 test 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 test 文件夹中是否已经存在 answer.txt 文件，如果存在请先删除该文件，然后创建新的 answer.txt 文件。\n\n使用 libreoffice 打开 answer.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "东京人口是多少",
+      "expected_answer": "约1400万人",
+      "target_directory": "test",
+      "file_name": "answer.txt",
+      "success_criteria": {
+        "directory_exists": "test",
+        "file_exists": "test/answer.txt",
+        "document_contains": "约1400万人"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0067",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"世界上最大的海洋\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 fact_files 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 fact_files 文件夹中是否已经存在 answer.txt 文件，如果存在请先删除该文件，然后创建新的 answer.txt 文件。\n\n使用 libreoffice 打开 answer.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "世界上最大的海洋",
+      "expected_answer": "太平洋",
+      "target_directory": "fact_files",
+      "file_name": "answer.txt",
+      "success_criteria": {
+        "directory_exists": "fact_files",
+        "file_exists": "fact_files/answer.txt",
+        "document_contains": "太平洋"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0041",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"世界上最长的河流\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 notes 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 notes 文件夹中是否已经存在 query_result.txt 文件，如果存在请先删除该文件，然后创建新的 query_result.txt 文件。\n\n使用 libreoffice 打开 query_result.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "世界上最长的河流",
+      "expected_answer": "尼罗河",
+      "target_directory": "notes",
+      "file_name": "query_result.txt",
+      "success_criteria": {
+        "directory_exists": "notes",
+        "file_exists": "notes/query_result.txt",
+        "document_contains": "尼罗河"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0014",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"哈佛大学地址\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 browser_output 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 browser_output 文件夹中是否已经存在 note.txt 文件，如果存在请先删除该文件，然后创建新的 note.txt 文件。\n\n使用 libreoffice 打开 note.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "哈佛大学地址",
+      "expected_answer": "Massachusetts Hall, Cambridge, MA 02138, USA",
+      "target_directory": "browser_output",
+      "file_name": "note.txt",
+      "success_criteria": {
+        "directory_exists": "browser_output",
+        "file_exists": "browser_output/note.txt",
+        "document_contains": "Massachusetts Hall, Cambridge, MA 02138, USA"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0019",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"日本的首都是哪里\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 records 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 records 文件夹中是否已经存在 fact.txt 文件，如果存在请先删除该文件，然后创建新的 fact.txt 文件。\n\n使用 libreoffice 打开 fact.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "日本的首都是哪里",
+      "expected_answer": "东京",
+      "target_directory": "records",
+      "file_name": "fact.txt",
+      "success_criteria": {
+        "directory_exists": "records",
+        "file_exists": "records/fact.txt",
+        "document_contains": "东京"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0009",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"日本的首都是哪里\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 results 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 results 文件夹中是否已经存在 query_result.txt 文件，如果存在请先删除该文件，然后创建新的 query_result.txt 文件。\n\n使用 libreoffice 打开 query_result.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "日本的首都是哪里",
+      "expected_answer": "东京",
+      "target_directory": "results",
+      "file_name": "query_result.txt",
+      "success_criteria": {
+        "directory_exists": "results",
+        "file_exists": "results/query_result.txt",
+        "document_contains": "东京"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0015",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"珠穆朗玛峰高度是多少\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 fact_files 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 fact_files 文件夹中是否已经存在 fact.txt 文件，如果存在请先删除该文件，然后创建新的 fact.txt 文件。\n\n使用 libreoffice 打开 fact.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "珠穆朗玛峰高度是多少",
+      "expected_answer": "8848.86米",
+      "target_directory": "fact_files",
+      "file_name": "fact.txt",
+      "success_criteria": {
+        "directory_exists": "fact_files",
+        "file_exists": "fact_files/fact.txt",
+        "document_contains": "8848.86米"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0038",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"长城长度是多少\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 results 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 results 文件夹中是否已经存在 ans.txt 文件，如果存在请先删除该文件，然后创建新的 ans.txt 文件。\n\n使用 libreoffice 打开 ans.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "长城长度是多少",
+      "expected_answer": "21196.18千米",
+      "target_directory": "results",
+      "file_name": "ans.txt",
+      "success_criteria": {
+        "directory_exists": "results",
+        "file_exists": "results/ans.txt",
+        "document_contains": "21196.18千米"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0028",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"世界上最长的河流\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 browser_output 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 browser_output 文件夹中是否已经存在 result.txt 文件，如果存在请先删除该文件，然后创建新的 result.txt 文件。\n\n使用 libreoffice 打开 result.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "世界上最长的河流",
+      "expected_answer": "尼罗河",
+      "target_directory": "browser_output",
+      "file_name": "result.txt",
+      "success_criteria": {
+        "directory_exists": "browser_output",
+        "file_exists": "browser_output/result.txt",
+        "document_contains": "尼罗河"
+      }
+    }
+  },
+  {
+    "task_id": "browser_train_0074",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前打开了浏览器，请先关闭所有浏览器窗口回到桌面。\n\n在网页中找到关于 \"珠穆朗玛峰高度是多少\" 的答案，并复制完整答案文本。\n\n然后返回桌面，进入 Home 文件夹。检查是否存在名为 docs 的文件夹，如果不存在则创建该文件夹；如果已经存在则直接进入该文件夹。\n\n检查 docs 文件夹中是否已经存在 ans.txt 文件，如果存在请先删除该文件，然后创建新的 ans.txt 文件。\n\n使用 libreoffice 打开 ans.txt 文件，将复制的地址粘贴到文件中。完成编辑后保存文件并退出 libreoffice。\n\n最后关闭桌面上所有窗口并完成任务。",
+    "meta": {
+      "search_query": "珠穆朗玛峰高度是多少",
+      "expected_answer": "8848.86米",
+      "target_directory": "docs",
+      "file_name": "ans.txt",
+      "success_criteria": {
+        "directory_exists": "docs",
+        "file_exists": "docs/ans.txt",
+        "document_contains": "8848.86米"
+      }
+    }
+  }
+]

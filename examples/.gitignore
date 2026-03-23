@@ -2,7 +2,8 @@ wandb/
 outputs/
 checkpoints/
 trained_models/
-trace/
+cua/trace/**/
+cua/logs/*.log
 calc-x-data.zip
 spider-data.zip
 claude_code/logs/
