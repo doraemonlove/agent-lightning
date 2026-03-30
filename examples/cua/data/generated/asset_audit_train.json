@@ -1,0 +1,578 @@
+[
+  {
+    "task_id": "audit_train_0058",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Rackwell\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Rackwell"
+    }
+  },
+  {
+    "task_id": "audit_train_0010",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Phonenet\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Phonenet"
+    }
+  },
+  {
+    "task_id": "audit_train_0061",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Deskview\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Deskview"
+    }
+  },
+  {
+    "task_id": "audit_train_0018",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Chairite\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Chairite"
+    }
+  },
+  {
+    "task_id": "audit_train_0052",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Monitron\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Monitron"
+    }
+  },
+  {
+    "task_id": "audit_train_0011",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Scanline\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Scanline"
+    }
+  },
+  {
+    "task_id": "audit_train_0062",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Compnode\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Compnode"
+    }
+  },
+  {
+    "task_id": "audit_train_0064",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Tablific\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Tablific"
+    }
+  },
+  {
+    "task_id": "audit_train_0022",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Monitron\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Monitron"
+    }
+  },
+  {
+    "task_id": "audit_train_0043",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Rackwell\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Rackwell"
+    }
+  },
+  {
+    "task_id": "audit_train_0033",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Chairite\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Chairite"
+    }
+  },
+  {
+    "task_id": "audit_train_0027",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Camerapy\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Camerapy"
+    }
+  },
+  {
+    "task_id": "audit_train_0063",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Chairite\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Chairite"
+    }
+  },
+  {
+    "task_id": "audit_train_0014",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Mousetry\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Mousetry"
+    }
+  },
+  {
+    "task_id": "audit_train_0028",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Rackwell\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Rackwell"
+    }
+  },
+  {
+    "task_id": "audit_train_0034",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Tablific\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Tablific"
+    }
+  },
+  {
+    "task_id": "audit_train_0057",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Camerapy\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Camerapy"
+    }
+  },
+  {
+    "task_id": "audit_train_0049",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Tablific\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Tablific"
+    }
+  },
+  {
+    "task_id": "audit_train_0009",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Cabintry\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Cabintry"
+    }
+  },
+  {
+    "task_id": "audit_train_0030",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Screenix\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Screenix"
+    }
+  },
+  {
+    "task_id": "audit_train_0048",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Chairite\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Chairite"
+    }
+  },
+  {
+    "task_id": "audit_train_0024",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Cabintry\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Cabintry"
+    }
+  },
+  {
+    "task_id": "audit_train_0025",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Phonenet\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Phonenet"
+    }
+  },
+  {
+    "task_id": "audit_train_0047",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Compnode\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Compnode"
+    }
+  },
+  {
+    "task_id": "audit_train_0008",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Servsync\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Servsync"
+    }
+  },
+  {
+    "task_id": "audit_train_0006",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Laptopix\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Laptopix"
+    }
+  },
+  {
+    "task_id": "audit_train_0042",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Camerapy\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Camerapy"
+    }
+  },
+  {
+    "task_id": "audit_train_0015",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Screenix\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Screenix"
+    }
+  },
+  {
+    "task_id": "audit_train_0003",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Chairite\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Chairite"
+    }
+  },
+  {
+    "task_id": "audit_train_0004",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Tablific\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Tablific"
+    }
+  },
+  {
+    "task_id": "audit_train_0017",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Compnode\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Compnode"
+    }
+  },
+  {
+    "task_id": "audit_train_0031",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Deskview\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Deskview"
+    }
+  },
+  {
+    "task_id": "audit_train_0032",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Compnode\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Compnode"
+    }
+  },
+  {
+    "task_id": "audit_train_0055",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Phonenet\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Phonenet"
+    }
+  },
+  {
+    "task_id": "audit_train_0059",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Mousetry\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Mousetry"
+    }
+  },
+  {
+    "task_id": "audit_train_0045",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Screenix\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Screenix"
+    }
+  },
+  {
+    "task_id": "audit_train_0053",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Servsync\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Servsync"
+    }
+  },
+  {
+    "task_id": "audit_train_0001",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Deskview\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Deskview"
+    }
+  },
+  {
+    "task_id": "audit_train_0002",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Compnode\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Compnode"
+    }
+  },
+  {
+    "task_id": "audit_train_0035",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Printway\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Printway"
+    }
+  },
+  {
+    "task_id": "audit_train_0040",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Phonenet\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Phonenet"
+    }
+  },
+  {
+    "task_id": "audit_train_0037",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Monitron\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Monitron"
+    }
+  },
+  {
+    "task_id": "audit_train_0041",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Scanline\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Scanline"
+    }
+  },
+  {
+    "task_id": "audit_train_0039",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Cabintry\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Cabintry"
+    }
+  },
+  {
+    "task_id": "audit_train_0021",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Laptopix\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Laptopix"
+    }
+  },
+  {
+    "task_id": "audit_train_0038",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Servsync\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Servsync"
+    }
+  },
+  {
+    "task_id": "audit_train_0023",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Servsync\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Servsync"
+    }
+  },
+  {
+    "task_id": "audit_train_0005",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Printway\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Printway"
+    }
+  },
+  {
+    "task_id": "audit_train_0056",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Scanline\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Scanline"
+    }
+  },
+  {
+    "task_id": "audit_train_0026",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Scanline\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Scanline"
+    }
+  },
+  {
+    "task_id": "audit_train_0050",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Printway\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Printway"
+    }
+  },
+  {
+    "task_id": "audit_train_0019",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Tablific\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Tablific"
+    }
+  },
+  {
+    "task_id": "audit_train_0044",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Mousetry\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Mousetry"
+    }
+  },
+  {
+    "task_id": "audit_train_0012",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Camerapy\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Camerapy"
+    }
+  },
+  {
+    "task_id": "audit_train_0054",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Cabintry\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Cabintry"
+    }
+  },
+  {
+    "task_id": "audit_train_0036",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Laptopix\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Laptopix"
+    }
+  },
+  {
+    "task_id": "audit_train_0007",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Monitron\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Monitron"
+    }
+  },
+  {
+    "task_id": "audit_train_0013",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Rackwell\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Rackwell"
+    }
+  },
+  {
+    "task_id": "audit_train_0029",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Mousetry\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Mousetry"
+    }
+  },
+  {
+    "task_id": "audit_train_0046",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Deskview\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Deskview"
+    }
+  },
+  {
+    "task_id": "audit_train_0051",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Laptopix\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Laptopix"
+    }
+  },
+  {
+    "task_id": "audit_train_0016",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Deskview\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Deskview"
+    }
+  },
+  {
+    "task_id": "audit_train_0060",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Screenix\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Screenix"
+    }
+  },
+  {
+    "task_id": "audit_train_0020",
+    "scene": "asset_audit",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n随后重新打开浏览器，并访问以下资产审核系统页面：\nhttps://apaas-dev27194.aedev.feishuapp.cn/ae/apps/v3/shunfeng_operating_platform__c/pc/aadie373q5ebw?lane_id=develop\n\n进入系统后，找到资产盘点审核界面，并设置筛选条件：\n- 盘点计划：Printway\n- 盘点审核结果：未盘点\n\n盘点计划列表可能需要滚动或搜索才能找到目标计划。完成筛选后，页面应显示待审核资产记录列表。\n\n请审核筛选结果中的前 2 条资产记录。对每条记录执行以下规则：\n- 检查图片中的条码是否与系统记录条码完全一致；\n- 若完全一致，则选择“通过”；\n- 若不一致、无法识别或图片不清晰，则选择“驳回”。\n\n完成前 2 条记录审核后，关闭浏览器并结束任务。\n",
+    "meta": {
+      "plan_name": "Printway"
+    }
+  }
+]

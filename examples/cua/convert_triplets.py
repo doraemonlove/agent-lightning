@@ -225,6 +225,7 @@ def normalize_coordinates(args: dict[str, Any], width: int, height: int) -> dict
     """
     清洗坐标数据，将绝对坐标转换为 0-1000 的相对坐标，并返回更新后的字典。
     支持处理格式如 "587,225" 的字符串，取其首位数字。
+    同时处理 click/scroll 的 x/y 以及 drag 的 start_x/start_y/end_x/end_y。
     """
     # 浅拷贝原始字典，避免修改外部输入
     new_args = args.copy()
@@ -239,17 +240,27 @@ def normalize_coordinates(args: dict[str, Any], width: int, height: int) -> dict
         except ValueError:
             return 0.0
 
-    # 1. 提取原始值并清洗
-    raw_x = clean_val(args.get("x"))
-    raw_y = clean_val(args.get("y"))
+    def norm_x(val: Any) -> int:
+        return max(0, min(1000, int((clean_val(val) / width) * 1000)))
 
-    # 2. 计算相对坐标 (归一化到 0-1000)
-    norm_x = max(0, min(1000, int((raw_x / width) * 1000)))
-    norm_y = max(0, min(1000, int((raw_y / height) * 1000)))
+    def norm_y(val: Any) -> int:
+        return max(0, min(1000, int((clean_val(val) / height) * 1000)))
 
-    # 3. 更新字典中的键值
-    new_args["x"] = norm_x
-    new_args["y"] = norm_y
+    # 归一化所有 x/y 类坐标键 (click, scroll 等)
+    if "x" in new_args:
+        new_args["x"] = norm_x(new_args["x"])
+    if "y" in new_args:
+        new_args["y"] = norm_y(new_args["y"])
+
+    # 归一化 drag 的起止坐标
+    if "start_x" in new_args:
+        new_args["start_x"] = norm_x(new_args["start_x"])
+    if "start_y" in new_args:
+        new_args["start_y"] = norm_y(new_args["start_y"])
+    if "end_x" in new_args:
+        new_args["end_x"] = norm_x(new_args["end_x"])
+    if "end_y" in new_args:
+        new_args["end_y"] = norm_y(new_args["end_y"])
 
     return new_args
 
@@ -382,13 +393,13 @@ def convert_trace_to_messages(trace, instruction):
                 "tool_output": formatted_tool_output_content,
             }
             observation_content_str = json.dumps(observation_content, ensure_ascii=False)
+            obs_content = [{"type": "text", "text": observation_content_str}]
+            if has_next_screenshot:
+                obs_content.append({"type": "image", "image": screenshot_data})
             dataset_sample["messages"].append(
                 {
                     "role": "observation",
-                    "content": [
-                        {"type": "text", "text": observation_content_str},
-                        {"type": "image", "image": screenshot_data} if has_next_screenshot else {},
-                    ],
+                    "content": obs_content,
                 }
             )
 
@@ -491,14 +502,33 @@ def convert_messages_to_triplet(
         # 根据你的训练框架需求，这里可以选择抛出异常或返回 None
         raise Exception("Response is empty or prompt matches full length.")
 
-    # (可选) 严格的一致性检查：确保 Full 的前半部分就是 Prompt
-    # 在 Qwen-VL 中，由于特殊 Token 的存在，通常是匹配的。
-    # 如果发现不匹配，通常是 add_generation_prompt 添加的 \n 和 Full 中的 \n 合并问题
-    # 这里不做硬性 assert，防止因为极个别 token 归一化导致训练中断，但建议日志关注
-    # if full_ids[:len(prompt_ids)] != prompt_ids:
-    #     logger.warning("⚠️ Warning: Token mismatch at boundary. Slicing anyway.")
-
-    response_ids = full_ids[len(prompt_ids) :]
+    # 严格的一致性检查：确保 Full 的前半部分就是 Prompt
+    # 如果不匹配，response_ids = full_ids[len(prompt_ids):] 会产生错误的训练数据
+    if full_ids[:len(prompt_ids)] != prompt_ids:
+        min_len = min(len(prompt_ids), len(full_ids))
+        mismatch_pos = next(
+            (i for i in range(min_len) if prompt_ids[i] != full_ids[i]),
+            min_len,
+        )
+        logger.warning(
+            f"Token mismatch at prompt/full boundary! "
+            f"First divergence at index {mismatch_pos}/{len(prompt_ids)}. "
+            f"prompt_len={len(prompt_ids)}, full_len={len(full_ids)}."
+        )
+        # 如果前 90% 以上匹配，仅在边界处有微小差异（如 \n 合并），
+        # 仍可使用 mismatch_pos 作为切分点；否则跳过该样本
+        if mismatch_pos < len(prompt_ids) * 0.9:
+            raise Exception(
+                f"Severe token mismatch: divergence at {mismatch_pos}/{len(prompt_ids)}, skipping."
+            )
+        # 使用实际 divergence 点作为切分点，而非 prompt_ids 长度
+        response_ids = full_ids[mismatch_pos:]
+        logger.info(
+            f"Minor boundary mismatch, adjusted split to index {mismatch_pos}, "
+            f"response_len={len(response_ids)}"
+        )
+    else:
+        response_ids = full_ids[len(prompt_ids):]
 
     # D. 长度检查与截断 (只截断 Response 部分)
     total_len = len(full_ids)

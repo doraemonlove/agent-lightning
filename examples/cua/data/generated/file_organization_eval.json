@@ -1,0 +1,262 @@
+[
+  {
+    "task_id": "file_eval_0010",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹，并确保其中存在名为 lab 的文件夹；如果不存在，则创建该文件夹。\n\n确保 Home 文件夹中存在以下两个源文件：\n- delta.txt\n- keep_beta.txt\n如果某个文件不存在，则创建该文件。\n\n将 delta.txt 移动到 lab 文件夹中。\n\n进入 lab 文件夹，将 delta.txt 重命名为 delta_done.txt。\n\n返回 Home 文件夹，并确保 drop_me.txt 不存在；如果存在，则删除它。\n\n最后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "lab",
+      "source_file_1": "delta.txt",
+      "source_file_2": "keep_beta.txt",
+      "target_file_1": "delta_done.txt",
+      "delete_file": "drop_me.txt"
+    }
+  },
+  {
+    "task_id": "file_eval_0004",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹，并确保其中存在名为 materials 的文件夹；如果不存在，则创建该文件夹。\n\n确保 Home 文件夹中存在以下两个源文件：\n- omega.txt\n- keep_beta.txt\n如果某个文件不存在，则创建该文件。\n\n将 omega.txt 移动到 materials 文件夹中。\n\n进入 materials 文件夹，将 omega.txt 重命名为 gamma_done.txt。\n\n返回 Home 文件夹，并确保 noise.txt 不存在；如果存在，则删除它。\n\n最后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "materials",
+      "source_file_1": "omega.txt",
+      "source_file_2": "keep_beta.txt",
+      "target_file_1": "gamma_done.txt",
+      "delete_file": "noise.txt"
+    }
+  },
+  {
+    "task_id": "file_eval_0013",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹，并确保其中存在名为 reports 的文件夹；如果不存在，则创建该文件夹。\n\n确保 Home 文件夹中存在以下两个源文件：\n- gamma.txt\n- keep_omega.txt\n如果某个文件不存在，则创建该文件。\n\n将 gamma.txt 移动到 reports 文件夹中。\n\n进入 reports 文件夹，将 gamma.txt 重命名为 beta_done.txt。\n\n返回 Home 文件夹，并确保 garbage.txt 不存在；如果存在，则删除它。\n\n最后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "reports",
+      "source_file_1": "gamma.txt",
+      "source_file_2": "keep_omega.txt",
+      "target_file_1": "beta_done.txt",
+      "delete_file": "garbage.txt"
+    }
+  },
+  {
+    "task_id": "file_eval_0005",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹，并确保其中存在名为 workspace 的文件夹；如果不存在，则创建该文件夹。\n\n确保 Home 文件夹中存在以下两个源文件：\n- omega.txt\n- keep_alpha.txt\n如果某个文件不存在，则创建该文件。\n\n将 omega.txt 移动到 workspace 文件夹中。\n\n进入 workspace 文件夹，将 omega.txt 重命名为 alpha_done.txt。\n\n返回 Home 文件夹，并确保 legacy.txt 不存在；如果存在，则删除它。\n\n最后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "workspace",
+      "source_file_1": "omega.txt",
+      "source_file_2": "keep_alpha.txt",
+      "target_file_1": "alpha_done.txt",
+      "delete_file": "legacy.txt"
+    }
+  },
+  {
+    "task_id": "file_eval_0009",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹，并确保其中存在名为 materials 的文件夹；如果不存在，则创建该文件夹。\n\n确保 Home 文件夹中存在以下两个源文件：\n- omega.txt\n- keep_alpha.txt\n如果某个文件不存在，则创建该文件。\n\n将 omega.txt 移动到 materials 文件夹中。\n\n进入 materials 文件夹，将 omega.txt 重命名为 delta_done.txt。\n\n返回 Home 文件夹，并确保 legacy.txt 不存在；如果存在，则删除它。\n\n最后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "materials",
+      "source_file_1": "omega.txt",
+      "source_file_2": "keep_alpha.txt",
+      "target_file_1": "delta_done.txt",
+      "delete_file": "legacy.txt"
+    }
+  },
+  {
+    "task_id": "file_eval_0016",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹，并确保其中存在名为 deliverables 的文件夹；如果不存在，则创建该文件夹。\n\n确保 Home 文件夹中存在以下两个源文件：\n- delta.txt\n- keep_omega.txt\n如果某个文件不存在，则创建该文件。\n\n将 delta.txt 移动到 deliverables 文件夹中。\n\n进入 deliverables 文件夹，将 delta.txt 重命名为 alpha_done.txt。\n\n返回 Home 文件夹，并确保 garbage.txt 不存在；如果存在，则删除它。\n\n最后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "deliverables",
+      "source_file_1": "delta.txt",
+      "source_file_2": "keep_omega.txt",
+      "target_file_1": "alpha_done.txt",
+      "delete_file": "garbage.txt"
+    }
+  },
+  {
+    "task_id": "file_eval_0020",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹，并确保其中存在名为 workspace 的文件夹；如果不存在，则创建该文件夹。\n\n确保 Home 文件夹中存在以下两个源文件：\n- gamma.txt\n- keep_alpha.txt\n如果某个文件不存在，则创建该文件。\n\n将 gamma.txt 移动到 workspace 文件夹中。\n\n进入 workspace 文件夹，将 gamma.txt 重命名为 omega_done.txt。\n\n返回 Home 文件夹，并确保 stale.txt 不存在；如果存在，则删除它。\n\n最后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "workspace",
+      "source_file_1": "gamma.txt",
+      "source_file_2": "keep_alpha.txt",
+      "target_file_1": "omega_done.txt",
+      "delete_file": "stale.txt"
+    }
+  },
+  {
+    "task_id": "file_eval_0012",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹，并确保其中存在名为 materials 的文件夹；如果不存在，则创建该文件夹。\n\n确保 Home 文件夹中存在以下两个源文件：\n- omega.txt\n- keep_beta.txt\n如果某个文件不存在，则创建该文件。\n\n将 omega.txt 移动到 materials 文件夹中。\n\n进入 materials 文件夹，将 omega.txt 重命名为 beta_done.txt。\n\n返回 Home 文件夹，并确保 garbage.txt 不存在；如果存在，则删除它。\n\n最后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "materials",
+      "source_file_1": "omega.txt",
+      "source_file_2": "keep_beta.txt",
+      "target_file_1": "beta_done.txt",
+      "delete_file": "garbage.txt"
+    }
+  },
+  {
+    "task_id": "file_eval_0002",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹，并确保其中存在名为 lab 的文件夹；如果不存在，则创建该文件夹。\n\n确保 Home 文件夹中存在以下两个源文件：\n- delta.txt\n- keep_delta.txt\n如果某个文件不存在，则创建该文件。\n\n将 delta.txt 移动到 lab 文件夹中。\n\n进入 lab 文件夹，将 delta.txt 重命名为 beta_done.txt。\n\n返回 Home 文件夹，并确保 legacy.txt 不存在；如果存在，则删除它。\n\n最后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "lab",
+      "source_file_1": "delta.txt",
+      "source_file_2": "keep_delta.txt",
+      "target_file_1": "beta_done.txt",
+      "delete_file": "legacy.txt"
+    }
+  },
+  {
+    "task_id": "file_eval_0014",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹，并确保其中存在名为 lab 的文件夹；如果不存在，则创建该文件夹。\n\n确保 Home 文件夹中存在以下两个源文件：\n- gamma.txt\n- keep_omega.txt\n如果某个文件不存在，则创建该文件。\n\n将 gamma.txt 移动到 lab 文件夹中。\n\n进入 lab 文件夹，将 gamma.txt 重命名为 beta_done.txt。\n\n返回 Home 文件夹，并确保 legacy.txt 不存在；如果存在，则删除它。\n\n最后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "lab",
+      "source_file_1": "gamma.txt",
+      "source_file_2": "keep_omega.txt",
+      "target_file_1": "beta_done.txt",
+      "delete_file": "legacy.txt"
+    }
+  },
+  {
+    "task_id": "file_eval_0015",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹，并确保其中存在名为 reports 的文件夹；如果不存在，则创建该文件夹。\n\n确保 Home 文件夹中存在以下两个源文件：\n- omega.txt\n- keep_beta.txt\n如果某个文件不存在，则创建该文件。\n\n将 omega.txt 移动到 reports 文件夹中。\n\n进入 reports 文件夹，将 omega.txt 重命名为 delta_done.txt。\n\n返回 Home 文件夹，并确保 garbage.txt 不存在；如果存在，则删除它。\n\n最后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "reports",
+      "source_file_1": "omega.txt",
+      "source_file_2": "keep_beta.txt",
+      "target_file_1": "delta_done.txt",
+      "delete_file": "garbage.txt"
+    }
+  },
+  {
+    "task_id": "file_eval_0018",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹，并确保其中存在名为 lab 的文件夹；如果不存在，则创建该文件夹。\n\n确保 Home 文件夹中存在以下两个源文件：\n- alpha.txt\n- keep_omega.txt\n如果某个文件不存在，则创建该文件。\n\n将 alpha.txt 移动到 lab 文件夹中。\n\n进入 lab 文件夹，将 alpha.txt 重命名为 omega_done.txt。\n\n返回 Home 文件夹，并确保 noise.txt 不存在；如果存在，则删除它。\n\n最后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "lab",
+      "source_file_1": "alpha.txt",
+      "source_file_2": "keep_omega.txt",
+      "target_file_1": "omega_done.txt",
+      "delete_file": "noise.txt"
+    }
+  },
+  {
+    "task_id": "file_eval_0001",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹，并确保其中存在名为 materials 的文件夹；如果不存在，则创建该文件夹。\n\n确保 Home 文件夹中存在以下两个源文件：\n- alpha.txt\n- keep_omega.txt\n如果某个文件不存在，则创建该文件。\n\n将 alpha.txt 移动到 materials 文件夹中。\n\n进入 materials 文件夹，将 alpha.txt 重命名为 delta_done.txt。\n\n返回 Home 文件夹，并确保 drop_me.txt 不存在；如果存在，则删除它。\n\n最后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "materials",
+      "source_file_1": "alpha.txt",
+      "source_file_2": "keep_omega.txt",
+      "target_file_1": "delta_done.txt",
+      "delete_file": "drop_me.txt"
+    }
+  },
+  {
+    "task_id": "file_eval_0008",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹，并确保其中存在名为 lab 的文件夹；如果不存在，则创建该文件夹。\n\n确保 Home 文件夹中存在以下两个源文件：\n- omega.txt\n- keep_gamma.txt\n如果某个文件不存在，则创建该文件。\n\n将 omega.txt 移动到 lab 文件夹中。\n\n进入 lab 文件夹，将 omega.txt 重命名为 omega_done.txt。\n\n返回 Home 文件夹，并确保 legacy.txt 不存在；如果存在，则删除它。\n\n最后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "lab",
+      "source_file_1": "omega.txt",
+      "source_file_2": "keep_gamma.txt",
+      "target_file_1": "omega_done.txt",
+      "delete_file": "legacy.txt"
+    }
+  },
+  {
+    "task_id": "file_eval_0017",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹，并确保其中存在名为 lab 的文件夹；如果不存在，则创建该文件夹。\n\n确保 Home 文件夹中存在以下两个源文件：\n- beta.txt\n- keep_alpha.txt\n如果某个文件不存在，则创建该文件。\n\n将 beta.txt 移动到 lab 文件夹中。\n\n进入 lab 文件夹，将 beta.txt 重命名为 beta_done.txt。\n\n返回 Home 文件夹，并确保 stale.txt 不存在；如果存在，则删除它。\n\n最后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "lab",
+      "source_file_1": "beta.txt",
+      "source_file_2": "keep_alpha.txt",
+      "target_file_1": "beta_done.txt",
+      "delete_file": "stale.txt"
+    }
+  },
+  {
+    "task_id": "file_eval_0003",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹，并确保其中存在名为 lab 的文件夹；如果不存在，则创建该文件夹。\n\n确保 Home 文件夹中存在以下两个源文件：\n- alpha.txt\n- keep_omega.txt\n如果某个文件不存在，则创建该文件。\n\n将 alpha.txt 移动到 lab 文件夹中。\n\n进入 lab 文件夹，将 alpha.txt 重命名为 alpha_done.txt。\n\n返回 Home 文件夹，并确保 noise.txt 不存在；如果存在，则删除它。\n\n最后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "lab",
+      "source_file_1": "alpha.txt",
+      "source_file_2": "keep_omega.txt",
+      "target_file_1": "alpha_done.txt",
+      "delete_file": "noise.txt"
+    }
+  },
+  {
+    "task_id": "file_eval_0019",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹，并确保其中存在名为 lab 的文件夹；如果不存在，则创建该文件夹。\n\n确保 Home 文件夹中存在以下两个源文件：\n- delta.txt\n- keep_alpha.txt\n如果某个文件不存在，则创建该文件。\n\n将 delta.txt 移动到 lab 文件夹中。\n\n进入 lab 文件夹，将 delta.txt 重命名为 beta_done.txt。\n\n返回 Home 文件夹，并确保 garbage.txt 不存在；如果存在，则删除它。\n\n最后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "lab",
+      "source_file_1": "delta.txt",
+      "source_file_2": "keep_alpha.txt",
+      "target_file_1": "beta_done.txt",
+      "delete_file": "garbage.txt"
+    }
+  },
+  {
+    "task_id": "file_eval_0011",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹，并确保其中存在名为 materials 的文件夹；如果不存在，则创建该文件夹。\n\n确保 Home 文件夹中存在以下两个源文件：\n- gamma.txt\n- keep_alpha.txt\n如果某个文件不存在，则创建该文件。\n\n将 gamma.txt 移动到 materials 文件夹中。\n\n进入 materials 文件夹，将 gamma.txt 重命名为 omega_done.txt。\n\n返回 Home 文件夹，并确保 legacy.txt 不存在；如果存在，则删除它。\n\n最后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "materials",
+      "source_file_1": "gamma.txt",
+      "source_file_2": "keep_alpha.txt",
+      "target_file_1": "omega_done.txt",
+      "delete_file": "legacy.txt"
+    }
+  },
+  {
+    "task_id": "file_eval_0007",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹，并确保其中存在名为 workspace 的文件夹；如果不存在，则创建该文件夹。\n\n确保 Home 文件夹中存在以下两个源文件：\n- gamma.txt\n- keep_beta.txt\n如果某个文件不存在，则创建该文件。\n\n将 gamma.txt 移动到 workspace 文件夹中。\n\n进入 workspace 文件夹，将 gamma.txt 重命名为 gamma_done.txt。\n\n返回 Home 文件夹，并确保 drop_me.txt 不存在；如果存在，则删除它。\n\n最后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "workspace",
+      "source_file_1": "gamma.txt",
+      "source_file_2": "keep_beta.txt",
+      "target_file_1": "gamma_done.txt",
+      "delete_file": "drop_me.txt"
+    }
+  },
+  {
+    "task_id": "file_eval_0006",
+    "scene": "file_organization",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前有窗口打开，请先关闭所有窗口并回到桌面。\n\n进入 Home 文件夹，并确保其中存在名为 workspace 的文件夹；如果不存在，则创建该文件夹。\n\n确保 Home 文件夹中存在以下两个源文件：\n- delta.txt\n- keep_alpha.txt\n如果某个文件不存在，则创建该文件。\n\n将 delta.txt 移动到 workspace 文件夹中。\n\n进入 workspace 文件夹，将 delta.txt 重命名为 alpha_done.txt。\n\n返回 Home 文件夹，并确保 garbage.txt 不存在；如果存在，则删除它。\n\n最后关闭所有窗口并结束任务。",
+    "meta": {
+      "target_folder": "workspace",
+      "source_file_1": "delta.txt",
+      "source_file_2": "keep_alpha.txt",
+      "target_file_1": "alpha_done.txt",
+      "delete_file": "garbage.txt"
+    }
+  }
+]

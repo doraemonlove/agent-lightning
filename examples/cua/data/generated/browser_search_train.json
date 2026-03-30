@@ -1,0 +1,1102 @@
+[
+  {
+    "task_id": "browser_train_0095",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“世界上最长的河流”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 notes 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 query_result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 query_result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "世界上最长的河流",
+      "target_directory": "notes",
+      "file_name": "query_result.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0047",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“东京大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 answers 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 query_result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 query_result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "东京大学地址",
+      "target_directory": "answers",
+      "file_name": "query_result.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0060",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“珠穆朗玛峰高度是多少”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 test 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 note.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 note.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "珠穆朗玛峰高度是多少",
+      "target_directory": "test",
+      "file_name": "note.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0068",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“南开大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 browser_output 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 ans.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 ans.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "南开大学地址",
+      "target_directory": "browser_output",
+      "file_name": "ans.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0069",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“哈佛大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 answers 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 note.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 note.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "哈佛大学地址",
+      "target_directory": "answers",
+      "file_name": "note.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0051",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“东京大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 docs 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 output.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 output.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "东京大学地址",
+      "target_directory": "docs",
+      "file_name": "output.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0002",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“哈佛大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 results 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 ans.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 ans.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "哈佛大学地址",
+      "target_directory": "results",
+      "file_name": "ans.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0086",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“北京大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 answers 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 fact.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 fact.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "北京大学地址",
+      "target_directory": "answers",
+      "file_name": "fact.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0074",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“日本的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 fact_files 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 note.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 note.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "日本的首都是哪里",
+      "target_directory": "fact_files",
+      "file_name": "note.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0098",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“日本的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 answers 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "日本的首都是哪里",
+      "target_directory": "answers",
+      "file_name": "result.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0044",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“东京人口是多少”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 browser_output 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 output.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 output.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "东京人口是多少",
+      "target_directory": "browser_output",
+      "file_name": "output.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0001",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“太阳系最大的行星”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 fact_files 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 fact.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 fact.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "太阳系最大的行星",
+      "target_directory": "fact_files",
+      "file_name": "fact.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0054",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“中国的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 fact_files 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 query_result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 query_result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "中国的首都是哪里",
+      "target_directory": "fact_files",
+      "file_name": "query_result.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0007",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“北京大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 docs 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 ans.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 ans.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "北京大学地址",
+      "target_directory": "docs",
+      "file_name": "ans.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0030",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“天津大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 docs 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 output.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 output.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "天津大学地址",
+      "target_directory": "docs",
+      "file_name": "output.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0061",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“中国的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 test 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 output.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 output.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "中国的首都是哪里",
+      "target_directory": "test",
+      "file_name": "output.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0014",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“天津大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 answers 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 note.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 note.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "天津大学地址",
+      "target_directory": "answers",
+      "file_name": "note.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0071",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“太阳系最大的行星”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 results 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 ans.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 ans.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "太阳系最大的行星",
+      "target_directory": "results",
+      "file_name": "ans.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0065",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“法国的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 browser_output 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "法国的首都是哪里",
+      "target_directory": "browser_output",
+      "file_name": "result.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0010",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“日本的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 browser_output 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 fact.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 fact.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "日本的首都是哪里",
+      "target_directory": "browser_output",
+      "file_name": "fact.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0013",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“太阳系最大的行星”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 docs 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 note.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 note.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "太阳系最大的行星",
+      "target_directory": "docs",
+      "file_name": "note.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0039",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“中国的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 fact_files 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 output.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 output.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "中国的首都是哪里",
+      "target_directory": "fact_files",
+      "file_name": "output.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0056",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“东京大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 test 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 fact.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 fact.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "东京大学地址",
+      "target_directory": "test",
+      "file_name": "fact.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0003",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“日本的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 records 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 query_result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 query_result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "日本的首都是哪里",
+      "target_directory": "records",
+      "file_name": "query_result.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0031",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“长城长度是多少”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 browser_output 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 ans.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 ans.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "长城长度是多少",
+      "target_directory": "browser_output",
+      "file_name": "ans.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0062",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“哈佛大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 records 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 ans.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 ans.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "哈佛大学地址",
+      "target_directory": "records",
+      "file_name": "ans.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0073",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“清华大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 answers 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 fact.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 fact.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "清华大学地址",
+      "target_directory": "answers",
+      "file_name": "fact.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0092",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“长城长度是多少”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 fact_files 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 answer.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 answer.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "长城长度是多少",
+      "target_directory": "fact_files",
+      "file_name": "answer.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0045",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“天津大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 fact_files 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 query_result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 query_result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "天津大学地址",
+      "target_directory": "fact_files",
+      "file_name": "query_result.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0064",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“世界上最大的海洋”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 answers 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 query_result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 query_result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "世界上最大的海洋",
+      "target_directory": "answers",
+      "file_name": "query_result.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0032",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“天津大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 test 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 answer.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 answer.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "天津大学地址",
+      "target_directory": "test",
+      "file_name": "answer.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0096",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“上海人口是多少”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 records 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 query_result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 query_result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "上海人口是多少",
+      "target_directory": "records",
+      "file_name": "query_result.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0029",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“Python列表推导式是什么”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 docs 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 note.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 note.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "Python列表推导式是什么",
+      "target_directory": "docs",
+      "file_name": "note.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0078",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“Python列表推导式是什么”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 answers 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 info.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 info.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "Python列表推导式是什么",
+      "target_directory": "answers",
+      "file_name": "info.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0008",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“清华大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 fact_files 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 answer.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 answer.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "清华大学地址",
+      "target_directory": "fact_files",
+      "file_name": "answer.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0023",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“清华大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 records 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 info.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 info.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "清华大学地址",
+      "target_directory": "records",
+      "file_name": "info.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0006",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“日本的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 test 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 info.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 info.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "日本的首都是哪里",
+      "target_directory": "test",
+      "file_name": "info.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0028",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“上海人口是多少”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 docs 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 ans.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 ans.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "上海人口是多少",
+      "target_directory": "docs",
+      "file_name": "ans.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0097",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“哈佛大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 test 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 answer.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 answer.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "哈佛大学地址",
+      "target_directory": "test",
+      "file_name": "answer.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0081",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“复旦大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 docs 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 query_result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 query_result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "复旦大学地址",
+      "target_directory": "docs",
+      "file_name": "query_result.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0079",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“太阳系最大的行星”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 results 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 fact.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 fact.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "太阳系最大的行星",
+      "target_directory": "results",
+      "file_name": "fact.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0089",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“长城长度是多少”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 fact_files 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "长城长度是多少",
+      "target_directory": "fact_files",
+      "file_name": "result.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0021",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“南开大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 notes 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 note.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 note.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "南开大学地址",
+      "target_directory": "notes",
+      "file_name": "note.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0048",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“东京大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 docs 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 info.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 info.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "东京大学地址",
+      "target_directory": "docs",
+      "file_name": "info.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0040",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“复旦大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 notes 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 info.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 info.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "复旦大学地址",
+      "target_directory": "notes",
+      "file_name": "info.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0084",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“上海人口是多少”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 results 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 answer.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 answer.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "上海人口是多少",
+      "target_directory": "results",
+      "file_name": "answer.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0055",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“日本的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 results 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 info.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 info.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "日本的首都是哪里",
+      "target_directory": "results",
+      "file_name": "info.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0050",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“南开大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 browser_output 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 info.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 info.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "南开大学地址",
+      "target_directory": "browser_output",
+      "file_name": "info.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0037",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“世界上最大的海洋”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 records 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 query_result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 query_result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "世界上最大的海洋",
+      "target_directory": "records",
+      "file_name": "query_result.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0035",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“世界上最大的海洋”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 docs 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 info.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 info.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "世界上最大的海洋",
+      "target_directory": "docs",
+      "file_name": "info.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0100",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“Linux是什么”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 docs 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 ans.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 ans.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "Linux是什么",
+      "target_directory": "docs",
+      "file_name": "ans.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0059",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“北京大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 answers 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 output.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 output.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "北京大学地址",
+      "target_directory": "answers",
+      "file_name": "output.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0076",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“Linux是什么”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 notes 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 note.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 note.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "Linux是什么",
+      "target_directory": "notes",
+      "file_name": "note.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0017",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“埃菲尔铁塔高度是多少”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 answers 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 ans.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 ans.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "埃菲尔铁塔高度是多少",
+      "target_directory": "answers",
+      "file_name": "ans.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0041",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“世界上最大的海洋”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 notes 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 query_result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 query_result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "世界上最大的海洋",
+      "target_directory": "notes",
+      "file_name": "query_result.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0009",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“长城长度是多少”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 results 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 note.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 note.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "长城长度是多少",
+      "target_directory": "results",
+      "file_name": "note.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0036",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“北京大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 notes 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "北京大学地址",
+      "target_directory": "notes",
+      "file_name": "result.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0042",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“Python列表推导式是什么”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 fact_files 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 info.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 info.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "Python列表推导式是什么",
+      "target_directory": "fact_files",
+      "file_name": "info.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0087",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“复旦大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 records 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 fact.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 fact.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "复旦大学地址",
+      "target_directory": "records",
+      "file_name": "fact.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0049",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“长城长度是多少”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 answers 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 query_result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 query_result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "长城长度是多少",
+      "target_directory": "answers",
+      "file_name": "query_result.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0070",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“世界上最长的河流”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 browser_output 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 ans.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 ans.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "世界上最长的河流",
+      "target_directory": "browser_output",
+      "file_name": "ans.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0004",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“Linux是什么”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 answers 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 note.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 note.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "Linux是什么",
+      "target_directory": "answers",
+      "file_name": "note.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0015",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“日本的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 records 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 ans.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 ans.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "日本的首都是哪里",
+      "target_directory": "records",
+      "file_name": "ans.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0091",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“太阳系最大的行星”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 test 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 info.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 info.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "太阳系最大的行星",
+      "target_directory": "test",
+      "file_name": "info.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0083",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“东京大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 docs 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 answer.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 answer.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "东京大学地址",
+      "target_directory": "docs",
+      "file_name": "answer.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0066",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“中国的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 notes 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 info.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 info.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "中国的首都是哪里",
+      "target_directory": "notes",
+      "file_name": "info.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0022",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“复旦大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 results 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 answer.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 answer.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "复旦大学地址",
+      "target_directory": "results",
+      "file_name": "answer.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0077",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“世界上最长的河流”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 browser_output 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 info.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 info.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "世界上最长的河流",
+      "target_directory": "browser_output",
+      "file_name": "info.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0094",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“Linux是什么”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 notes 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 output.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 output.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "Linux是什么",
+      "target_directory": "notes",
+      "file_name": "output.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0026",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“北京大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 answers 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "北京大学地址",
+      "target_directory": "answers",
+      "file_name": "result.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0005",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“珠穆朗玛峰高度是多少”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 docs 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 ans.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 ans.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "珠穆朗玛峰高度是多少",
+      "target_directory": "docs",
+      "file_name": "ans.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0085",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“日本的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 records 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 output.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 output.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "日本的首都是哪里",
+      "target_directory": "records",
+      "file_name": "output.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0033",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“北京大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 notes 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 answer.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 answer.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "北京大学地址",
+      "target_directory": "notes",
+      "file_name": "answer.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0043",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“长城长度是多少”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 test 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 ans.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 ans.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "长城长度是多少",
+      "target_directory": "test",
+      "file_name": "ans.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0080",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“南开大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 fact_files 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 ans.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 ans.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "南开大学地址",
+      "target_directory": "fact_files",
+      "file_name": "ans.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0053",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“长城长度是多少”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 answers 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 note.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 note.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "长城长度是多少",
+      "target_directory": "answers",
+      "file_name": "note.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0025",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“Python列表推导式是什么”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 records 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 answer.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 answer.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "Python列表推导式是什么",
+      "target_directory": "records",
+      "file_name": "answer.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0027",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“世界上最大的海洋”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 browser_output 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 query_result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 query_result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "世界上最大的海洋",
+      "target_directory": "browser_output",
+      "file_name": "query_result.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0072",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“日本的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 fact_files 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 info.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 info.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "日本的首都是哪里",
+      "target_directory": "fact_files",
+      "file_name": "info.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0057",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“复旦大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 records 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 answer.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 answer.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "复旦大学地址",
+      "target_directory": "records",
+      "file_name": "answer.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0046",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“中国的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 results 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 query_result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 query_result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "中国的首都是哪里",
+      "target_directory": "results",
+      "file_name": "query_result.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0019",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“长城长度是多少”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 docs 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 note.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 note.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "长城长度是多少",
+      "target_directory": "docs",
+      "file_name": "note.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0093",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“东京人口是多少”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 records 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "东京人口是多少",
+      "target_directory": "records",
+      "file_name": "result.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0016",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“东京大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 answers 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 info.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 info.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "东京大学地址",
+      "target_directory": "answers",
+      "file_name": "info.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0052",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“太阳系最大的行星”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 docs 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 ans.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 ans.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "太阳系最大的行星",
+      "target_directory": "docs",
+      "file_name": "ans.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0020",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“Python列表推导式是什么”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 fact_files 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 query_result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 query_result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "Python列表推导式是什么",
+      "target_directory": "fact_files",
+      "file_name": "query_result.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0024",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“天津大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 browser_output 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "天津大学地址",
+      "target_directory": "browser_output",
+      "file_name": "result.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0099",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“南开大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 test 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 note.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 note.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "南开大学地址",
+      "target_directory": "test",
+      "file_name": "note.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0038",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“哈佛大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 docs 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 fact.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 fact.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "哈佛大学地址",
+      "target_directory": "docs",
+      "file_name": "fact.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0058",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“世界上最长的河流”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 answers 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 output.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 output.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "世界上最长的河流",
+      "target_directory": "answers",
+      "file_name": "output.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0067",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“中国的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 answers 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 ans.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 ans.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "中国的首都是哪里",
+      "target_directory": "answers",
+      "file_name": "ans.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0034",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“法国的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 browser_output 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 output.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 output.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "法国的首都是哪里",
+      "target_directory": "browser_output",
+      "file_name": "output.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0088",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“东京人口是多少”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 test 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 answer.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 answer.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "东京人口是多少",
+      "target_directory": "test",
+      "file_name": "answer.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0012",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“南开大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 test 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 output.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 output.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "南开大学地址",
+      "target_directory": "test",
+      "file_name": "output.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0082",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“日本的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 notes 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 fact.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 fact.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "日本的首都是哪里",
+      "target_directory": "notes",
+      "file_name": "fact.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0018",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“Python列表推导式是什么”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 docs 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "Python列表推导式是什么",
+      "target_directory": "docs",
+      "file_name": "result.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0063",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“埃菲尔铁塔高度是多少”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 docs 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 fact.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 fact.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "埃菲尔铁塔高度是多少",
+      "target_directory": "docs",
+      "file_name": "fact.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0011",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“北京大学地址”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 records 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 info.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 info.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "北京大学地址",
+      "target_directory": "records",
+      "file_name": "info.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0075",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“世界上最大的海洋”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 answers 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 output.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 output.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "世界上最大的海洋",
+      "target_directory": "answers",
+      "file_name": "output.txt"
+    }
+  },
+  {
+    "task_id": "browser_train_0090",
+    "scene": "browser_search",
+    "split": "train",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“世界上最大的海洋”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 test 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 note.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 note.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "世界上最大的海洋",
+      "target_directory": "test",
+      "file_name": "note.txt"
+    }
+  }
+]

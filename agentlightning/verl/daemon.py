@@ -402,6 +402,11 @@ class AgentModeDaemon:
             # Already a proper URI (http, https, file, data)
             if url.startswith(("http://", "https://", "file://", "data:")):
                 return url
+            # Heuristic: raw base64 strings (from screenshots) are typically
+            # much longer than file paths. Wrap them as data URIs so that
+            # downstream image processors can decode them correctly.
+            if len(url) > 256:
+                return f"data:image/png;base64,{url}"
             # Treat as a file path that needs resolution
             resolved = self._resolve_image_path(url)
             return f"file://{resolved}"
@@ -991,13 +996,13 @@ class AgentModeDaemon:
                     "prompt_ids": t.prompt.get("token_ids", []),
                     "response_ids": t.response.get("token_ids", []),
                     "image_urls": t.prompt.get("image_urls", []),
-                    "reward": t.reward if t.reward else 0.0,
+                    "reward": t.reward if t.reward is not None else 0.0,
                 }
                 for t in rollout.triplets
             ]
 
             info = {
-                "reward": overall_score if overall_score else 0.0,
+                "reward": overall_score if overall_score is not None else 0.0,
                 "trace_list": trace_list,
                 "data_id": original_sample["data_id"],
             }
@@ -1032,16 +1037,22 @@ class AgentModeDaemon:
 
             for turn_index, trace in enumerate(sample_info["trace_list"]):
 
-                # NOTE:定义新的reward
-                lamada = 0.9
-                # reward_list.append(trace["reward"])
+                # GRPO computes advantages by normalizing rewards within a group
+                # (all rollouts sharing the same data_id). What matters is the
+                # *relative ranking* of rollouts, not per-action differences.
+                # Using overall_score ensures a clean inter-rollout signal:
+                #   - Good rollout → all its actions get positive advantage
+                #   - Bad rollout  → all its actions get negative advantage
+                # Mixing in seg_reward only adds noise because:
+                #   1. All actions in the same segment share the same seg_reward,
+                #      so it cannot distinguish actions within a segment.
+                #   2. It narrows the inter-rollout reward gap that GRPO relies on.
                 seg_reward = trace["reward"]
-                hybrid_reward = lamada * current_overall_score + (1 - lamada) * seg_reward
-                reward_list.append(hybrid_reward)
+                reward_list.append(current_overall_score)
 
                 # 【收集指标】用于折线图
                 metric_seg_rewards.append(seg_reward)
-                metric_hybrid_rewards.append(hybrid_reward)
+                metric_hybrid_rewards.append(current_overall_score)
 
                 prompt_ids, response_ids = trace["prompt_ids"], trace["response_ids"]
 

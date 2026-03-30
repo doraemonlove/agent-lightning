@@ -1,0 +1,222 @@
+[
+  {
+    "task_id": "browser_eval_0009",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“澳大利亚的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 eval_docs 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 eval_note.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 eval_note.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "澳大利亚的首都是哪里",
+      "target_directory": "eval_docs",
+      "file_name": "eval_note.txt"
+    }
+  },
+  {
+    "task_id": "browser_eval_0004",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“光合作用是什么”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 eval_answers 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 eval_info.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 eval_info.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "光合作用是什么",
+      "target_directory": "eval_answers",
+      "file_name": "eval_info.txt"
+    }
+  },
+  {
+    "task_id": "browser_eval_0020",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“加拿大的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 eval_notes 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 eval_result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 eval_result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "加拿大的首都是哪里",
+      "target_directory": "eval_notes",
+      "file_name": "eval_result.txt"
+    }
+  },
+  {
+    "task_id": "browser_eval_0014",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“澳大利亚的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 eval_notes 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 eval_info.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 eval_info.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "澳大利亚的首都是哪里",
+      "target_directory": "eval_notes",
+      "file_name": "eval_info.txt"
+    }
+  },
+  {
+    "task_id": "browser_eval_0015",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“地球上最大的大陆”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 eval_notes 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 eval_ans.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 eval_ans.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "地球上最大的大陆",
+      "target_directory": "eval_notes",
+      "file_name": "eval_ans.txt"
+    }
+  },
+  {
+    "task_id": "browser_eval_0005",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“加拿大的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 eval_answers 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 eval_result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 eval_result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "加拿大的首都是哪里",
+      "target_directory": "eval_answers",
+      "file_name": "eval_result.txt"
+    }
+  },
+  {
+    "task_id": "browser_eval_0013",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“世界上最大的沙漠”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 eval_answers 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 eval_result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 eval_result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "世界上最大的沙漠",
+      "target_directory": "eval_answers",
+      "file_name": "eval_result.txt"
+    }
+  },
+  {
+    "task_id": "browser_eval_0019",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“世界上最高的山峰”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 eval_docs 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 eval_note.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 eval_note.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "世界上最高的山峰",
+      "target_directory": "eval_docs",
+      "file_name": "eval_note.txt"
+    }
+  },
+  {
+    "task_id": "browser_eval_0017",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“意大利的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 eval_docs 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 eval_result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 eval_result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "意大利的首都是哪里",
+      "target_directory": "eval_docs",
+      "file_name": "eval_result.txt"
+    }
+  },
+  {
+    "task_id": "browser_eval_0010",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“德国的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 eval_notes 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 eval_ans.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 eval_ans.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "德国的首都是哪里",
+      "target_directory": "eval_notes",
+      "file_name": "eval_ans.txt"
+    }
+  },
+  {
+    "task_id": "browser_eval_0016",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“世界上最高的山峰”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 eval_results 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 eval_result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 eval_result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "世界上最高的山峰",
+      "target_directory": "eval_results",
+      "file_name": "eval_result.txt"
+    }
+  },
+  {
+    "task_id": "browser_eval_0006",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“德国的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 eval_answers 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 eval_result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 eval_result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "德国的首都是哪里",
+      "target_directory": "eval_answers",
+      "file_name": "eval_result.txt"
+    }
+  },
+  {
+    "task_id": "browser_eval_0001",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“太阳系最小的行星”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 eval_results 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 eval_result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 eval_result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "太阳系最小的行星",
+      "target_directory": "eval_results",
+      "file_name": "eval_result.txt"
+    }
+  },
+  {
+    "task_id": "browser_eval_0002",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“澳大利亚的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 eval_docs 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 eval_info.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 eval_info.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "澳大利亚的首都是哪里",
+      "target_directory": "eval_docs",
+      "file_name": "eval_info.txt"
+    }
+  },
+  {
+    "task_id": "browser_eval_0007",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“巴西的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 eval_docs 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 eval_info.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 eval_info.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "巴西的首都是哪里",
+      "target_directory": "eval_docs",
+      "file_name": "eval_info.txt"
+    }
+  },
+  {
+    "task_id": "browser_eval_0003",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“世界上最高的山峰”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 eval_results 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 eval_ans.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 eval_ans.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "世界上最高的山峰",
+      "target_directory": "eval_results",
+      "file_name": "eval_ans.txt"
+    }
+  },
+  {
+    "task_id": "browser_eval_0011",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“加拿大的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 eval_docs 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 eval_info.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 eval_info.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "加拿大的首都是哪里",
+      "target_directory": "eval_docs",
+      "file_name": "eval_info.txt"
+    }
+  },
+  {
+    "task_id": "browser_eval_0012",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“德国的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 eval_docs 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 eval_result.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 eval_result.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "德国的首都是哪里",
+      "target_directory": "eval_docs",
+      "file_name": "eval_result.txt"
+    }
+  },
+  {
+    "task_id": "browser_eval_0008",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“加拿大的首都是哪里”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 eval_docs 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 eval_note.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 eval_note.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "加拿大的首都是哪里",
+      "target_directory": "eval_docs",
+      "file_name": "eval_note.txt"
+    }
+  },
+  {
+    "task_id": "browser_eval_0018",
+    "scene": "browser_search",
+    "split": "eval",
+    "instruction": "\n任务开始前，如果当前浏览器已经打开，请先关闭所有浏览器窗口并回到桌面。\n\n重新打开浏览器，搜索并找到关于“世界上最高的山峰”的答案。请从可信来源页面中复制能够直接回答该问题的完整答案文本。\n\n随后返回桌面，进入 Home 文件夹，并确保其中存在名为 eval_results 的文件夹；如果不存在，则创建该文件夹。然后进入该文件夹。\n\n确保 eval_note.txt 最终是一个新的文本文件：如果该文件已存在，请先删除旧文件，再创建新的同名文件。\n\n使用 libreoffice 打开 eval_note.txt，将刚才复制的答案文本粘贴到文件中，保存并退出 libreoffice。\n\n最后关闭浏览器、libreoffice 以及所有其他窗口并结束任务。",
+    "meta": {
+      "search_query": "世界上最高的山峰",
+      "target_directory": "eval_results",
+      "file_name": "eval_note.txt"
+    }
+  }
+]
