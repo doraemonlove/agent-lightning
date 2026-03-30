@@ -45,6 +45,7 @@ fi
 python -m agentlightning.verl \
     algorithm.adv_estimator=grpo \
     algorithm.use_kl_in_reward=False \
+    algorithm.credit_assignment_beta=1.0 \
     data.train_files=${DATA_DIR}/asset_audit_train.parquet \
     data.val_files=${DATA_DIR}/asset_audit_eval.parquet \
     data.train_batch_size=8 \
@@ -52,7 +53,7 @@ python -m agentlightning.verl \
     data.max_prompt_length=32768 \
     data.max_response_length=1024  \
     data.truncation='error' \
-    actor_rollout_ref.rollout.n=8 \
+    actor_rollout_ref.rollout.n=4 \
     actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu=1 \
     actor_rollout_ref.rollout.multi_turn.format=hermes \
     actor_rollout_ref.rollout.name=vllm \
@@ -66,14 +67,14 @@ python -m agentlightning.verl \
     actor_rollout_ref.model.path=${BASE_MODEL} \
     actor_rollout_ref.model.use_remove_padding=True \
     actor_rollout_ref.model.enable_gradient_checkpointing=True \
-    actor_rollout_ref.actor.optim.lr=2e-6 \
-    actor_rollout_ref.actor.ppo_mini_batch_size=8 \
+    actor_rollout_ref.actor.optim.lr=1e-6 \
+    actor_rollout_ref.actor.ppo_mini_batch_size=128 \
     actor_rollout_ref.actor.ppo_micro_batch_size_per_gpu=1 \
     actor_rollout_ref.actor.use_kl_loss=True \
     actor_rollout_ref.actor.kl_loss_coef=0.05 \
     actor_rollout_ref.actor.entropy_coeff=0.001 \
     actor_rollout_ref.actor.clip_ratio_low=0.2 \
-    actor_rollout_ref.actor.clip_ratio_high=0.2 \
+    actor_rollout_ref.actor.clip_ratio_high=0.28 \
     actor_rollout_ref.actor.fsdp_config.param_offload=True \
     actor_rollout_ref.actor.fsdp_config.optimizer_offload=True \
     actor_rollout_ref.ref.log_prob_micro_batch_size_per_gpu=1 \
