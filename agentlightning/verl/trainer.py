@@ -359,6 +359,42 @@ class AgentLightningTrainer(RayPPOTrainer):
                     config=self.config.algorithm,
                 )
 
+            # ── Stage 2: intra-rollout credit assignment ──
+            # GRPO (Stage 1) already computed inter-rollout advantages using
+            # overall_score.  Now we add a per-action bonus derived from
+            # segment-level rewards so that *within* the same rollout, good
+            # segments receive higher advantage and bad segments are penalised.
+            #
+            #   bonus_i = seg_reward_i − mean(seg_rewards in same rollout)
+            #   final_advantage_i = grpo_advantage_i + β × bonus_i
+            #
+            # β is a configurable coefficient (default 1.0).
+            credit_beta = self.config.algorithm.get("credit_assignment_beta", 1.0)
+            if credit_beta > 0 and "seg_reward_list" in batch.non_tensor_batch:
+                seg_rewards = batch.non_tensor_batch["seg_reward_list"]      # (N,)
+                rollout_ids = batch.non_tensor_batch["rollout_id_list"]      # (N,)
+                response_mask = batch.batch["response_mask"]                 # (N, resp_len)
+
+                # Compute per-rollout mean seg_reward
+                unique_rollouts = np.unique(rollout_ids)
+                rollout_mean = np.zeros_like(seg_rewards)
+                for rid in unique_rollouts:
+                    mask = rollout_ids == rid
+                    rollout_mean[mask] = seg_rewards[mask].mean()
+
+                # bonus = seg_reward - rollout_mean  (zero-centred within each rollout)
+                bonus = torch.tensor(
+                    seg_rewards - rollout_mean, dtype=batch.batch["advantages"].dtype,
+                    device=batch.batch["advantages"].device,
+                )  # (N,)
+
+                # Broadcast bonus to every response token where response_mask=1
+                bonus_token = bonus.unsqueeze(-1) * response_mask  # (N, resp_len)
+                batch.batch["advantages"] = batch.batch["advantages"] + credit_beta * bonus_token
+
+                metrics["training/credit_bonus_std"] = float(bonus.std().item())
+                metrics["training/credit_bonus_mean"] = float(bonus.mean().item())
+
             # Calculate the metrics before processing. Refer to the comments of function `compute_data_metrics` for details.
             metrics.update(compute_data_metrics(batch=batch, use_critic=self.use_critic, suffix="_before_processing"))
 

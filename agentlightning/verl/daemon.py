@@ -1024,6 +1024,7 @@ class AgentModeDaemon:
         response_ids_list: List[List[int]] = []
         response_attention_mask_list: List[List[int]] = []
         reward_list: List[float] = []
+        seg_reward_list: List[float] = []  # per-action segment rewards for intra-rollout credit
         data_id_list: List[str] = []
         rollout_id_list: List[str] = []
         turn_index_list: List[int] = []
@@ -1037,18 +1038,22 @@ class AgentModeDaemon:
 
             for turn_index, trace in enumerate(sample_info["trace_list"]):
 
-                # GRPO computes advantages by normalizing rewards within a group
-                # (all rollouts sharing the same data_id). What matters is the
-                # *relative ranking* of rollouts, not per-action differences.
-                # Using overall_score ensures a clean inter-rollout signal:
-                #   - Good rollout → all its actions get positive advantage
-                #   - Bad rollout  → all its actions get negative advantage
-                # Mixing in seg_reward only adds noise because:
-                #   1. All actions in the same segment share the same seg_reward,
-                #      so it cannot distinguish actions within a segment.
-                #   2. It narrows the inter-rollout reward gap that GRPO relies on.
+                # Two-stage advantage design:
+                #
+                # Stage 1 (GRPO inter-rollout, in token_level_scores):
+                #   Use overall_score so that GRPO correctly compares
+                #   different rollouts of the SAME task (same uid=data_id).
+                #   This is standard GRPO: same prompt → N rollouts → normalize.
+                #
+                # Stage 2 (intra-rollout credit assignment, in seg_reward_list):
+                #   seg_reward is passed separately. After compute_advantage,
+                #   trainer.py adds per-action bonus:
+                #     bonus_i = β × (seg_reward_i − mean_seg_within_rollout)
+                #   This preserves GRPO's inter-rollout signal while adding
+                #   dense credit assignment within each rollout.
                 seg_reward = trace["reward"]
                 reward_list.append(current_overall_score)
+                seg_reward_list.append(seg_reward)
 
                 # 【收集指标】用于折线图
                 metric_seg_rewards.append(seg_reward)
@@ -1175,6 +1180,7 @@ class AgentModeDaemon:
         data_proto.non_tensor_batch["data_id_list"] = np.array(data_id_list)  # type: ignore
         data_proto.non_tensor_batch["rollout_id_list"] = np.array(rollout_id_list)  # type: ignore
         data_proto.non_tensor_batch["turn_index_list"] = np.array(turn_index_list)  # type: ignore
+        data_proto.non_tensor_batch["seg_reward_list"] = np.array(seg_reward_list, dtype=np.float32)  # type: ignore
 
         return data_proto, data_metrics
 
